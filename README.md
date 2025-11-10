@@ -54,7 +54,9 @@ Unreal Engine 에셋(`Content/`)과 빌드 산출물은 포함되지 않습니�
 
 ## License / Usage
 - 개인 포트폴리오 목적으로 공개되었습니다.  
-- 원본 강의 및 저작권: [Udemy – Unreal Engine 5 C++ Advanced Action RPG](https://www.udemy.com/course/unreal-engine-5-advanced-action-rpg-korean/)  
+- 참고 강의: [Udemy – Unreal Engine 5 C++ Advanced Action RPG](https://www.udemy.com/course/unreal-engine-5-advanced-action-rpg-korean/)  
+- 사용 리소스
+  1. Bossy Enemy Animation Pack — by kampinis, via Epic Games Fab (https://fab.com/s/bebc63332c80)
 
 ---
 
