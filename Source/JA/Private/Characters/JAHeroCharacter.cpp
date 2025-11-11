@@ -6,6 +6,11 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "DataAssets/Input/DataAsset_InputConfig.h"
+#include "Components/Input/JAInputComponent.h"
+#include "JAGameplayTags.h"
+
 #include "JADebugHelper.h"
 
 AJAHeroCharacter::AJAHeroCharacter()
@@ -37,4 +42,58 @@ void AJAHeroCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	Debug::Print(TEXT("Working"));
+}
+
+void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	checkf(InputConfigDataAsset, TEXT("Forgot to assign a valid data asset as input config"));
+
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	ULocalPlayer* LocalPlayer = GetController<APlayerController>()->GetLocalPlayer();
+
+	UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
+	check(SubSystem);
+
+	SubSystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
+
+	UJAInputComponent* JAInputComponent = CastChecked<UJAInputComponent>(PlayerInputComponent);
+
+	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+}
+
+void AJAHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
+{
+	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
+	const FRotator MovementRotation(0.f, Controller->GetControlRotation().Yaw, 0.f);
+
+	if (0.f != MovementVector.Y)
+	{
+		const FVector ForwardDir = MovementRotation.RotateVector(FVector::ForwardVector);
+
+		AddMovementInput(ForwardDir, MovementVector.Y);
+	}
+
+	if (0.f != MovementVector.X)
+	{
+		const FVector RightDir = MovementRotation.RotateVector(FVector::RightVector);
+
+		AddMovementInput(RightDir, MovementVector.X);
+	}
+}
+
+void AJAHeroCharacter::Input_Look(const FInputActionValue& InputActionValue)
+{
+	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
+
+	if (0.f != LookAxisVector.X)
+	{
+		AddControllerYawInput(LookAxisVector.X);
+	}
+
+	if (0.f != LookAxisVector.Y)
+	{
+		AddControllerPitchInput(LookAxisVector.Y);
+	}
 }
