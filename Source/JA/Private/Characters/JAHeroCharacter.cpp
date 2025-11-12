@@ -9,7 +9,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/JAInputComponent.h"
+#include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "JAGameplayTags.h"
+#include "DataAssets/StartUpData/DataAsset_HeroStartUpData.h"
 
 #include "JADebugHelper.h"
 
@@ -37,11 +39,23 @@ AJAHeroCharacter::AJAHeroCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 }
 
+void AJAHeroCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (!CharacterStartUpData.IsNull())
+	{
+		if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.LoadSynchronous())
+		{
+			LoadedData->GiveToAbilitySystemComponent(JAAbilitySystemComponent);
+		}		
+	}
+}
+
 void AJAHeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Debug::Print(TEXT("Working"));
 }
 
 void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

@@ -2,6 +2,8 @@
 
 
 #include "Characters/JABaseCharacter.h"
+#include "AbilitySystem/JAAbilitySystemComponent.h"
+#include "AbilitySystem/JAAttributeSet.h"
 
 // Sets default values
 AJABaseCharacter::AJABaseCharacter()
@@ -13,5 +15,23 @@ AJABaseCharacter::AJABaseCharacter()
 	// decal 영향
 	GetMesh()->bReceivesDecals = false;
 	
+	JAAbilitySystemComponent = CreateDefaultSubobject<UJAAbilitySystemComponent>(TEXT("JAAbilitySystemComponent"));
+	JAAttributeSet = CreateDefaultSubobject<UJAAttributeSet>(TEXT("JAAttributeSet"));
+}
 
+UAbilitySystemComponent* AJABaseCharacter::GetAbilitySystemComponent() const
+{
+	return GetAbilitySystemComponent();
+}
+
+void AJABaseCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (JAAbilitySystemComponent)
+	{
+		JAAbilitySystemComponent->InitAbilityActorInfo(this, this);
+		
+		ensureMsgf(!CharacterStartUpData.IsNull(), TEXT("Forgot to Assign start up data to %s"), *GetName());
+	}
 }
