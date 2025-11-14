@@ -23,13 +23,7 @@
 ---
 
 ## Current Progress
-| 단계 | 내용 | 상태 |
-|------|------|------|
-| 프로젝트 셋업 및 기본 클래스 구조 | JA 모듈 구성, 입력 바인딩 | 완료 |
-| Gameplay Ability System 초기화 | Ability / Attribute / Effect / Cue 흐름 구성 | 진행중 |
-| Melee Combat & Animation Layer | Light/Heavy Attack, Motion Warping | 진행중 |
-| AI Behavior Tree & EQS | 적 행동 패턴 및 위치 선택 로직 | 예정 |
-| Rage Mode / Survival Mode 확장 | GAS 응용 + GameMode 확장 | 예정 |
+- 강의 베이스라인 구현 중 (커스텀 기능은 추후 별도 브랜치/프로젝트로 확장 예정)
 
 ---
 
