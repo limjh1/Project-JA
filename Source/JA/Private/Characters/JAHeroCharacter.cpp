@@ -78,6 +78,8 @@ void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+
+	JAInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
 void AJAHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
@@ -113,4 +115,14 @@ void AJAHeroCharacter::Input_Look(const FInputActionValue& InputActionValue)
 	{
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AJAHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
+{
+	JAAbilitySystemComponent->OnAbilityInputPressed(InInputTag);
+}
+
+void AJAHeroCharacter::Input_AbilityInputReleased(FGameplayTag InInputTag)
+{
+	JAAbilitySystemComponent->OnAbilityInputReleased(InInputTag);
 }

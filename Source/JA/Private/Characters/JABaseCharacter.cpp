@@ -21,7 +21,7 @@ AJABaseCharacter::AJABaseCharacter()
 
 UAbilitySystemComponent* AJABaseCharacter::GetAbilitySystemComponent() const
 {
-	return GetAbilitySystemComponent();
+	return GetJAAbilitySystemComponent();
 }
 
 void AJABaseCharacter::PossessedBy(AController* NewController)
