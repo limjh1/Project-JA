@@ -6,6 +6,9 @@
 #include "Abilities/GameplayAbility.h"
 #include "JAGameplayAbility.generated.h"
 
+class UPawnCombatComponent;
+class UJAAbilitySystemComponent;
+
 UENUM(BlueprintType)
 enum class EJAAbilityActivationPolicy : uint8
 {
@@ -27,8 +30,14 @@ protected:
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	//~ End UGameplayAbility Interface
 
+	UFUNCTION(BlueprintPure, Category = "JA|Ability")
+	UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
+
+	UFUNCTION(BlueprintPure, Category = "JA|Ability")
+	UJAAbilitySystemComponent* GetJAAbilitySystemComponentFromActorInfo() const;
+
+protected:
 	UPROPERTY(EditDefaultsOnly, Category = "JAAbility")
 	EJAAbilityActivationPolicy AbilityActivationPolicy = EJAAbilityActivationPolicy::OnTriggered;
-
 
 };

@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/Abilities/JAGameplayAbility.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
+#include "Components/Combat/PawnCombatComponent.h"
 
 void UJAGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -28,4 +29,14 @@ void UJAGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, con
 			ActorInfo->AbilitySystemComponent->ClearAbility(Handle);
 		}
 	}
+}
+
+UPawnCombatComponent* UJAGameplayAbility::GetPawnCombatComponentFromActorInfo() const
+{
+	return GetAvatarActorFromActorInfo()->FindComponentByClass< UPawnCombatComponent>();
+}
+
+UJAAbilitySystemComponent* UJAGameplayAbility::GetJAAbilitySystemComponentFromActorInfo() const
+{
+	return Cast<UJAAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }

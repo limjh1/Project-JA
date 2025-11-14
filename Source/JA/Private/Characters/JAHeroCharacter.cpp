@@ -11,6 +11,7 @@
 #include "Components/Input/JAInputComponent.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "JAGameplayTags.h"
+#include "Components/Combat/HeroCombatComponent.h"
 #include "DataAssets/StartUpData/DataAsset_HeroStartUpData.h"
 
 #include "JADebugHelper.h"
@@ -37,6 +38,8 @@ AJAHeroCharacter::AJAHeroCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+
+	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
 }
 
 void AJAHeroCharacter::PossessedBy(AController* NewController)
