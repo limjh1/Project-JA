@@ -23,13 +23,7 @@
 ---
 
 ## Current Progress
-| 단계 | 내용 | 상태 |
-|------|------|------|
-| 프로젝트 셋업 및 기본 클래스 구조 | DS1 모듈 구성, 입력 시스템 설정 | 예정 |
-| Gameplay Ability System 초기화 | Ability / Attribute / Effect / Cue 흐름 구성 | 예정 |
-| Melee Combat & Animation Layer | Light/Heavy Attack, Motion Warping | 예정 |
-| AI Behavior Tree & EQS | 적 행동 패턴 및 위치 선택 로직 | 예정 |
-| Rage Mode / Survival Mode 확장 | GAS 응용 + GameMode 확장 | 예정 |
+- 강의 베이스라인 구현 중 (커스텀 기능은 추후 별도 브랜치/프로젝트로 확장 예정)
 
 ---
 
