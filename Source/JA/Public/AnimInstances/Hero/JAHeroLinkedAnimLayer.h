@@ -6,6 +6,7 @@
 #include "AnimInstances/JABaseAnimInstance.h"
 #include "JAHeroLinkedAnimLayer.generated.h"
 
+class UJAHeroAnimInstance;
 /**
  * 
  */
@@ -14,4 +15,7 @@ class JA_API UJAHeroLinkedAnimLayer : public UJABaseAnimInstance
 {
 	GENERATED_BODY()
 	
+public:
+	UFUNCTION(BlueprintPure, meta = (BlueprintThreadSafe))
+	UJAHeroAnimInstance* GetHeroAnimInstance() const;
 };

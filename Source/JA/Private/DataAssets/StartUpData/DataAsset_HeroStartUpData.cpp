@@ -5,11 +5,6 @@
 #include "AbilitySystem/Abilities/JAGameplayAbility.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 
-bool FJAHeroAbilitySet::IsValid() const
-{
-	return (InputTag.IsValid() && AbilityToGrant);
-}
-
 void UDataAsset_HeroStartUpData::GiveToAbilitySystemComponent(UJAAbilitySystemComponent* InASCToGive, int32 ApplyLevel)
 {
 	Super::GiveToAbilitySystemComponent(InASCToGive, ApplyLevel);
