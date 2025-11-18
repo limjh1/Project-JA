@@ -5,7 +5,7 @@
 #include "GameplayTagContainer.h"
 #include "JAStructTypes.generated.h"
 
-class UJAGameplayAbility;
+class UJAHeroGameplayAbility;
 class UJAHeroLinkedAnimLayer;
 class UInputMappingContext;
 
@@ -18,7 +18,7 @@ struct FJAHeroAbilitySet
 	FGameplayTag InputTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UJAGameplayAbility> AbilityToGrant;
+	TSubclassOf<UJAHeroGameplayAbility> AbilityToGrant;
 
 	bool IsValid() const;
 };

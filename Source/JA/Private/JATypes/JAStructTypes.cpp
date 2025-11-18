@@ -2,7 +2,7 @@
 
 
 #include "JATypes/JAStructTypes.h"
-#include "AbilitySystem/Abilities/JAGameplayAbility.h"
+#include "AbilitySystem/Abilities/JAHeroGameplayAbility.h"
 
 bool FJAHeroAbilitySet::IsValid() const
 {
