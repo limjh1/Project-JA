@@ -32,6 +32,13 @@ void AJABaseCharacter::PossessedBy(AController* NewController)
 	{
 		JAAbilitySystemComponent->InitAbilityActorInfo(this, this);
 		
+		const TArray<UAttributeSet*>& Sets = JAAbilitySystemComponent->GetSpawnedAttributes();
+		UE_LOG(LogTemp, Warning, TEXT("Spawned AttributeSets: %d"), Sets.Num());
+		for (UAttributeSet* S : Sets)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("  %s"), *GetNameSafe(S));
+		}
+
 		ensureMsgf(!CharacterStartUpData.IsNull(), TEXT("Forgot to Assign start up data to %s"), *GetName());
 	}
 }
