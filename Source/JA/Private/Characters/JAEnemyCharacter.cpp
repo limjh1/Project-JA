@@ -26,6 +26,11 @@ AJAEnemyCharacter::AJAEnemyCharacter()
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>("EnemyCombatComponent");
 }
 
+UPawnCombatComponent* AJAEnemyCharacter::GetPawnCombatComponent() const
+{
+	return EnemyCombatComponent;
+}
+
 void AJAEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -48,8 +53,6 @@ void AJAEnemyCharacter::InitEnemyStartUpData()
 				if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.Get())
 				{
 					LoadedData->GiveToAbilitySystemComponent(JAAbilitySystemComponent);
-
-					Debug::Print(("Enemy Start Up Data Loaded"), FColor::Green);
 				}
 			}
 		)

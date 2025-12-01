@@ -1,8 +1,8 @@
 // JhLim All Rights Reserved
 
+#include "AbilitySystem/JAAttributeSet.h"
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystemComponent.h"
-#include "AbilitySystem/JAAttributeSet.h"
 
 UJAAttributeSet::UJAAttributeSet()
 {

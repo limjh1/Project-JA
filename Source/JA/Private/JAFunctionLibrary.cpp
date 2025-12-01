@@ -3,6 +3,7 @@
 
 #include "JAFunctionLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Interfaces/PawnCombatInterface.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 
 UJAAbilitySystemComponent* UJAFunctionLibrary::NativeGetJAASCFromAcotr(AActor* InActor)
@@ -10,6 +11,18 @@ UJAAbilitySystemComponent* UJAFunctionLibrary::NativeGetJAASCFromAcotr(AActor* I
     check(InActor);
 
     return CastChecked<UJAAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(InActor));
+}
+
+UPawnCombatComponent* UJAFunctionLibrary::NativeGetPawnCombatComponentFromActor(AActor* InActor)
+{
+    check(InActor);
+
+    if (IPawnCombatInterface* PawnCombatInterface = Cast<IPawnCombatInterface>(InActor))
+    {
+        return PawnCombatInterface->GetPawnCombatComponent();
+    }
+
+    return nullptr;
 }
 
 void UJAFunctionLibrary::AddGameplayTagToActorIfNone(AActor* InActor, FGameplayTag TagToAdd)
@@ -41,5 +54,14 @@ bool UJAFunctionLibrary::NativeDoesActorHaveTag(AActor* InActor, FGameplayTag Ta
 void UJAFunctionLibrary::BP_DoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck, EJAConfirmType& OutConfirmType)
 {
     OutConfirmType = NativeDoesActorHaveTag(InActor, TagToCheck) ? EJAConfirmType::Yes : EJAConfirmType::No;
+}
+
+UPawnCombatComponent* UJAFunctionLibrary::BP_GetPawnCombatComponentFromActor(AActor* InActor, EJAValidType& OutValidType)
+{
+    UPawnCombatComponent* CombatComponent = NativeGetPawnCombatComponentFromActor(InActor);
+
+    OutValidType = CombatComponent ? EJAValidType::Valid : EJAValidType::Invalid;
+    
+    return CombatComponent;
 }
 

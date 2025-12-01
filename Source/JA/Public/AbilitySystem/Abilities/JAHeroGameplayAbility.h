@@ -28,6 +28,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "JA|Ability")
 	UHeroCombatComponent* GetHeroCombatComponentFromActorInfo();
 
+	UFUNCTION(BlueprintPure, Category = "JA|Ability")
+	FGameplayEffectSpecHandle MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount);
+
 private:
 	TWeakObjectPtr<AJAHeroCharacter>	CachedJAHeroCharacter;
 	TWeakObjectPtr<AJAHeroController>	CachedJAHeroController;

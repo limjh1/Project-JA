@@ -24,6 +24,11 @@ UAbilitySystemComponent* AJABaseCharacter::GetAbilitySystemComponent() const
 	return GetJAAbilitySystemComponent();
 }
 
+UPawnCombatComponent* AJABaseCharacter::GetPawnCombatComponent() const
+{
+	return nullptr;
+}
+
 void AJABaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);

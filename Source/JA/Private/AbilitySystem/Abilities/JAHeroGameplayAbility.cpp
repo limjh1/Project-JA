@@ -4,6 +4,8 @@
 #include "AbilitySystem/Abilities/JAHeroGameplayAbility.h"
 #include "Characters/JAHeroCharacter.h"
 #include "Controllers/JAHeroController.h"
+#include "AbilitySystem/JAAbilitySystemComponent.h"
+#include "JAGameplayTags.h"
 
 AJAHeroCharacter* UJAHeroGameplayAbility::GetHeroCharacterFromActorInfo()
 {
@@ -28,4 +30,34 @@ AJAHeroController* UJAHeroGameplayAbility::GetHeroControllerFromActorInfo()
 UHeroCombatComponent* UJAHeroGameplayAbility::GetHeroCombatComponentFromActorInfo()
 {
     return GetHeroCharacterFromActorInfo()->GetHeroCombatComponent();
+}
+
+FGameplayEffectSpecHandle UJAHeroGameplayAbility::MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount)
+{
+    check(EffectClass);
+
+    FGameplayEffectContextHandle ContextHandle = GetJAAbilitySystemComponentFromActorInfo()->MakeEffectContext();
+    ContextHandle.SetAbility(this);
+    ContextHandle.AddSourceObject(GetAvatarActorFromActorInfo());
+    ContextHandle.AddInstigator(GetAvatarActorFromActorInfo(), GetAvatarActorFromActorInfo());
+
+    FGameplayEffectSpecHandle EffectSpecHandle = GetJAAbilitySystemComponentFromActorInfo()->MakeOutgoingSpec(
+        EffectClass,
+        GetAbilityLevel(),
+        ContextHandle
+    );
+
+    // Damage
+    EffectSpecHandle.Data->SetSetByCallerMagnitude(
+        JAGameplayTags::Shared_SetByCaller_BaseDamage,
+        InWeaponBaseDamage
+    );
+
+    // AttackType, Count
+    if (InCurrentAttackTypeTag.IsValid())
+    {
+        EffectSpecHandle.Data->SetSetByCallerMagnitude(InCurrentAttackTypeTag, InCurrentComboCount);
+    }
+
+    return EffectSpecHandle;
 }

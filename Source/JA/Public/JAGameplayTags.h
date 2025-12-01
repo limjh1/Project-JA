@@ -29,4 +29,9 @@ namespace JAGameplayTags
 
 	/* Enemy Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
+
+	/* Shared Tags */
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
+
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 }

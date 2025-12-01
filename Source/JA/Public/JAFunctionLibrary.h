@@ -4,16 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "JATypes/JAEnumTypes.h"
 #include "JAFunctionLibrary.generated.h"
 
 class UJAAbilitySystemComponent;
-
-UENUM()
-enum class EJAConfirmType : uint8
-{
-	Yes,
-	No
-};
+class UPawnCombatComponent;
 
 /**
  * 
@@ -25,7 +20,8 @@ class JA_API UJAFunctionLibrary : public UBlueprintFunctionLibrary
 
 public:
 	static UJAAbilitySystemComponent* NativeGetJAASCFromAcotr(AActor* InActor);
-	
+	static UPawnCombatComponent* NativeGetPawnCombatComponentFromActor(AActor* InActor);
+
 	UFUNCTION(BlueprintCallable, Category = "JA|FunctionLibrary")
 	static void AddGameplayTagToActorIfNone(AActor* InActor, FGameplayTag TagToAdd);
 
@@ -36,4 +32,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "JA|FunctionLibrary", meta = (DisplayName = "Does Actor Have Tag", ExpandEnumAsExecs = "OutConfirmType"))
 	static void BP_DoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck, EJAConfirmType& OutConfirmType);
+
+	UFUNCTION(BlueprintCallable, Category = "JA|FunctionLibrary", meta = (DisplayName = "Get Pawn Combat Component From Actor", ExpandEnumAsExecs = "OutValidType"))
+	static UPawnCombatComponent* BP_GetPawnCombatComponentFromActor(AActor* InActor, EJAValidType& OutValidType);
 };

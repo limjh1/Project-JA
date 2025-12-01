@@ -23,6 +23,11 @@ class JA_API AJAHeroCharacter : public AJABaseCharacter
 public:
 	AJAHeroCharacter();
 
+public:
+	//~ Begin IPawnCombatInterface Interface.
+	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+	//~ End IPawnCombatInterface Interface
+
 protected:
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;

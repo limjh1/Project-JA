@@ -42,6 +42,11 @@ AJAHeroCharacter::AJAHeroCharacter()
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
 }
 
+UPawnCombatComponent* AJAHeroCharacter::GetPawnCombatComponent() const
+{
+	return HeroCombatComponent;
+}
+
 void AJAHeroCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
