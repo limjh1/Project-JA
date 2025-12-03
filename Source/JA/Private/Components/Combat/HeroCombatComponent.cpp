@@ -13,6 +13,16 @@ AJAHeroWeapon* UHeroCombatComponent::GetHeroCarriedWeaponByTag(FGameplayTag InWe
     return Cast<AJAHeroWeapon>(GetCharacterCarriedWeaponByTag(InWeaponTag));
 }
 
+AJAHeroWeapon* UHeroCombatComponent::GetHeroCurrentEquippedWeapon() const
+{
+    return Cast<AJAHeroWeapon>(GetCharacterCurrentEquippedWeapon());
+}
+
+float UHeroCombatComponent::GetHeroCurrentEquippedWeaponDamageAtLevel(float InLevel) const
+{
+    return GetHeroCurrentEquippedWeapon()->HeroWeaponData.WeaponBaseDamage.GetValueAtLevel(InLevel);
+}
+
 void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
 {
     if (OverlappedActors.Contains(HitActor))

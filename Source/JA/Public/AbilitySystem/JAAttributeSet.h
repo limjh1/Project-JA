@@ -24,6 +24,10 @@ class JA_API UJAAttributeSet : public UAttributeSet
 public:
 	UJAAttributeSet();
 
+    virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+public:
+
     // Health
     UPROPERTY(BlueprintReadOnly, Category = "Health", ReplicatedUsing = OnRep_CurrentHealth)
     FGameplayAttributeData CurrentHealth;
@@ -51,6 +55,10 @@ public:
     FGameplayAttributeData DefensePower;
     ATTRIBUTE_ACCESSORS(UJAAttributeSet, DefensePower)
 
+    UPROPERTY(BlueprintReadOnly, Category = "Damage", ReplicatedUsing = OnRep_DamageTaken)
+    FGameplayAttributeData DamageTaken;
+    ATTRIBUTE_ACCESSORS(UJAAttributeSet, DamageTaken)
+
     // === RepNotify 함수들 ===
     UFUNCTION()
     void OnRep_CurrentHealth(const FGameplayAttributeData& OldValue);
@@ -69,6 +77,9 @@ public:
 
     UFUNCTION()
     void OnRep_DefensePower(const FGameplayAttributeData& OldValue);
+
+    UFUNCTION()
+    void OnRep_DamageTaken(const FGameplayAttributeData& OldValue);
 
     // === Replication 설정 ===
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "JATypes/JAEnumTypes.h"
 #include "JAGameplayAbility.generated.h"
 
 class UPawnCombatComponent;
@@ -36,8 +37,15 @@ protected:
 	UFUNCTION(BlueprintPure, Category = "JA|Ability")
 	UJAAbilitySystemComponent* GetJAAbilitySystemComponentFromActorInfo() const;
 
+	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
+
+	UFUNCTION(BlueprintCallable, Category = "JA|Ability", meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
+	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EJASuccessType& OutSuccessType);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "JAAbility")
 	EJAAbilityActivationPolicy AbilityActivationPolicy = EJAAbilityActivationPolicy::OnTriggered;
+
+
 
 };

@@ -13,3 +13,10 @@ enum class EJAValidType : uint8
 	Valid,
 	Invalid
 };
+
+UENUM()
+enum class EJASuccessType : uint8
+{
+	Successful,
+	Failed
+};
