@@ -4,6 +4,8 @@
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
+#include "JAFunctionLibrary.h"
+#include "JAGameplayTags.h"
 
 #include "JADebugHelper.h"
 
@@ -54,7 +56,7 @@ void UJAAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
         if (0.f >= NewCurrentHealth)
         {
-            //#TODO: Handle Character Death
+            UJAFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), JAGameplayTags::Shared_Status_Dead);            
         }
     }    
 }
