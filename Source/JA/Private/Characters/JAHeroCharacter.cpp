@@ -13,6 +13,7 @@
 #include "JAGameplayTags.h"
 #include "Components/Combat/HeroCombatComponent.h"
 #include "DataAssets/StartUpData/DataAsset_HeroStartUpData.h"
+#include "Components/UI/HeroUIComponent.h"
 
 #include "JADebugHelper.h"
 
@@ -40,11 +41,17 @@ AJAHeroCharacter::AJAHeroCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
+	HeroUIComponent = CreateDefaultSubobject<UHeroUIComponent>(TEXT("HeroUIComponent"));
 }
 
 UPawnCombatComponent* AJAHeroCharacter::GetPawnCombatComponent() const
 {
 	return HeroCombatComponent;
+}
+
+UPawnUIComponent* AJAHeroCharacter::GetPawnUIComponent() const
+{
+	return HeroUIComponent;
 }
 
 void AJAHeroCharacter::PossessedBy(AController* NewController)

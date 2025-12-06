@@ -6,6 +6,7 @@
 #include "Components/Combat/EnemyCombatComponent.h"
 #include "Engine/AssetManager.h"
 #include "DataAssets/StartUpData/DataAsset_EnemyStartUpData.h"
+#include "Components/UI/EnemyUIComponent.h"
 
 #include "JADebugHelper.h"
 
@@ -24,11 +25,17 @@ AJAEnemyCharacter::AJAEnemyCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 1000.f;
 
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>("EnemyCombatComponent");
+	EnemyUIComponent = CreateDefaultSubobject<UEnemyUIComponent>("EnemyUIComponent");
 }
 
 UPawnCombatComponent* AJAEnemyCharacter::GetPawnCombatComponent() const
 {
 	return EnemyCombatComponent;
+}
+
+UPawnUIComponent* AJAEnemyCharacter::GetPawnUIComponent() const
+{
+	return EnemyUIComponent;
 }
 
 void AJAEnemyCharacter::PossessedBy(AController* NewController)

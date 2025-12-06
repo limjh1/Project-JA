@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "Interfaces/PawnCombatInterface.h"
+#include "Interfaces/PawnUIInterface.h"
 #include "JABaseCharacter.generated.h"
 
 class UJAAbilitySystemComponent;
@@ -13,7 +14,8 @@ class UJAAttributeSet;
 class UDataAsset_StartUpDataBase;
 
 UCLASS()
-class JA_API AJABaseCharacter : public ACharacter, public IAbilitySystemInterface, public IPawnCombatInterface
+class JA_API AJABaseCharacter 
+	: public ACharacter, public IAbilitySystemInterface, public IPawnCombatInterface, public IPawnUIInterface
 {
 	GENERATED_BODY()
 
@@ -28,6 +30,10 @@ public:
 	//~ Begin IPawnCombatInterface Interface.
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 	//~ End IPawnCombatInterface Interface
+
+	//~ Begin IPawnUIInterface Interface.
+	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+	//~ End IPawnUIInterface Interface
 
 protected:
 	//~ Begin APawn Interface.

@@ -29,6 +29,11 @@ UPawnCombatComponent* AJABaseCharacter::GetPawnCombatComponent() const
 	return nullptr;
 }
 
+UPawnUIComponent* AJABaseCharacter::GetPawnUIComponent() const
+{
+	return nullptr;
+}
+
 void AJABaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
