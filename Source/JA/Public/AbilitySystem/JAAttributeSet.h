@@ -7,6 +7,8 @@
 #include "AttributeSet.h"
 #include "JAAttributeSet.generated.h"
 
+class IPawnUIInterface;
+
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
@@ -46,6 +48,15 @@ public:
     FGameplayAttributeData MaxRage;
     ATTRIBUTE_ACCESSORS(UJAAttributeSet, MaxRage)
 
+    // Stamina
+    UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_CurrentStamina)
+    FGameplayAttributeData CurrentStamina;
+    ATTRIBUTE_ACCESSORS(UJAAttributeSet, CurrentStamina)
+
+    UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_MaxStamina)
+    FGameplayAttributeData MaxStamina;
+    ATTRIBUTE_ACCESSORS(UJAAttributeSet, MaxStamina)
+
     // Damage
     UPROPERTY(BlueprintReadOnly, Category = "Damage", ReplicatedUsing = OnRep_AttackPower)
     FGameplayAttributeData AttackPower;
@@ -59,6 +70,10 @@ public:
     FGameplayAttributeData DamageTaken;
     ATTRIBUTE_ACCESSORS(UJAAttributeSet, DamageTaken)
 
+private:
+    TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
+
+public:
     // === RepNotify 함수들 ===
     UFUNCTION()
     void OnRep_CurrentHealth(const FGameplayAttributeData& OldValue);
@@ -71,6 +86,12 @@ public:
 
     UFUNCTION()
     void OnRep_MaxRage(const FGameplayAttributeData& OldValue);
+
+    UFUNCTION()
+    void OnRep_CurrentStamina(const FGameplayAttributeData& OldValue);
+
+    UFUNCTION()
+    void OnRep_MaxStamina(const FGameplayAttributeData& OldValue);
 
     UFUNCTION()
     void OnRep_AttackPower(const FGameplayAttributeData& OldValue);

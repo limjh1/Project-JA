@@ -6,6 +6,9 @@
 #include "GameplayEffectExtension.h"
 #include "JAFunctionLibrary.h"
 #include "JAGameplayTags.h"
+#include "Interfaces/PawnUIInterface.h"
+#include "Components/UI/PawnUIComponent.h"
+#include "Components/UI/HeroUIComponent.h"
 
 #include "JADebugHelper.h"
 
@@ -18,22 +21,42 @@ UJAAttributeSet::UJAAttributeSet()
 	InitAttackPower(1.f);
 	InitDefensePower(1.f);
     InitDamageTaken(1.f);
+    InitCurrentStamina(1.f);
+    InitMaxStamina(1.f);
 }
 
 void UJAAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
     Super::PostGameplayEffectExecute(Data);
 
+    if (!CachedPawnUIInterface.IsValid())
+    {
+        CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(Data.Target.GetAvatarActor()); // Cast<IPawnUIInterface>(Data.Target.GetAvatarActor());
+    }
+
+    checkf(CachedPawnUIInterface.IsValid(), TEXT("%s didn't implement IPawnUIInterface"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+
+    UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
+
+    checkf(PawnUIComponent, TEXT("Couldn't extract a PawnUIComponent from %s"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+
     if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
     {
         const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth());
         SetCurrentHealth(NewCurrentHealth);
+
+        PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
     }
 
     if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
     {
         const float NewCurrentRage = FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage());
         SetCurrentRage(NewCurrentRage);
+
+        if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+        {
+            HeroUIComponent->OnCurrentRageChanged.Broadcast(GetCurrentRage() / GetMaxRage());
+        }       
     }
 
     if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
@@ -52,13 +75,24 @@ void UJAAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
         );
         Debug::Print(DebugString, FColor::Green);
 
-        //#TODO::Notify the UI
+        PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 
-        if (0.f >= NewCurrentHealth)
+        if (0.f >= GetCurrentHealth())
         {
             UJAFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), JAGameplayTags::Shared_Status_Dead);            
         }
-    }    
+    }
+
+    if (Data.EvaluatedData.Attribute == GetCurrentStaminaAttribute())
+    {
+        const float NewCurrentStamina = FMath::Clamp(GetCurrentStamina(), 0.f, GetMaxStamina());
+        SetCurrentRage(NewCurrentStamina);
+
+        if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
+        {
+            HeroUIComponent->OnCurrentStaminaChanged.Broadcast(GetCurrentStamina() / GetMaxStamina());
+        }
+    }
 }
 
 void UJAAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -69,6 +103,8 @@ void UJAAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, MaxHealth, COND_OwnerOnly, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, CurrentRage, COND_OwnerOnly, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, MaxRage, COND_OwnerOnly, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, CurrentStamina, COND_OwnerOnly, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, MaxStamina, COND_OwnerOnly, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, AttackPower, COND_OwnerOnly, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, DefensePower, COND_OwnerOnly, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, DamageTaken, COND_OwnerOnly, REPNOTIFY_Always);
@@ -92,6 +128,16 @@ void UJAAttributeSet::OnRep_CurrentRage(const FGameplayAttributeData& OldValue)
 void UJAAttributeSet::OnRep_MaxRage(const FGameplayAttributeData& OldValue)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UJAAttributeSet, MaxRage, OldValue);
+}
+
+void UJAAttributeSet::OnRep_CurrentStamina(const FGameplayAttributeData& OldValue)
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UJAAttributeSet, CurrentStamina, OldValue);
+}
+
+void UJAAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldValue)
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UJAAttributeSet, MaxStamina, OldValue);
 }
 
 void UJAAttributeSet::OnRep_AttackPower(const FGameplayAttributeData& OldValue)

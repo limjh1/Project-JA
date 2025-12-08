@@ -54,6 +54,11 @@ UPawnUIComponent* AJAHeroCharacter::GetPawnUIComponent() const
 	return HeroUIComponent;
 }
 
+UHeroUIComponent* AJAHeroCharacter::GetHeroUIComponent() const
+{
+	return HeroUIComponent;
+}
+
 void AJAHeroCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
