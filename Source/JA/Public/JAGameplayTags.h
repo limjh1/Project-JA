@@ -38,6 +38,8 @@ namespace JAGameplayTags
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
 
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
+
 	/* Shared Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_HitReact);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_Death);

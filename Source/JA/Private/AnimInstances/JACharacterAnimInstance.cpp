@@ -3,6 +3,7 @@
 #include "AnimInstances/JACharacterAnimInstance.h"
 #include "Characters/JABaseCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "KismetAnimationLibrary.h"
 
 void UJACharacterAnimInstance::NativeInitializeAnimation()
 {
@@ -25,5 +26,8 @@ void UJACharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSecond
 	}
 
 	GroundSpeed = OwningCharacter->GetVelocity().Size2D();
+
 	bHasAcceleration = (0.f < OwningMovementComponent->GetCurrentAcceleration().SizeSquared2D());
+
+	LocomotionDirection = UKismetAnimationLibrary::CalculateDirection(OwningCharacter->GetVelocity(), OwningCharacter->GetActorRotation());
 }
