@@ -3,6 +3,7 @@
 
 #include "Items/Weapons/JAWeaponBase.h"
 #include "Components/BoxComponent.h"
+#include "JAFunctionLibrary.h"
 
 #include "JADebugHelper.h"
 
@@ -29,12 +30,10 @@ void AJAWeaponBase::OnCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedCo
 
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn != HitPawn)
+		if (UJAFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
 		}
-
-		// Todo: Implement Hit Check For Enemy Characters
 	}
 }
 
@@ -45,12 +44,10 @@ void AJAWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedComp
 
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn != HitPawn)
+		if (UJAFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponPulledFromTarget.ExecuteIfBound(OtherActor);
 		}
-
-		// Todo: Implement Hit Check For Enemy Characters
 	}
 }
 

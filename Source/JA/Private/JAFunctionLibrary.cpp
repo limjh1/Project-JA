@@ -5,6 +5,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Interfaces/PawnCombatInterface.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
+#include "GenericTeamAgentInterface.h"
 
 UJAAbilitySystemComponent* UJAFunctionLibrary::NativeGetJAASCFromAcotr(AActor* InActor)
 {
@@ -63,5 +64,20 @@ UPawnCombatComponent* UJAFunctionLibrary::BP_GetPawnCombatComponentFromActor(AAc
     OutValidType = CombatComponent ? EJAValidType::Valid : EJAValidType::Invalid;
     
     return CombatComponent;
+}
+
+bool UJAFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn)
+{
+    check(QueryPawn && TargetPawn);
+
+    IGenericTeamAgentInterface* QueryTeamAgent = Cast<IGenericTeamAgentInterface>(QueryPawn->GetController());
+    IGenericTeamAgentInterface* TargetTeamAgent = Cast<IGenericTeamAgentInterface>(TargetPawn->GetController());
+
+    if (QueryTeamAgent && TargetTeamAgent)
+    {
+        return QueryTeamAgent->GetGenericTeamId() != TargetTeamAgent->GetGenericTeamId();
+    }
+
+    return false;
 }
 
