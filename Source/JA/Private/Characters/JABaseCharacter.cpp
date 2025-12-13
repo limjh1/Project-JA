@@ -4,6 +4,7 @@
 #include "Characters/JABaseCharacter.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "AbilitySystem/JAAttributeSet.h"
+#include "MotionWarpingComponent.h"
 
 // Sets default values
 AJABaseCharacter::AJABaseCharacter()
@@ -16,7 +17,10 @@ AJABaseCharacter::AJABaseCharacter()
 	GetMesh()->bReceivesDecals = false;
 	
 	JAAbilitySystemComponent = CreateDefaultSubobject<UJAAbilitySystemComponent>(TEXT("JAAbilitySystemComponent"));
+
 	JAAttributeSet = CreateDefaultSubobject<UJAAttributeSet>(TEXT("JAAttributeSet"));
+
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 UAbilitySystemComponent* AJABaseCharacter::GetAbilitySystemComponent() const

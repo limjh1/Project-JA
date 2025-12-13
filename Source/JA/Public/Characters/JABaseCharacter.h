@@ -12,6 +12,7 @@
 class UJAAbilitySystemComponent;
 class UJAAttributeSet;
 class UDataAsset_StartUpDataBase;
+class UMotionWarpingComponent;
 
 UCLASS()
 class JA_API AJABaseCharacter 
@@ -45,6 +46,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UJAAttributeSet* JAAttributeSet;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MotionWarping")
+	UMotionWarpingComponent* MotionWarpingComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;
