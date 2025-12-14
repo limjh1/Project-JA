@@ -9,6 +9,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "JAGameplayTags.h"
 
+#include "JADebugHelper.h"
+
 UJAAbilitySystemComponent* UJAFunctionLibrary::NativeGetJAASCFromAcotr(AActor* InActor)
 {
     check(InActor);
@@ -122,4 +124,16 @@ FGameplayTag UJAFunctionLibrary::ComputeHitReactDirectionTag(AActor* InAttacker,
     }
 
     return JAGameplayTags::Shared_Status_HitReact_Front;
+}
+
+bool UJAFunctionLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
+{
+    check(InAttacker && InDefender);
+
+    const float DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(), InDefender->GetActorForwardVector());
+
+    /*const FString DebugString = FString::Printf(TEXT("Dot Result: %f %s"), DotResult, (-0.1f > DotResult ? TEXT("Valid Block"): TEXT("Invalid Block")));
+    Debug::Print(DebugString, (-0.1f > DotResult ? FColor::Green : FColor::Red));*/
+
+    return (-0.1f > DotResult);
 }

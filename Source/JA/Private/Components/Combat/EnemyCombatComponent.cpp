@@ -4,6 +4,7 @@
 #include "Components/Combat/EnemyCombatComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "JAGameplayTags.h"
+#include "JAFunctionLibrary.h"
 
 #include "JADebugHelper.h"
 
@@ -19,12 +20,12 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 	//#TODO Implement block check
 	bool bIsValidBlock = false;
 
-	const bool bIsPlayerBlocking = false;
+	const bool bIsPlayerBlocking = UJAFunctionLibrary::NativeDoesActorHaveTag(HitActor, JAGameplayTags::Player_Status_Blocking);
 	const bool bIsMyAttackUnblockable = false;
 
 	if (bIsPlayerBlocking && false == bIsMyAttackUnblockable)
 	{
-		//#TODO check if the block is valid
+		bIsValidBlock = UJAFunctionLibrary::IsValidBlock(GetOwningPawn(), HitActor);
 	}
 
 	FGameplayEventData EventData;
@@ -33,7 +34,11 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 
 	if (bIsValidBlock)
 	{
-		//#TODO Handle successful block
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			HitActor,
+			JAGameplayTags::Player_Event_SuccessfulBlock,
+			EventData
+		);
 	}
 	else
 	{

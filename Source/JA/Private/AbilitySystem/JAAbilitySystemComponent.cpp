@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/JAHeroGameplayAbility.h"
+#include "JAGameplayTags.h"
 
 void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
@@ -18,12 +19,38 @@ void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInpu
 			continue;
 		}
 
-		TryActivateAbility(AbilitySpec.Handle);
+		if (InInputTag.MatchesTag(JAGameplayTags::InputTag_Toggleable))
+		{
+			if (AbilitySpec.IsActive())
+			{
+				CancelAbilityHandle(AbilitySpec.Handle);
+			}
+			else
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+		else
+		{
+			TryActivateAbility(AbilitySpec.Handle);
+		}
 	}
 }
 
 void UJAAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
+	if (!InInputTag.IsValid() || !InInputTag.MatchesTag(JAGameplayTags::InputTag_MustBeHeld))
+	{
+		return;
+	}
+
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag) && AbilitySpec.IsActive())
+		{
+			CancelAbilityHandle(AbilitySpec.Handle);
+		}
+	}
 }
 
 void UJAAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FJAHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
