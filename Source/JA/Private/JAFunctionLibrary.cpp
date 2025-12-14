@@ -6,6 +6,8 @@
 #include "Interfaces/PawnCombatInterface.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "GenericTeamAgentInterface.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "JAGameplayTags.h"
 
 UJAAbilitySystemComponent* UJAFunctionLibrary::NativeGetJAASCFromAcotr(AActor* InActor)
 {
@@ -81,3 +83,43 @@ bool UJAFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn
     return false;
 }
 
+float UJAFunctionLibrary::GetScalableFloatValueAtLevel(const FScalableFloat& InScalalbeFloat, float InLevel)
+{
+    return InScalalbeFloat.GetValueAtLevel(InLevel);
+}
+
+FGameplayTag UJAFunctionLibrary::ComputeHitReactDirectionTag(AActor* InAttacker, AActor* InVictim, float& OutAngleDifference)
+{
+    check(InAttacker && InVictim);
+
+    const FVector VictimForward = InVictim->GetActorForwardVector();
+    const FVector VictimToAttackerNormalized = (InAttacker->GetActorLocation() - InVictim->GetActorLocation()).GetSafeNormal();
+
+    const float DotResult = FVector::DotProduct(VictimForward, VictimToAttackerNormalized);
+    OutAngleDifference = UKismetMathLibrary::DegAcos(DotResult);
+
+    const FVector CrossResult = FVector::CrossProduct(VictimForward, VictimToAttackerNormalized);
+    if (0.f > CrossResult.Z)
+    {
+        OutAngleDifference *= -1.f;
+    }
+
+    if (-45.f <= OutAngleDifference && 45 >= OutAngleDifference)
+    {
+        return JAGameplayTags::Shared_Status_HitReact_Front;
+    }
+    else if (-45.f > OutAngleDifference && -135.f <= OutAngleDifference)
+    {
+        return JAGameplayTags::Shared_Status_HitReact_Left;
+    }
+    else if (-135.f > OutAngleDifference || 135.f < OutAngleDifference)
+    {
+        return JAGameplayTags::Shared_Status_HitReact_Back;
+    }
+    else if (45.f < OutAngleDifference && 135.f >= OutAngleDifference)
+    {
+        return JAGameplayTags::Shared_Status_HitReact_Right;
+    }
+
+    return JAGameplayTags::Shared_Status_HitReact_Front;
+}
