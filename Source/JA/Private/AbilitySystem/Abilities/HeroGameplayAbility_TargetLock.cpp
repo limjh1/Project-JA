@@ -57,10 +57,12 @@ void UHeroGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
 
 	if (bShouldOverrideRotation)
 	{
-		const FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(
+		FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(
 			GetHeroCharacterFromActorInfo()->GetActorLocation(),
 			CurrentLockedActor->GetActorLocation()
 		);
+
+		LookAtRot -= FRotator(TargetLockCameraOffetDistance, 0.f, 0.f);
 
 		const FRotator CurrentControlRot = GetHeroControllerFromActorInfo()->GetControlRotation();
 		const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot, LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);
@@ -243,6 +245,11 @@ void UHeroGameplayAbility_TargetLock::SetTargetLockWidgetPosition()
 
 void UHeroGameplayAbility_TargetLock::InitTargetLockMovement()
 {
+	if (!CurrentLockedActor)
+	{
+		return;
+	}
+
 	CachedDefaultMaxWalkSpeed = GetHeroCharacterFromActorInfo()->GetCharacterMovement()->MaxWalkSpeed;
 
 	GetHeroCharacterFromActorInfo()->GetCharacterMovement()->MaxWalkSpeed = TargetLockMaxWalkSpeed;
@@ -250,6 +257,11 @@ void UHeroGameplayAbility_TargetLock::InitTargetLockMovement()
 
 void UHeroGameplayAbility_TargetLock::InitTargetLockMappingContext()
 {
+	if (!CurrentLockedActor)
+	{
+		return;
+	}
+
 	const ULocalPlayer* LocalPlayer = GetHeroControllerFromActorInfo()->GetLocalPlayer();
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
 
