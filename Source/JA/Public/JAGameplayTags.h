@@ -57,6 +57,7 @@ namespace JAGameplayTags
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_UnderAttack);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Unblockable);
 
 	/* Shared Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_HitReact);
@@ -64,6 +65,7 @@ namespace JAGameplayTags
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_HitReact);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_SpawnProjectile);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 

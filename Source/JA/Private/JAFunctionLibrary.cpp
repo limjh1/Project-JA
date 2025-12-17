@@ -137,3 +137,13 @@ bool UJAFunctionLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
 
     return (-0.1f > DotResult);
 }
+
+bool UJAFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* InInstigator, AActor* InTargetActor, const FGameplayEffectSpecHandle& InSpecHandle)
+{
+    UJAAbilitySystemComponent* SourceASC = NativeGetJAASCFromAcotr(InInstigator);
+    UJAAbilitySystemComponent* TargetASC = NativeGetJAASCFromAcotr(InTargetActor);
+
+    FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
+
+    return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}

@@ -21,7 +21,7 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 	bool bIsValidBlock = false;
 
 	const bool bIsPlayerBlocking = UJAFunctionLibrary::NativeDoesActorHaveTag(HitActor, JAGameplayTags::Player_Status_Blocking);
-	const bool bIsMyAttackUnblockable = false;
+	const bool bIsMyAttackUnblockable = UJAFunctionLibrary::NativeDoesActorHaveTag(GetOwningPawn(), JAGameplayTags::Enemy_Status_Unblockable);
 
 	if (bIsPlayerBlocking && false == bIsMyAttackUnblockable)
 	{

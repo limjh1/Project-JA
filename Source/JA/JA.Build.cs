@@ -18,7 +18,8 @@ public class JA : ModuleRules
             "GameplayTags",
             "GameplayTasks",
             "AnimGraphRuntime",
-            "MotionWarping"
+            "MotionWarping",
+            "Niagara"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
