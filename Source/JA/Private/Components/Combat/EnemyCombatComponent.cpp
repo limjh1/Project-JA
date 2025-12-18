@@ -5,6 +5,8 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "JAGameplayTags.h"
 #include "JAFunctionLibrary.h"
+#include "Characters/JAEnemyCharacter.h"
+#include "Components/BoxComponent.h"
 
 #include "JADebugHelper.h"
 
@@ -47,5 +49,35 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 			JAGameplayTags::Shared_Event_MeleeHit,
 			EventData
 		);
+	}
+}
+
+void UEnemyCombatComponent::ToggleBodyCollisionBoxCollsion(bool bShouldEnable, EToggleDamageType ToggleDamageType)
+{
+	Super::ToggleBodyCollisionBoxCollsion(bShouldEnable, ToggleDamageType);
+
+	AJAEnemyCharacter* OwningEnemyCharacter = GetOwningPawn<AJAEnemyCharacter>();
+	check(OwningEnemyCharacter);
+
+	UBoxComponent* LeftHandCollisionBox = OwningEnemyCharacter->GetLeftHandCollisionBox();
+	UBoxComponent* RightHandCollisionBox = OwningEnemyCharacter->GetRightHandCollisionBox();
+
+	check(LeftHandCollisionBox && RightHandCollisionBox);
+
+	switch (ToggleDamageType)
+	{
+	case EToggleDamageType::LeftHand:
+		LeftHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		break;
+	case EToggleDamageType::RightHand:
+		RightHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		break;
+	default:
+		break;
+	}
+
+	if (!bShouldEnable)
+	{
+		OverlappedActors.Empty();
 	}
 }

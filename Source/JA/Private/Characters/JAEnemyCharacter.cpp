@@ -9,6 +9,8 @@
 #include "Components/UI/EnemyUIComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/JAWidgetBase.h"
+#include "Components/BoxComponent.h"
+#include "JAFunctionLibrary.h"
 
 #include "JADebugHelper.h"
 
@@ -32,6 +34,16 @@ AJAEnemyCharacter::AJAEnemyCharacter()
 
 	EnemyHealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>("EnemyHealthWidgetComponent");
 	EnemyHealthWidgetComponent->SetupAttachment(GetMesh());
+
+	LeftHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("LeftHandCollisionBox");
+	LeftHandCollisionBox->SetupAttachment(GetMesh()); // Mesh에 붙이고, 소켓에 부착하는식으로해야함. 각 Enemy별로 소켓 네임이 다를 것이기 때문
+	LeftHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LeftHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
+
+	RightHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("RightHandCollisionBox");
+	RightHandCollisionBox->SetupAttachment(GetMesh());
+	RightHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RightHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
 }
 
 UPawnCombatComponent* AJAEnemyCharacter::GetPawnCombatComponent() const
@@ -66,6 +78,23 @@ void AJAEnemyCharacter::PossessedBy(AController* NewController)
 	InitEnemyStartUpData();
 }
 
+#if WITH_EDITOR
+void AJAEnemyCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, LeftHandCollisionBoxAttachBoneName))
+	{
+		LeftHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftHandCollisionBoxAttachBoneName);
+	}
+
+	if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, RightHandCollisionBoxAttachBoneName))
+	{
+		RightHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandCollisionBoxAttachBoneName);
+	}
+}
+#endif
+
 void AJAEnemyCharacter::InitEnemyStartUpData()
 {
 	if (CharacterStartUpData.IsNull())
@@ -85,4 +114,15 @@ void AJAEnemyCharacter::InitEnemyStartUpData()
 			}
 		)
 	);
+}
+
+void AJAEnemyCharacter::OnBodyCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (APawn* HitPawn = Cast<APawn>(OtherActor))
+	{
+		if (UJAFunctionLibrary::IsTargetPawnHostile(this, HitPawn))
+		{
+			EnemyCombatComponent->OnHitTargetActor(HitPawn);
+		}
+	}
 }
