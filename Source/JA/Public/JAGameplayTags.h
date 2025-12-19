@@ -52,8 +52,11 @@ namespace JAGameplayTags
 	/* Enemy Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Ranged);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SummonEnemies);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
+
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Event_SummonEnemies);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_UnderAttack);
