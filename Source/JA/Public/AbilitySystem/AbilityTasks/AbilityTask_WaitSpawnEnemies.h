@@ -27,8 +27,7 @@ public:
 		TSoftClassPtr<AJAEnemyCharacter> SoftEnemyClassToSpawn, 
 		int32 NumToSpawn, 
 		const FVector& SpawnOrigin, 
-		float RandomSpawnRadius, 
-		const FRotator& SpawnRotation
+		float RandomSpawnRadius
 	);
 
 	//~ Begin UGameplayTask Interface
@@ -38,6 +37,7 @@ public:
 
 private:
 	void OnGameplayEventReceived(const FGameplayEventData* InPayload);
+	void OnEnemyClassLoaded();
 
 public:
 	UPROPERTY(BlueprintAssignable)
@@ -52,7 +52,6 @@ private:
 	int32 CachedNumToSpawn;
 	FVector CachedSpawnOrigin;
 	float CachedRandomSpawnRadius;
-	FRotator CachedSpawnRotation;
 
 	FDelegateHandle DelegateHandle;
 

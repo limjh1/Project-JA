@@ -3,10 +3,13 @@
 
 #include "AbilitySystem/AbilityTasks/AbilityTask_WaitSpawnEnemies.h"
 #include "AbilitySystemComponent.h"
+#include "Engine/AssetManager.h"
+#include "NavigationSystem.h"
+#include "Characters/JAEnemyCharacter.h"
 
 #include "JADebugHelper.h"
 
-UAbilityTask_WaitSpawnEnemies* UAbilityTask_WaitSpawnEnemies::WaitSpawnEnemies(UGameplayAbility* OwningAbility, FGameplayTag EventTag, TSoftClassPtr<AJAEnemyCharacter> SoftEnemyClassToSpawn, int32 NumToSpawn, const FVector& SpawnOrigin, float RandomSpawnRadius, const FRotator& SpawnRotation)
+UAbilityTask_WaitSpawnEnemies* UAbilityTask_WaitSpawnEnemies::WaitSpawnEnemies(UGameplayAbility* OwningAbility, FGameplayTag EventTag, TSoftClassPtr<AJAEnemyCharacter> SoftEnemyClassToSpawn, int32 NumToSpawn, const FVector& SpawnOrigin, float RandomSpawnRadius)
 {
     UAbilityTask_WaitSpawnEnemies* Node = NewAbilityTask<UAbilityTask_WaitSpawnEnemies>(OwningAbility);
     
@@ -17,7 +20,6 @@ UAbilityTask_WaitSpawnEnemies* UAbilityTask_WaitSpawnEnemies::WaitSpawnEnemies(U
     Node->CachedNumToSpawn = NumToSpawn;
     Node->CachedSpawnOrigin = SpawnOrigin;
     Node->CachedRandomSpawnRadius = RandomSpawnRadius;
-    Node->CachedSpawnRotation = SpawnRotation;
 
     return Node;
 }
@@ -42,7 +44,73 @@ void UAbilityTask_WaitSpawnEnemies::OnDestroy(bool bInOwnerFinished)
 
 void UAbilityTask_WaitSpawnEnemies::OnGameplayEventReceived(const FGameplayEventData* InPayload)
 {
-    Debug::Print(TEXT("GameplayEvent Received"));
+    if (ensure(!CachedSoftEnemyClassToSpawn.IsNull()))
+    {
+        UAssetManager::Get().GetStreamableManager().RequestAsyncLoad(
+            CachedSoftEnemyClassToSpawn.ToSoftObjectPath(),
+            FStreamableDelegate::CreateUObject(this, &ThisClass::OnEnemyClassLoaded)
+        );
+    }
+    else
+    {
+        if (ShouldBroadcastAbilityTaskDelegates())
+        {
+            DidNotSpawn.Broadcast(TArray<AJAEnemyCharacter*>());
+        }
+
+        EndTask();
+    }
+}
+
+void UAbilityTask_WaitSpawnEnemies::OnEnemyClassLoaded()
+{
+    UClass* LoadedClass = CachedSoftEnemyClassToSpawn.Get();
+    UWorld* World = GetWorld();
+
+    if (!LoadedClass || !World)
+    {
+        if (ShouldBroadcastAbilityTaskDelegates())
+        {
+            DidNotSpawn.Broadcast(TArray<AJAEnemyCharacter*>());
+        }
+        
+        EndTask();
+        return;
+    }
+
+    TArray<AJAEnemyCharacter*> SpawnedEnemies;
+    
+    FActorSpawnParameters SpawnParam;
+    SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+    for (int32 i = 0; i < CachedNumToSpawn; ++i)
+    {
+        FVector RandomLocation;
+        UNavigationSystemV1::K2_GetRandomReachablePointInRadius(this, CachedSpawnOrigin, RandomLocation, CachedRandomSpawnRadius);
+        
+        RandomLocation += FVector(0.f, 0.f, 150.f); // offset
+
+        const FRotator SpawnFacingRotation = AbilitySystemComponent->GetAvatarActor()->GetActorForwardVector().ToOrientationRotator();
+
+        AJAEnemyCharacter* SpawnedEnemy = World->SpawnActor<AJAEnemyCharacter>(LoadedClass, RandomLocation, SpawnFacingRotation, SpawnParam);
+
+        if (SpawnedEnemy)
+        {
+            SpawnedEnemies.Add(SpawnedEnemy);
+        }
+    }
+
+    if (ShouldBroadcastAbilityTaskDelegates())
+    {
+        if (!SpawnedEnemies.IsEmpty())
+        {
+            OnSpawnFinished.Broadcast(SpawnedEnemies);
+        }
+        else
+        {
+            DidNotSpawn.Broadcast(TArray<AJAEnemyCharacter*>());
+        }
+    }
 
     EndTask();
 }
