@@ -21,6 +21,7 @@ namespace JAGameplayTags
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_TargetLock);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_Rage);
 
 	/* Player Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Axe);
@@ -31,6 +32,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Roll);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Block);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_TargetLock);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Rage);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Axe);
 
@@ -40,11 +42,16 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SuccessfulBlock);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
 		
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Blocking);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_TargetLock);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Activating);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Active);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Full);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_None);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);
@@ -77,4 +84,5 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Back);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Left);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Right);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Invincible);
 }

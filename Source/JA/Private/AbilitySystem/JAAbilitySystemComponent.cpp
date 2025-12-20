@@ -19,16 +19,9 @@ void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInpu
 			continue;
 		}
 
-		if (InInputTag.MatchesTag(JAGameplayTags::InputTag_Toggleable))
+		if (InInputTag.MatchesTag(JAGameplayTags::InputTag_Toggleable) && AbilitySpec.IsActive())
 		{
-			if (AbilitySpec.IsActive())
-			{
-				CancelAbilityHandle(AbilitySpec.Handle);
-			}
-			else
-			{
-				TryActivateAbility(AbilitySpec.Handle);
-			}
+			CancelAbilityHandle(AbilitySpec.Handle);
 		}
 		else
 		{
