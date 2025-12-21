@@ -53,6 +53,20 @@ void UJAAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
         const float NewCurrentRage = FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage());
         SetCurrentRage(NewCurrentRage);
 
+        if (GetCurrentRage() == GetMaxRage())
+        {
+            UJAFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), JAGameplayTags::Player_Status_Rage_Full);
+        }
+        else if (GetCurrentRage() == 0.f)
+        {
+            UJAFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), JAGameplayTags::Player_Status_Rage_None);
+        }
+        else
+        {
+            UJAFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(), JAGameplayTags::Player_Status_Rage_Full);
+            UJAFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(), JAGameplayTags::Player_Status_Rage_None);
+        }
+
         if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
         {
             HeroUIComponent->OnCurrentRageChanged.Broadcast(GetCurrentRage() / GetMaxRage());
