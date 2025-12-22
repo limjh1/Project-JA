@@ -42,6 +42,9 @@ protected:
 private:
 	void HandleApplyProjectileDamage(APawn* InHitPawn, const FGameplayEventData& InPayLoad);
 
+private:
+	TArray<AActor*> OverlappedActors;
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
 	UBoxComponent* ProjectileCollisionBox;

@@ -100,7 +100,7 @@ void UJAAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
     if (Data.EvaluatedData.Attribute == GetCurrentStaminaAttribute())
     {
         const float NewCurrentStamina = FMath::Clamp(GetCurrentStamina(), 0.f, GetMaxStamina());
-        SetCurrentRage(NewCurrentStamina);
+        SetCurrentStamina(NewCurrentStamina);
 
         if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
         {
