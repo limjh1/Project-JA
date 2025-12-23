@@ -46,7 +46,7 @@ void UJAAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInp
 	}
 }
 
-void UJAAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FJAHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
+void UJAAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FJAHeroAbilitySet>& InDefaultWeaponAbilities, const TArray<FJAHeroSpecialAbilitySet>& InSpecialWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
 {
 	if (InDefaultWeaponAbilities.IsEmpty())
 	{
@@ -54,6 +54,21 @@ void UJAAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FJAHeroAbi
 	}
 
 	for (const FJAHeroAbilitySet& AbilitySet : InDefaultWeaponAbilities)
+	{
+		if (!AbilitySet.IsValid())
+		{
+			continue;
+		}
+
+		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
+		AbilitySpec.SourceObject = GetAvatarActor();
+		AbilitySpec.Level = ApplyLevel;
+		AbilitySpec.DynamicAbilityTags.AddTag(AbilitySet.InputTag);
+
+		OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
+	}
+
+	for (const FJAHeroSpecialAbilitySet& AbilitySet : InSpecialWeaponAbilities)
 	{
 		if (!AbilitySet.IsValid())
 		{

@@ -15,6 +15,8 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Axe);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Light);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Heavy);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Block);
@@ -33,6 +35,11 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Block);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_TargetLock);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Rage);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SpecialWeaponAbility_Light);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SpecialWeaponAbility_Heavy);
+
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Axe);
 

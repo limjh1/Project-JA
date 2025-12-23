@@ -25,6 +25,18 @@ struct FJAHeroAbilitySet
 };
 
 USTRUCT(BlueprintType)
+struct FJAHeroSpecialAbilitySet : public FJAHeroAbilitySet
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UMaterialInterface> AbilityIconMaterial;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Player.Cooldown"))
+	FGameplayTag AbilityCooldownTag;
+};
+
+USTRUCT(BlueprintType)
 struct FJAHeroWeaponData
 {
 	GENERATED_BODY()
@@ -37,6 +49,9 @@ struct FJAHeroWeaponData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FJAHeroAbilitySet> DefaultWeaponAbilities;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
+	TArray<FJAHeroSpecialAbilitySet> SpecialWeaponAbilities;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FScalableFloat WeaponBaseDamage;
