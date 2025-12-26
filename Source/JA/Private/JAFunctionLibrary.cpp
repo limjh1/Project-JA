@@ -8,6 +8,7 @@
 #include "GenericTeamAgentInterface.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "JAGameplayTags.h"
+#include "JATypes/JACountDownAction.h"
 
 #include "JADebugHelper.h"
 
@@ -146,4 +147,43 @@ bool UJAFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* InIn
     FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
 
     return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
+
+void UJAFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime, EJACountDownActionInput CountDownInput, UPARAM(DisplayName = "Output") EJACountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo)
+{
+    UWorld* World = nullptr;
+    
+    if (GEngine)
+    {
+        World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+    }
+
+    if (!World)
+    {
+        return;
+    }
+
+    FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+    FJACountDownAction* FoundAction = LatentActionManager.FindExistingAction<FJACountDownAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+    if (CountDownInput == EJACountDownActionInput::Start)
+    {
+        if (!FoundAction)
+        {
+            LatentActionManager.AddNewAction(
+                LatentInfo.CallbackTarget,
+                LatentInfo.UUID,
+                new FJACountDownAction(TotalTime, UpdateInterval, OutRemainingTime, CountDownOutput, LatentInfo) // 메모리 Manager에서 관리
+            );
+        }
+    }
+
+    if (CountDownInput == EJACountDownActionInput::Cancel) 
+    {
+        if (FoundAction)
+        {
+            FoundAction->CancelAction();
+        }
+    }
+
 }

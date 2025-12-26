@@ -20,3 +20,18 @@ enum class EJASuccessType : uint8
 	Successful,
 	Failed
 };
+
+UENUM()
+enum class EJACountDownActionInput : uint8
+{
+	Start,
+	Cancel
+};
+
+UENUM()
+enum class EJACountDownActionOutput : uint8
+{
+	Updated,
+	Completed,
+	Cancelled
+};
