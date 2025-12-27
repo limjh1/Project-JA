@@ -100,6 +100,8 @@ void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
 
+	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_PickUp_Stones, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
+
 	JAInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
@@ -153,6 +155,17 @@ void AJAHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue& Inpu
 		Data
 	);
 
+}
+
+void AJAHeroCharacter::Input_PickUpStonesStarted(const FInputActionValue& InputActionValue)
+{
+	FGameplayEventData Data;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this,
+		JAGameplayTags::Player_Event_ConsumeStones,
+		Data
+	);
 }
 
 void AJAHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

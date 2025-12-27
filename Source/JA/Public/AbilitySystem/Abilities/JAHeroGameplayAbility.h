@@ -9,6 +9,7 @@
 class AJAHeroCharacter;
 class AJAHeroController;
 class UHeroCombatComponent;
+class UHeroUIComponent;
 
 /**
  * 
@@ -27,6 +28,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "JA|Ability")
 	UHeroCombatComponent* GetHeroCombatComponentFromActorInfo();
+
+	UFUNCTION(BlueprintPure, Category = "JA|Ability")
+	UHeroUIComponent* GetHeroUIComponentFromActorInfo();
 
 	UFUNCTION(BlueprintPure, Category = "JA|Ability")
 	FGameplayEffectSpecHandle MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InUsedComboCount);
