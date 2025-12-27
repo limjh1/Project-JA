@@ -50,6 +50,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
 		
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);

@@ -5,6 +5,8 @@
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Components/Combat/PawnCombatComponent.h"
+#include "JAFunctionLibrary.h"
+#include "JAGameplayTags.h"
 
 void UJAGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -60,4 +62,38 @@ FActiveGameplayEffectHandle UJAGameplayAbility::BP_ApplyEffectSpecHandleToTarget
 	OutSuccessType = ActiveGameplayEffectHandle.WasSuccessfullyApplied() ? EJASuccessType::Successful : EJASuccessType::Failed;
 
 	return ActiveGameplayEffectHandle;
+}
+
+void UJAGameplayAbility::ApplyGameplayEffectSpecHandleToHitResults(const FGameplayEffectSpecHandle& InSpecHandle, const TArray<FHitResult>& InHitResults)
+{
+	if (InHitResults.IsEmpty())
+	{
+		return;
+	}
+
+	APawn* OwningPawn = CastChecked<APawn>(GetAvatarActorFromActorInfo());
+
+	for (const FHitResult& Hit : InHitResults)
+	{
+		if (APawn* HitPawn = Cast<APawn>(Hit.GetActor()))
+		{
+			if (UJAFunctionLibrary::IsTargetPawnHostile(OwningPawn, HitPawn))
+			{
+				FActiveGameplayEffectHandle ActiveGameplayEffectHandle = NativeApplyEffectSpecHandleToTarget(HitPawn, InSpecHandle);
+
+				if (ActiveGameplayEffectHandle.WasSuccessfullyApplied())
+				{
+					FGameplayEventData Data;
+					Data.Instigator = OwningPawn;
+					Data.Target = HitPawn;
+
+					UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+						HitPawn,
+						JAGameplayTags::Shared_Event_HitReact,
+						Data
+					);
+				}
+			}
+		}
+	}
 }

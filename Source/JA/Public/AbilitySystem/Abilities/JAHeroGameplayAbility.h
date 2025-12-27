@@ -31,6 +31,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "JA|Ability")
 	FGameplayEffectSpecHandle MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InUsedComboCount);
 
+	UFUNCTION(BlueprintCallable, Category = "JA|Ability")
+	bool GetAbilityRemainingCooldownByTag(FGameplayTag InCooldownTag, float& TotalCooldownTime, float& RemainingCooldownTime);
+
 private:
 	TWeakObjectPtr<AJAHeroCharacter>	CachedJAHeroCharacter;
 	TWeakObjectPtr<AJAHeroController>	CachedJAHeroController;

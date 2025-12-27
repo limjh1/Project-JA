@@ -42,6 +42,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "JA|Ability", meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
 	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EJASuccessType& OutSuccessType);
 
+	UFUNCTION(BlueprintCallable, Category = "JA|Ability")
+	void ApplyGameplayEffectSpecHandleToHitResults(const FGameplayEffectSpecHandle& InSpecHandle, const TArray<FHitResult>& InHitResults);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "JAAbility")
 	EJAAbilityActivationPolicy AbilityActivationPolicy = EJAAbilityActivationPolicy::OnTriggered;

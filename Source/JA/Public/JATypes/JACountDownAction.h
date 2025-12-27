@@ -17,6 +17,8 @@ public:
 	}
 
 public:
+	virtual void UpdateOperation(FLatentResponse& Response) override;
+
 	void CancelAction();
 
 private:
