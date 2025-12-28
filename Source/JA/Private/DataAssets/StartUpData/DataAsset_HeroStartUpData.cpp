@@ -2,8 +2,8 @@
 
 
 #include "DataAssets/StartUpData/DataAsset_HeroStartUpData.h"
-#include "AbilitySystem/Abilities/JAGameplayAbility.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
+#include "AbilitySystem/Abilities/JAHeroGameplayAbility.h" 
 
 void UDataAsset_HeroStartUpData::GiveToAbilitySystemComponent(UJAAbilitySystemComponent* InASCToGive, int32 ApplyLevel)
 {

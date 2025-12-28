@@ -11,6 +11,7 @@
 #include "Widgets/JAWidgetBase.h"
 #include "Components/BoxComponent.h"
 #include "JAFunctionLibrary.h"
+#include "GameModes/JABaseGameMode.h"
 
 #include "JADebugHelper.h"
 
@@ -102,14 +103,38 @@ void AJAEnemyCharacter::InitEnemyStartUpData()
 		return;
 	}
 
+	//#TODO: 함수로 묶어서 한번에 관리하기
+	int32 AbilityApplyLevel = 1;
+
+	if (AJABaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<AJABaseGameMode>())
+	{
+		switch (BaseGameMode->GetCurrentGameDifficulty())
+		{
+		case EJAGameDifficulty::Easy:
+			AbilityApplyLevel = 1;
+			break;
+		case EJAGameDifficulty::Normal:
+			AbilityApplyLevel = 2;
+			break;
+		case EJAGameDifficulty::Hard:
+			AbilityApplyLevel = 3;
+			break;
+		case EJAGameDifficulty::VeryHard:
+			AbilityApplyLevel = 4;
+			break;
+		default:
+			break;
+		}
+	}
+
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(
 		CharacterStartUpData.ToSoftObjectPath(),
 		FStreamableDelegate::CreateLambda(
-			[this]()
+			[this, AbilityApplyLevel]()
 			{
 				if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.Get())
 				{
-					LoadedData->GiveToAbilitySystemComponent(JAAbilitySystemComponent);
+					LoadedData->GiveToAbilitySystemComponent(JAAbilitySystemComponent, AbilityApplyLevel);
 				}
 			}
 		)

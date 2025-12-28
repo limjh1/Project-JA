@@ -3,3 +3,8 @@
 
 #include "GameModes/JABaseGameMode.h"
 
+AJABaseGameMode::AJABaseGameMode()
+{
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+}
