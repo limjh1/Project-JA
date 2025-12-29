@@ -44,3 +44,10 @@ enum class EJAGameDifficulty : uint8
 	Hard,
 	VeryHard
 };
+
+UENUM(BlueprintType)
+enum class EJAInputMode : uint8
+{
+	GameOnly,
+	UIOnly
+};

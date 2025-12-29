@@ -10,6 +10,7 @@
 class UJAAbilitySystemComponent;
 class UPawnCombatComponent;
 struct FScalableFloat;
+class UJAGameInstance;
 
 /**
  * 
@@ -56,4 +57,10 @@ public:
 	static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime, 
 		EJACountDownActionInput CountDownInput, UPARAM(DisplayName = "Output") EJACountDownActionOutput & CountDownOutput, 
 		FLatentActionInfo LatentInfo);
+
+	UFUNCTION(BlueprintPure, Category = "JA|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static UJAGameInstance* GetJAGameInstance(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "JA|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static void ToggleInputMode(EJAInputMode InInputMode, const UObject* WorldContextObject);
 };
