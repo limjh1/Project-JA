@@ -63,4 +63,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "JA|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
 	static void ToggleInputMode(EJAInputMode InInputMode, const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "JA|FunctionLibrary")
+	static void SaveCurrentGameDifficulty(EJAGameDifficulty InDifficultyToSave);
+
+	UFUNCTION(BlueprintCallable, Category = "JA|FunctionLibrary")
+	static bool TryLoadSavedGameDifficulty(EJAGameDifficulty& OutSavedDifficulty);
 };

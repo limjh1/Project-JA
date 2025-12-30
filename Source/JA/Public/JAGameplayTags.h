@@ -101,4 +101,6 @@ namespace JAGameplayTags
 	/* Game Data Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_SurvivalGameModeMap);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_MainMenuMap);
+	
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SavedGame_Slot_1);
 }

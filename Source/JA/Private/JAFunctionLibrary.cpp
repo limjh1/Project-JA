@@ -10,6 +10,8 @@
 #include "JAGameplayTags.h"
 #include "JATypes/JACountDownAction.h"
 #include "JAGameInstance.h"
+#include "Kismet/GameplayStatics.h"
+#include "SaveGame/JASaveGame.h"
 
 #include "JADebugHelper.h"
 
@@ -239,4 +241,37 @@ void UJAFunctionLibrary::ToggleInputMode(EJAInputMode InInputMode, const UObject
     default:
         break;
     }
+}
+
+void UJAFunctionLibrary::SaveCurrentGameDifficulty(EJAGameDifficulty InDifficultyToSave)
+{
+    USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(UJASaveGame::StaticClass());
+
+    if (UJASaveGame* JASaveGameObject = Cast<UJASaveGame>(SaveGameObject))
+    {
+        JASaveGameObject->SavedCurrentGameDifficulty = InDifficultyToSave;
+
+        const bool bWasSaved = UGameplayStatics::SaveGameToSlot(JASaveGameObject, JAGameplayTags::GameData_SavedGame_Slot_1.GetTag().ToString(), 0);
+
+        Debug::Print(bWasSaved ? TEXT("Difficulty Saved") : TEXT("Difficulty Not Saved"));
+    }
+}
+
+bool UJAFunctionLibrary::TryLoadSavedGameDifficulty(EJAGameDifficulty& OutSavedDifficulty)
+{
+    if (UGameplayStatics::DoesSaveGameExist(JAGameplayTags::GameData_SavedGame_Slot_1.GetTag().ToString(), 0))
+    {
+        USaveGame* SaveGameObject = UGameplayStatics::LoadGameFromSlot(JAGameplayTags::GameData_SavedGame_Slot_1.GetTag().ToString(), 0);
+
+        if (UJASaveGame* JASaveGameObject = Cast<UJASaveGame>(SaveGameObject))
+        {
+            OutSavedDifficulty = JASaveGameObject->SavedCurrentGameDifficulty;
+
+            Debug::Print(TEXT("Loading Successfull"), FColor::Green);
+
+            return true;
+        }
+    }
+
+    return false;
 }
