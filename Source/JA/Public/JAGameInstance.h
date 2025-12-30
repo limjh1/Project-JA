@@ -33,10 +33,16 @@ class JA_API UJAGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
+	virtual void Init() override;
+
+public:
 	UFUNCTION(BlueprintPure, meta = (GameplayTagFilter = "GameData.Level"))
 	TSoftObjectPtr<UWorld> GetGameLevelByTag(FGameplayTag InTag) const;
 
 protected:
+	virtual void OnPreLoadMap(const FString& MapName);
+	virtual void OnDestinationWorldLoaded(UWorld* LoadedWorld);
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FJAGameLevelSet> GameLevelSets;
 

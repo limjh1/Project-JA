@@ -6,8 +6,21 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/TargetPoint.h"
 #include "NavigationSystem.h"
+#include "JAFunctionLibrary.h"
 
 #include "JADebugHelper.h"
+
+void AJASurvivalGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	EJAGameDifficulty SavedGameDifficulty;
+
+	if (UJAFunctionLibrary::TryLoadSavedGameDifficulty(SavedGameDifficulty))
+	{
+		CurrentGameDifficulty = SavedGameDifficulty;
+	}
+}
 
 void AJASurvivalGameMode::BeginPlay()
 {
