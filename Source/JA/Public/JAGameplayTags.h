@@ -9,10 +9,10 @@ namespace JAGameplayTags
 	/* Input Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_EquipAxe);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_UnequipAxe);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack_Axe);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Axe);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Equip_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Unequip_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Katana);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Light);
@@ -27,10 +27,10 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_Rage);
 
 	/* Player Tags */
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Axe);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unquip_Axe);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Light_Axe);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Heavy_Axe);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unquip_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Light_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Heavy_Katana);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_HitPause);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Roll);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Block);
@@ -43,10 +43,10 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
 
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Axe);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Katana);
 
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_EquipAxe);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Axe);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Katana);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_HitPause);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SuccessfulBlock);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
