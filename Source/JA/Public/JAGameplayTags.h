@@ -54,6 +54,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ConsumeStones);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_InputPressed);
 		
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
@@ -63,6 +64,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Active);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Full);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_None);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_ComboWindow);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);

@@ -253,7 +253,7 @@ void UJAFunctionLibrary::SaveCurrentGameDifficulty(EJAGameDifficulty InDifficult
 
         const bool bWasSaved = UGameplayStatics::SaveGameToSlot(JASaveGameObject, JAGameplayTags::GameData_SavedGame_Slot_1.GetTag().ToString(), 0);
 
-        Debug::Print(bWasSaved ? TEXT("Difficulty Saved") : TEXT("Difficulty Not Saved"));
+        //Debug::Print(bWasSaved ? TEXT("Difficulty Saved") : TEXT("Difficulty Not Saved"));
     }
 }
 
@@ -267,7 +267,7 @@ bool UJAFunctionLibrary::TryLoadSavedGameDifficulty(EJAGameDifficulty& OutSavedD
         {
             OutSavedDifficulty = JASaveGameObject->SavedCurrentGameDifficulty;
 
-            Debug::Print(TEXT("Loading Successfull"), FColor::Green);
+            //Debug::Print(TEXT("Loading Successfull"));
 
             return true;
         }

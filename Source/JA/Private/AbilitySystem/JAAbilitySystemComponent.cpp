@@ -5,6 +5,8 @@
 #include "AbilitySystem/Abilities/JAHeroGameplayAbility.h"
 #include "JAGameplayTags.h"
 
+#include "JADebugHelper.h"
+
 void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
 	if (!InInputTag.IsValid())
@@ -12,12 +14,17 @@ void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInpu
 		return;
 	}
 
-	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag))
 		{
 			continue;
 		}
+
+		FGameplayEventData Payload;
+		Payload.EventTag = JAGameplayTags::Player_Event_InputPressed;
+		Payload.Instigator = GetAvatarActor();
+		HandleGameplayEvent(Payload.EventTag, &Payload);
 
 		if (InInputTag.MatchesTag(JAGameplayTags::InputTag_Toggleable) && AbilitySpec.IsActive())
 		{
@@ -32,14 +39,19 @@ void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInpu
 
 void UJAAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
-	if (!InInputTag.IsValid() || !InInputTag.MatchesTag(JAGameplayTags::InputTag_MustBeHeld))
+	if (!InInputTag.IsValid())
 	{
 		return;
 	}
 
-	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag) && AbilitySpec.IsActive())
+		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag))
+		{
+			continue;
+		}
+
+		if (InInputTag.MatchesTag(JAGameplayTags::InputTag_MustBeHeld) && AbilitySpec.IsActive())
 		{
 			CancelAbilityHandle(AbilitySpec.Handle);
 		}
