@@ -55,4 +55,5 @@ void AJABaseCharacter::PossessedBy(AController* NewController)
 
 		ensureMsgf(!CharacterStartUpData.IsNull(), TEXT("Forgot to Assign start up data to %s"), *GetName());
 	}
+
 }
