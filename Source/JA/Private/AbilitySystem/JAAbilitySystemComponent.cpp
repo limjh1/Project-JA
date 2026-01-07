@@ -7,6 +7,22 @@
 
 #include "JADebugHelper.h"
 
+void UJAAbilitySystemComponent::OnInternalAbilityEnded(const FAbilityEndedData& AbilityEndedData)
+{
+	if (AbilityEndedData.AbilityThatEnded)
+	{
+		FGameplayTag AbilityTag = AbilityEndedData.AbilityThatEnded->AbilityTags.First();
+		OnJAAbilityEnded.Broadcast(AbilityTag);
+	}
+}
+
+void UJAAbilitySystemComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OnAbilityEnded.AddUObject(this, &UJAAbilitySystemComponent::OnInternalAbilityEnded);
+}
+
 void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
 	if (!InInputTag.IsValid())
@@ -135,4 +151,17 @@ bool UJAAbilitySystemComponent::TryActivateAbilityByTag(FGameplayTag AbilityTagT
 	}
 
 	return false;
+}
+
+bool UJAAbilitySystemComponent::TryCancelAbilityByTag(FGameplayTag AbilityTagToActivate)
+{
+	if (!AbilityTagToActivate.IsValid()) return false;
+
+	FGameplayTagContainer TagContainer;
+	TagContainer.AddTag(AbilityTagToActivate);
+
+	// 인자: (취소할 태그들, 제외할 태그들, 무시할 인스턴스)
+	// AbilitySpec들을 순회하며 Active 상태인 능력을 종료시킵니다.
+	CancelAbilities(&TagContainer);
+	return true; 
 }

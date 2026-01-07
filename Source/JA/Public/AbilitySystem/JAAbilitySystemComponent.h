@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "JATypes/JAStructTypes.h"
+#include "GameplayAbilitySpec.h"
 #include "JAAbilitySystemComponent.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FJAAbilityEndedSignature, FGameplayTag, AbilityTag);
 
 /**
  * 
@@ -14,6 +17,12 @@ UCLASS()
 class JA_API UJAAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
+
+protected:
+	// 엔진의 네이티브 OnAbilityEnded를 받을 내부 함수
+	void OnInternalAbilityEnded(const FAbilityEndedData& AbilityEndedData);
+
+	virtual void BeginPlay() override;
 	
 public:
 	void OnAbilityInputPressed(const FGameplayTag& InInputTag);
@@ -27,4 +36,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "JA|Ability")
 	bool TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate);
+
+	UFUNCTION(BlueprintCallable, Category = "JA|Ability")
+	bool TryCancelAbilityByTag(FGameplayTag AbilityTagToActivate);
+
+public:
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Abilities")
+	FJAAbilityEndedSignature OnJAAbilityEnded;
+
 };
