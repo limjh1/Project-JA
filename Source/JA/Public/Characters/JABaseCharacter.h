@@ -36,6 +36,10 @@ public:
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	//~ End IPawnUIInterface Interface
 
+public:
+	UFUNCTION(BlueprintCallable, Category = "JA|Physics")
+	void ActivateRagdoll();
+
 protected:
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
