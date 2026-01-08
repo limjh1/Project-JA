@@ -44,7 +44,7 @@ UPawnUIComponent* AJABaseCharacter::GetPawnUIComponent() const
 
 void AJABaseCharacter::ActivateRagdoll()
 {
-    Debug::Print(TEXT("ActivateRagdoll"));
+    //Debug::Print(TEXT("ActivateRagdoll"));
 
     // 이동 입력 및 AI 로직 차단
     if (GetCharacterMovement())
@@ -73,11 +73,14 @@ void AJABaseCharacter::ActivateRagdoll()
         GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
         GetMesh()->SetAllBodiesSimulatePhysics(true);
+        GetMesh()->SetSimulatePhysics(true);
+
+        GetMesh()->WakeAllRigidBodies();
 
         // 임펄스를 주어 튕겨 나가는 효과 추가
         GetMesh()->AddImpulse(GetActorForwardVector() * -5000.0f, NAME_None, true);
 
-        Debug::Print(TEXT("ActivateRagdoll Finished"));
+        //Debug::Print(TEXT("ActivateRagdoll Finished"));
     }
 
     // BT 작동 중지 등 추가적인 사망 후처리 로직

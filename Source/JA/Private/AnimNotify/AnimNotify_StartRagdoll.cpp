@@ -15,7 +15,7 @@ void UAnimNotify_StartRagdoll::Notify(USkeletalMeshComponent* MeshComp, UAnimSeq
 {
 	Super::Notify(MeshComp, Animation);
 
-	Debug::Print(TEXT("Notify ActivateRagdoll"));
+	//Debug::Print(TEXT("Notify ActivateRagdoll"));
 
 	if (MeshComp && MeshComp->GetOwner())
 	{
