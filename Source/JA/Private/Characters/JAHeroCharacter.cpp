@@ -125,6 +125,7 @@ void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Climb, ETriggerEvent::Started, this, &ThisClass::Input_Climb);
 
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
@@ -167,6 +168,11 @@ void AJAHeroCharacter::Input_Look(const FInputActionValue& InputActionValue)
 	{
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AJAHeroCharacter::Input_Climb(const FInputActionValue& InputActionValue)
+{
+	Debug::Print("Climb");
 }
 
 void AJAHeroCharacter::Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue)

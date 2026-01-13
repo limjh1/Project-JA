@@ -8,6 +8,7 @@ namespace JAGameplayTags
 	/* Input Tags */
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Move, "InputTag.Move");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Look, "InputTag.Look");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Climb, "InputTag.Climb");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Equip_Katana, "InputTag.Equip.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Unequip_Katana, "InputTag.Unequip.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_LightAttack_Katana, "InputTag.LightAttack.Katana");
