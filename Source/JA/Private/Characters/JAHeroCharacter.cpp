@@ -5,7 +5,6 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/JAInputComponent.h"
@@ -16,10 +15,12 @@
 #include "Components/UI/HeroUIComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameModes/JABaseGameMode.h"
+#include "Components/Movement/JACustomMovementComponent.h"
 
 #include "JADebugHelper.h"
 
-AJAHeroCharacter::AJAHeroCharacter()
+AJAHeroCharacter::AJAHeroCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UJACustomMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.f);
 
@@ -125,7 +126,6 @@ void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
-	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Climb, ETriggerEvent::Started, this, &ThisClass::Input_Climb);
 
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
@@ -168,11 +168,6 @@ void AJAHeroCharacter::Input_Look(const FInputActionValue& InputActionValue)
 	{
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
-}
-
-void AJAHeroCharacter::Input_Climb(const FInputActionValue& InputActionValue)
-{
-	Debug::Print("Climb");
 }
 
 void AJAHeroCharacter::Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue)

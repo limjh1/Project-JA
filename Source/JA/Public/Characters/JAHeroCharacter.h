@@ -22,7 +22,7 @@ class JA_API AJAHeroCharacter : public AJABaseCharacter
 	GENERATED_BODY()
 	
 public:
-	AJAHeroCharacter();
+	AJAHeroCharacter(const FObjectInitializer& ObjectInitializer);
 
 public:
 	//~ Begin IPawnCombatInterface Interface.
@@ -69,7 +69,6 @@ private:
 
 	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
-	void Input_Climb(const FInputActionValue& InputActionValue);
 
 	void Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue);
 	void Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue);	

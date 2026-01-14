@@ -23,6 +23,8 @@ class JA_API AJABaseCharacter
 public:
 	// Sets default values for this character's properties
 	AJABaseCharacter();
+	AJABaseCharacter(const FObjectInitializer& ObjectInitializer);
+	
 
 	//~ Begin IAbilitySystemInterface Interface.
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;

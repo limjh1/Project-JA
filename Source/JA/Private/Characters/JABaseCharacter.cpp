@@ -10,21 +10,26 @@
 
 #include "JADebugHelper.h"
 
-// Sets default values
 AJABaseCharacter::AJABaseCharacter()
+    : AJABaseCharacter(FObjectInitializer::Get())
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-	PrimaryActorTick.bStartWithTickEnabled = false;
-	
-	// decal 영향
-	GetMesh()->bReceivesDecals = false;
-	
-	JAAbilitySystemComponent = CreateDefaultSubobject<UJAAbilitySystemComponent>(TEXT("JAAbilitySystemComponent"));
+}
 
-	JAAttributeSet = CreateDefaultSubobject<UJAAttributeSet>(TEXT("JAAttributeSet"));
+AJABaseCharacter::AJABaseCharacter(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer)
+{
+    // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+    PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bStartWithTickEnabled = false;
 
-	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
+    // decal 영향
+    GetMesh()->bReceivesDecals = false;
+
+    JAAbilitySystemComponent = CreateDefaultSubobject<UJAAbilitySystemComponent>(TEXT("JAAbilitySystemComponent"));
+
+    JAAttributeSet = CreateDefaultSubobject<UJAAttributeSet>(TEXT("JAAttributeSet"));
+
+    MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 UAbilitySystemComponent* AJABaseCharacter::GetAbilitySystemComponent() const
