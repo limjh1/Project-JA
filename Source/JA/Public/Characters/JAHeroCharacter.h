@@ -13,6 +13,7 @@ class UDataAsset_InputConfig;
 struct FInputActionValue;
 class UHeroCombatComponent;
 class UHeroUIComponent;
+class UJACustomMovementComponent;
 /**
  * 
  */
@@ -33,6 +34,10 @@ public:
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	virtual UHeroUIComponent* GetHeroUIComponent() const override;
 	//~ End IPawnUIInterface Interface
+
+public:
+	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const { return HeroCombatComponent; }
+	FORCEINLINE UJACustomMovementComponent* GetJACustomMovementComponent() const { return JACustomMovementComponent; }
 
 protected:
 	//~ Begin APawn Interface.
@@ -56,6 +61,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
 	UHeroUIComponent* HeroUIComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	UJACustomMovementComponent* JACustomMovementComponent;
 
 #pragma endregion
 
@@ -81,6 +89,9 @@ private:
 #pragma endregion
 
 public:
-	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const { return HeroCombatComponent; }
+	FORCEINLINE float GetCapsuleHeight() const { return CapsuleHeight; }
 
+private:
+	UPROPERTY()
+	float CapsuleHeight = 96.f;
 };

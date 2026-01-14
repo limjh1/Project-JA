@@ -22,7 +22,7 @@
 AJAHeroCharacter::AJAHeroCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UJACustomMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
-	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.f);
+	GetCapsuleComponent()->InitCapsuleSize(42.f, CapsuleHeight);
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -38,7 +38,8 @@ AJAHeroCharacter::AJAHeroCharacter(const FObjectInitializer& ObjectInitializer)
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	JACustomMovementComponent = Cast<UJACustomMovementComponent>(GetCharacterMovement());
+	GetCharacterMovement()->bOrientRotationToMovement = true; // Character move in the direction of input
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
