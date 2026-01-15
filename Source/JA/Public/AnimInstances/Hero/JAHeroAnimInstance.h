@@ -7,6 +7,8 @@
 #include "JAHeroAnimInstance.generated.h"
 
 class AJAHeroCharacter;
+class UJACustomMovementComponent;
+
 /**
  * 
  */
@@ -22,6 +24,9 @@ public:
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|References")
 	AJAHeroCharacter* OwningHeroCharacter;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|References")
+	UJACustomMovementComponent* OwningHeroCustomMovementComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	bool bShouldEnterRelaxState;

@@ -88,6 +88,10 @@ private:
 
 #pragma endregion
 
+private:
+	void HandleGroundMovementInput(const FInputActionValue& InputActionValue);
+	void HandleClimbMovementInput(const FInputActionValue& InputActionValue);
+
 public:
 	FORCEINLINE float GetCapsuleHeight() const { return CapsuleHeight; }
 

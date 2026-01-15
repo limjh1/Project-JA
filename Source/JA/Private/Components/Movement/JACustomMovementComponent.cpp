@@ -16,6 +16,12 @@ void UJACustomMovementComponent::TickComponent(float DeltaTime, ELevelTick TickT
     //TraceFromEyeHeight(ClimbLineTraceDist);
 }
 
+void UJACustomMovementComponent::BeginPlay()
+{
+    Super::BeginPlay();
+
+}
+
 void UJACustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
 {
     AJAHeroCharacter* HeroCharacter = Cast<AJAHeroCharacter>(CharacterOwner);
@@ -38,6 +44,10 @@ void UJACustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMov
         bOrientRotationToMovement = true;
         HeroCharacter->GetCapsuleComponent()->SetCapsuleHalfHeight(CharacterCapsuleHeight);
 
+        const FRotator DirtyRotation = UpdatedComponent->GetComponentRotation();
+        const FRotator CleanStandRotation = FRotator(0.f, DirtyRotation.Yaw, 0.f);
+        UpdatedComponent->SetRelativeRotation(CleanStandRotation);
+
         StopMovementImmediately();
     }
  
@@ -52,6 +62,26 @@ void UJACustomMovementComponent::PhysCustom(float deltaTime, int32 Iterations)
     }
 
     Super::PhysCustom(deltaTime, Iterations);
+}
+
+float UJACustomMovementComponent::GetMaxSpeed() const
+{
+    if (IsClimbing())
+    {
+        return MaxClimbSpeed;
+    }
+    
+    return Super::GetMaxSpeed();
+}
+
+float UJACustomMovementComponent::GetMaxAcceleration() const
+{
+    if (IsClimbing())
+    {
+        return MaxClimbAcceleration;
+    }
+
+    return Super::GetMaxAcceleration();
 }
 
 TArray<FHitResult> UJACustomMovementComponent::DoCapsuleTraceMultiByObject(const FVector& Start, const FVector& End, bool bShowDebugShape, bool bDrawPersistantShapes)
@@ -115,7 +145,7 @@ bool UJACustomMovementComponent::TraceClimbableSurfaces()
     const FVector Start = UpdatedComponent->GetComponentLocation() + StartOffset;
     const FVector End = Start + UpdatedComponent->GetForwardVector(); // 길이는 1일 것.
 
-    ClimbableSurfacesTracedResults = DoCapsuleTraceMultiByObject(Start, End, true, true);
+    ClimbableSurfacesTracedResults = DoCapsuleTraceMultiByObject(Start, End);
 
     return !(ClimbableSurfacesTracedResults.IsEmpty());
 }
@@ -128,7 +158,7 @@ FHitResult UJACustomMovementComponent::TraceFromEyeHeight(float TraceDist, float
     const FVector Start = ComponentLocation + EyeHeightOffset;
     const FVector End = Start + UpdatedComponent->GetForwardVector() * TraceDist;
 
-    return DoLineTraceSingleByObject(Start, End, true, true);
+    return DoLineTraceSingleByObject(Start, End);
 }
 
 bool UJACustomMovementComponent::CanStartClimbing()
@@ -171,10 +201,15 @@ void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
         return;
     }
 
-    // Process All the Climb surfaces Info
+    // Process all the climable surface info
+    TraceClimbableSurfaces();
+    ProcessClimbableSurfaceInfo();
 
     // Check if we should stop climbing
-
+    if (CheckShouldStopClimbing())
+    {
+        StopClimbing();
+    }
 
     RestorePreAdditiveRootMotionVelocity();
 
@@ -191,7 +226,7 @@ void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
     FHitResult Hit(1.f);
 
     // Handle Climb Rotation
-    SafeMoveUpdatedComponent(Adjusted, UpdatedComponent->GetComponentQuat(), true, Hit);
+    SafeMoveUpdatedComponent(Adjusted, GetClimbRotation(deltaTime), true, Hit);
 
     if (Hit.Time < 1.f)
     {      
@@ -206,6 +241,75 @@ void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
     }
 
     // Snap Movement To Climb Surfaces
+    SnapMovementToClimableSurfaces(deltaTime);
+}
+
+void UJACustomMovementComponent::ProcessClimbableSurfaceInfo()
+{
+    CurrentClimableSurfaceLocation = FVector::ZeroVector;
+    CurrentClimableSurfaceNormal = FVector::ZeroVector;
+
+    if (ClimbableSurfacesTracedResults.IsEmpty())
+    {
+        return;
+    }
+
+    for (const FHitResult& TracedHitResult : ClimbableSurfacesTracedResults)
+    {
+        CurrentClimableSurfaceLocation += TracedHitResult.ImpactPoint;
+        CurrentClimableSurfaceNormal += TracedHitResult.ImpactNormal;
+    }
+
+    CurrentClimableSurfaceLocation /= ClimbableSurfacesTracedResults.Num(); // 평균 위치
+    CurrentClimableSurfaceNormal = CurrentClimableSurfaceNormal.GetSafeNormal(); // 정규화
+}
+
+bool UJACustomMovementComponent::CheckShouldStopClimbing()
+{
+    if (ClimbableSurfacesTracedResults.IsEmpty())
+    {
+        return true;
+    }
+
+    const float DotResult = FVector::DotProduct(CurrentClimableSurfaceNormal, FVector::UpVector);
+    const float DegreeDiff = FMath::RadiansToDegrees(FMath::Acos(DotResult));
+
+    if (DegreeDiff <= 60.f)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+FQuat UJACustomMovementComponent::GetClimbRotation(float DeltaTime)
+{
+    const FQuat CurrentQuat = UpdatedComponent->GetComponentQuat();
+    if (HasAnimRootMotion() || CurrentRootMotion.HasOverrideVelocity())
+    {
+        return CurrentQuat;
+    }
+
+    const FQuat TargetQuat = FRotationMatrix::MakeFromX((-1.f * CurrentClimableSurfaceNormal)).ToQuat();
+
+    return FMath::QInterpTo(CurrentQuat, TargetQuat, DeltaTime, 5.f);
+}
+
+void UJACustomMovementComponent::SnapMovementToClimableSurfaces(float DeltaTime)
+{
+    const FVector ComponentForward = UpdatedComponent->GetForwardVector();
+    const FVector ComponentLocation = UpdatedComponent->GetComponentLocation();
+
+    const FVector ProjectedCharacterToSurface = 
+        (CurrentClimableSurfaceLocation - ComponentLocation).ProjectOnTo(ComponentForward); // 표면 바라보는 벡터 구하고 투영
+
+    const FVector SnapVector = (-1.f * CurrentClimableSurfaceNormal) * ProjectedCharacterToSurface.Length(); // 캐릭터가 표면에 스냅
+
+    UpdatedComponent->MoveComponent(
+        SnapVector * DeltaTime * GetMaxSpeed(),
+        UpdatedComponent->GetComponentQuat(),
+        true
+    );
 }
 
 bool UJACustomMovementComponent::IsClimbing() const

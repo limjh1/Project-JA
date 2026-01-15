@@ -6,6 +6,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "JACustomMovementComponent.generated.h"
 
+class UAnimMontage;
+class UAnimInstance;
+
 UENUM(BlueprintType)
 namespace ECustomMovementMode 
 {
@@ -24,9 +27,13 @@ class JA_API UJACustomMovementComponent : public UCharacterMovementComponent
 	GENERATED_BODY()
 	
 protected:
+	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
+
+	virtual float GetMaxSpeed() const override;
+	virtual float GetMaxAcceleration() const override;
 
 private:
 	TArray<FHitResult> DoCapsuleTraceMultiByObject(const FVector& Start, const FVector& End, bool bShowDebugShape = false, bool bDrawPersistantShapes = false);
@@ -37,6 +44,8 @@ private:
 	FHitResult TraceFromEyeHeight(float TraceDist, float TraceStartOffset = 0.f);
 
 public:
+	FORCEINLINE FVector GetClimbableSurfaceNormal() const { return CurrentClimableSurfaceNormal; }
+
 	bool IsClimbing() const;
 	bool CanStartClimbing();
 	
@@ -45,10 +54,21 @@ public:
 
 private:
 	void PhysClimb(float deltaTime, int32 Iterations);
+	void ProcessClimbableSurfaceInfo();
+
+	bool CheckShouldStopClimbing();
+
+	FQuat GetClimbRotation(float DeltaTime);
+
+	void SnapMovementToClimableSurfaces(float DeltaTime);
 
 public:
 	TArray<FHitResult> ClimbableSurfacesTracedResults;
+	
+	FVector CurrentClimableSurfaceLocation;
+	FVector CurrentClimableSurfaceNormal;
 
+public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
 	TArray<TEnumAsByte<EObjectTypeQuery>> ClimbableSurfaceTraceTypes;
 
@@ -63,4 +83,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
 	float MaxBreakClimbDeceleration = 400.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
+	float MaxClimbSpeed = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
+	float MaxClimbAcceleration = 300.f;
 };

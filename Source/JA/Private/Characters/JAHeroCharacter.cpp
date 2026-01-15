@@ -138,26 +138,24 @@ void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AJAHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
 {
-	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
-	const FRotator MovementRotation(0.f, Controller->GetControlRotation().Yaw, 0.f);
-
-	if (0.f != MovementVector.Y)
+	if (!JACustomMovementComponent)
 	{
-		const FVector ForwardDir = MovementRotation.RotateVector(FVector::ForwardVector);
-
-		AddMovementInput(ForwardDir, MovementVector.Y);
+		return;
 	}
 
-	if (0.f != MovementVector.X)
+	if (JACustomMovementComponent->IsClimbing())
 	{
-		const FVector RightDir = MovementRotation.RotateVector(FVector::RightVector);
-
-		AddMovementInput(RightDir, MovementVector.X);
+		HandleClimbMovementInput(InputActionValue);
+	}
+	else
+	{
+		HandleGroundMovementInput(InputActionValue);
 	}
 }
 
 void AJAHeroCharacter::Input_Look(const FInputActionValue& InputActionValue)
 {
+	// Input Vector
 	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
 
 	if (0.f != LookAxisVector.X)
@@ -207,4 +205,45 @@ void AJAHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
 void AJAHeroCharacter::Input_AbilityInputReleased(FGameplayTag InInputTag)
 {
 	JAAbilitySystemComponent->OnAbilityInputReleased(InInputTag);
+}
+
+void AJAHeroCharacter::HandleGroundMovementInput(const FInputActionValue& InputActionValue)
+{
+	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
+	const FRotator MovementRotation(0.f, Controller->GetControlRotation().Yaw, 0.f);
+
+	if (0.f != MovementVector.Y)
+	{
+		const FVector ForwardDir = MovementRotation.RotateVector(FVector::ForwardVector);
+
+		AddMovementInput(ForwardDir, MovementVector.Y);
+	}
+
+	if (0.f != MovementVector.X)
+	{
+		const FVector RightDir = MovementRotation.RotateVector(FVector::RightVector);
+
+		AddMovementInput(RightDir, MovementVector.X);
+	}
+}
+
+void AJAHeroCharacter::HandleClimbMovementInput(const FInputActionValue& InputActionValue)
+{
+	// Input Vector
+	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
+	
+	// 왼손 좌표계
+	// 위로 전진
+	const FVector ForwardDirection = FVector::CrossProduct(
+		(-1.f * JACustomMovementComponent->GetClimbableSurfaceNormal()),
+		GetActorRightVector()
+	); 
+
+	const FVector RightDirection = FVector::CrossProduct(
+		(-1.f * JACustomMovementComponent->GetClimbableSurfaceNormal()),
+		(-1.f * GetActorUpVector())
+	);
+
+	AddMovementInput(ForwardDirection, LookAxisVector.Y);
+	AddMovementInput(RightDirection, LookAxisVector.X);
 }
