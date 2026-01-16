@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystem/Abilities/JAHeroGameplayAbility.h"
-#include "HeroGameplayAbility_Climb.generated.h"
+#include "HeroGameplayAbility_Climb_Hang.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class JA_API UHeroGameplayAbility_Climb : public UJAHeroGameplayAbility
+class JA_API UHeroGameplayAbility_Climb_Hang : public UJAHeroGameplayAbility
 {
 	GENERATED_BODY()
 	

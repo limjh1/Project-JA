@@ -1,15 +1,16 @@
 // JhLim All Rights Reserved
 
 
-#include "AbilitySystem/Abilities/HeroGameplayAbility_Climb.h"
+#include "AbilitySystem/Abilities/HeroGameplayAbility_Climb_Hang.h"
 #include "Characters/JAHeroCharacter.h"
 #include "Components/Movement/JACustomMovementComponent.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "JAGameplayTags.h"
+#include "JAFunctionLibrary.h"
 
 #include "JADebugHelper.h"
 
-void UHeroGameplayAbility_Climb::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+void UHeroGameplayAbility_Climb_Hang::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
@@ -26,16 +27,7 @@ void UHeroGameplayAbility_Climb::ActivateAbility(const FGameplayAbilitySpecHandl
         return;
     }
 
-    // 토글 처리: 이미 클라이밍 중이라면 기존, 현재 모두 종료
-    if (CMC->IsClimbing())
-    {
-        ASC->TryCancelAbilityByTag(JAGameplayTags::Player_Ability_Climb);
-        EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-        return;
-    }
-
-    // 시작 조건 확인: 조건 안 맞으면 현재 종료
-    if (!CMC->CanStartClimbing())
+    if (CMC->IsClimbing() || !CMC->CanStartClimbing())
     {
         EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
         return;
@@ -44,7 +36,7 @@ void UHeroGameplayAbility_Climb::ActivateAbility(const FGameplayAbilitySpecHandl
     CMC->StartClimbing();
 }
 
-void UHeroGameplayAbility_Climb::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+void UHeroGameplayAbility_Climb_Hang::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     AJAHeroCharacter* HeroCharacter = Cast<AJAHeroCharacter>(ActorInfo->AvatarActor);
     if (!HeroCharacter)
@@ -58,7 +50,10 @@ void UHeroGameplayAbility_Climb::EndAbility(const FGameplayAbilitySpecHandle Han
         return;
     }
 
-    CMC->StopClimbing();
+    if (CMC->IsClimbing()) 
+    {
+        CMC->StopClimbing();
+    }
 
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

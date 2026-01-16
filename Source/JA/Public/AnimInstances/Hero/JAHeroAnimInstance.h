@@ -19,6 +19,7 @@ class JA_API UJAHeroAnimInstance : public UJACharacterAnimInstance
 	
 public:
 	virtual void NativeInitializeAnimation() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 	
 protected:
@@ -33,6 +34,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	float EnterRelaxStateThreshold = 2.5f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
+	bool bIsClimbing = false;
 
 	float IdleElpasedTime;
 };

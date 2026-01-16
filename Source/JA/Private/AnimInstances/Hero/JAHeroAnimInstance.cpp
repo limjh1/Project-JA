@@ -4,6 +4,8 @@
 #include "AnimInstances/Hero/JAHeroAnimInstance.h"
 #include "Characters/JAHeroCharacter.h"
 #include "Components/Movement/JACustomMovementComponent.h"
+#include "JAFunctionLibrary.h"
+#include "JAGameplayTags.h"
 
 void UJAHeroAnimInstance::NativeInitializeAnimation()
 {
@@ -17,6 +19,16 @@ void UJAHeroAnimInstance::NativeInitializeAnimation()
 	if (OwningMovementComponent)
 	{
 		OwningHeroCustomMovementComponent = Cast<UJACustomMovementComponent>(OwningMovementComponent);
+	}
+}
+
+void UJAHeroAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+{
+	Super::NativeUpdateAnimation(DeltaSeconds);
+
+	if (OwningHeroCharacter)
+	{
+		bIsClimbing = UJAFunctionLibrary::NativeDoesActorHaveTag(OwningHeroCharacter, JAGameplayTags::Player_Status_Climbing);
 	}
 }
 

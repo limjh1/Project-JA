@@ -5,6 +5,10 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Characters/JAHeroCharacter.h"
 #include "Components/CapsuleComponent.h"
+#include "JAFunctionLibrary.h"
+#include "JAGameplayTags.h"
+#include "AbilitySystem/JAAbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 #include "JADebugHelper.h"
 
@@ -49,6 +53,18 @@ void UJACustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMov
         UpdatedComponent->SetRelativeRotation(CleanStandRotation);
 
         StopMovementImmediately();
+
+        if (CharacterOwner)
+        {
+            FGameplayEventData Data;
+            Data.Instigator = CharacterOwner;
+
+            UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+                CharacterOwner,
+                JAGameplayTags::Player_Event_Climb_Finished,
+                Data
+            );
+        }
     }
  
     Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
@@ -191,7 +207,7 @@ void UJACustomMovementComponent::StopClimbing()
     if (IsClimbing())
     {
         SetMovementMode(MOVE_Falling);
-    }    
+    }
 }
 
 void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
