@@ -45,6 +45,7 @@ private:
 
 public:
 	FORCEINLINE FVector GetClimbableSurfaceNormal() const { return CurrentClimableSurfaceNormal; }
+	FVector GetUnrotatedClimbVelocity() const;
 
 	bool IsClimbing() const;
 	bool CanStartClimbing();

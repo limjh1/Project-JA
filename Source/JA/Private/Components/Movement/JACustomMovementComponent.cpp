@@ -9,6 +9,7 @@
 #include "JAGameplayTags.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "JADebugHelper.h"
 
@@ -326,6 +327,11 @@ void UJACustomMovementComponent::SnapMovementToClimableSurfaces(float DeltaTime)
         UpdatedComponent->GetComponentQuat(),
         true
     );
+}
+
+FVector UJACustomMovementComponent::GetUnrotatedClimbVelocity() const
+{
+    return UKismetMathLibrary::Quat_UnrotateVector(UpdatedComponent->GetComponentQuat(), Velocity);
 }
 
 bool UJACustomMovementComponent::IsClimbing() const

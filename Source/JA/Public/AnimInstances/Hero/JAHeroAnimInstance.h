@@ -39,4 +39,10 @@ protected:
 	bool bIsClimbing = false;
 
 	float IdleElpasedTime;
+
+private:
+	// 스레드 안전하게 복사된 데이터들
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	FVector ClimbVelocity;
+
 };
