@@ -32,6 +32,8 @@ protected:
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 
+	virtual FVector ConstrainAnimRootMotionVelocity(const FVector& RootMotionVelocity, const FVector& CurrentVelocity) const override;
+
 	virtual float GetMaxSpeed() const override;
 	virtual float GetMaxAcceleration() const override;
 
@@ -58,6 +60,8 @@ private:
 	void ProcessClimbableSurfaceInfo();
 
 	bool CheckShouldStopClimbing();
+	bool CheckHasReachedFloor();
+	bool CheckHasReachedLedge();
 
 	FQuat GetClimbRotation(float DeltaTime);
 

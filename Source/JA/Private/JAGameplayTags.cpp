@@ -41,6 +41,8 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_PickUp_Stones, "Player.Ability.PickUp.Stones");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Hang, "Player.Ability.Climb.Hang");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Jump, "Player.Ability.Climb.Jump");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_LedgeUp, "Player.Ability.Climb.LedgeUp");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_LedgeDown, "Player.Ability.Climb.LedgeDown");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Light, "Player.Cooldown.SpecialWeaponAbility.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Heavy, "Player.Cooldown.SpecialWeaponAbility.Heavy");
@@ -59,6 +61,8 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_InputPressed, "Player.Event.InputPressed");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_Jump, "Player.Event.Climb.Jump");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_Finished, "Player.Event.Climb.Finished");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_LedgeUp, "Player.Event.Climb.LedgeUp");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_LedgeDown, "Player.Event.Climb.LedgeDown");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_JumpToFinisher, "Player.Status.JumpToFinisher");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rolling, "Player.Status.Rolling");

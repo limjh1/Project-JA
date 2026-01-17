@@ -273,6 +273,8 @@ void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
 
     if (CheckHasReachedLedge())
     {
+        StopClimbing();
+
         if (CharacterOwner)
         {
             FGameplayEventData Data;

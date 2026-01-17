@@ -42,6 +42,8 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stones);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Hang);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Jump);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_LedgeUp);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_LedgeDown);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
@@ -60,6 +62,8 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_InputPressed);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_Jump);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_Finished);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_LedgeUp);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_LedgeDown);
 		
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
