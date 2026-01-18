@@ -26,7 +26,7 @@ void UHeroGameplayAbility_Climb_Hang::ActivateAbility(const FGameplayAbilitySpec
     {
         return;
     }
-
+    
     if (CMC->IsClimbing() || !CMC->CanStartClimbing())
     {
         EndAbility(Handle, ActorInfo, ActivationInfo, true, true);

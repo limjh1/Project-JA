@@ -51,8 +51,11 @@ public:
 
 	bool IsClimbing() const;
 	bool CanStartClimbing();
+	bool CanClimbDownLedge();
 	
+	UFUNCTION(BlueprintCallable)
 	void StartClimbing();
+
 	void StopClimbing();
 
 private:
@@ -94,4 +97,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
 	float MaxClimbAcceleration = 300.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
+	float ClimbDownWalkableSurfaceTraceOffset = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
+	float ClimbDownLedgeTraceOffset = 50.f;
 };

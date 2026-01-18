@@ -173,18 +173,30 @@ void AJAHeroCharacter::Input_Look(const FInputActionValue& InputActionValue)
 void AJAHeroCharacter::Input_Climb(const FInputActionValue& InputActionValue)
 {
 	UJAAbilitySystemComponent* ASC = GetJAAbilitySystemComponent();
-	if (!ASC)
+	UJACustomMovementComponent* CMC = GetJACustomMovementComponent();
+	if (!ASC || !CMC)
 	{
 		return;
 	}
 
-	if (ASC->HasMatchingGameplayTag(JAGameplayTags::Player_Status_Climbing))
+	if (ASC->HasMatchingGameplayTag(JAGameplayTags::Player_Status_Climbing_Default))
 	{
-		ASC->TryCancelAbilityByTag(JAGameplayTags::Player_Ability_Climb_Hang);
+		ASC->TryCancelAbilityByTag(JAGameplayTags::Player_Ability_Climb_Hang_Default);
+	}
+	else if (ASC->HasMatchingGameplayTag(JAGameplayTags::Player_Status_Climbing_LedgeDown))
+	{
+		ASC->TryCancelAbilityByTag(JAGameplayTags::Player_Ability_Climb_Hang_LedgeDown);
 	}
 	else
 	{
-		ASC->TryActivateAbilityByTag(JAGameplayTags::Player_Ability_Climb_Hang);
+		if (CMC->CanStartClimbing())
+		{
+			ASC->TryActivateAbilityByTag(JAGameplayTags::Player_Ability_Climb_Hang_Default);
+		}
+		else if (CMC->CanClimbDownLedge())
+		{
+			ASC->TryActivateAbilityByTag(JAGameplayTags::Player_Ability_Climb_Hang_LedgeDown);
+		}		
 	}
 }
 

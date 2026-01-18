@@ -28,7 +28,10 @@ void UJAHeroAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (OwningHeroCharacter)
 	{
-		bIsClimbing = UJAFunctionLibrary::NativeDoesActorHaveTag(OwningHeroCharacter, JAGameplayTags::Player_Status_Climbing);
+		bIsClimbing = (
+			UJAFunctionLibrary::NativeDoesActorHaveTag(OwningHeroCharacter, JAGameplayTags::Player_Status_Climbing_Default) || 
+			UJAFunctionLibrary::NativeDoesActorHaveTag(OwningHeroCharacter, JAGameplayTags::Player_Status_Climbing_LedgeDown)
+			);
 
 		ClimbVelocity = OwningHeroCustomMovementComponent->GetUnrotatedClimbVelocity();
 	}

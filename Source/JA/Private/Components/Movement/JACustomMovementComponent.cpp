@@ -209,6 +209,35 @@ bool UJACustomMovementComponent::CanStartClimbing()
     return true;
 }
 
+bool UJACustomMovementComponent::CanClimbDownLedge()
+{
+    if (IsFalling())
+    {
+        return false;
+    }
+
+    const FVector ComponentLocation = UpdatedComponent->GetComponentLocation();
+    const FVector ComponentFoward = UpdatedComponent->GetForwardVector();
+    const FVector DownVector = UpdatedComponent->GetUpVector() * -1.f;
+
+    const FVector WalkableSurfaceTraceStart = ComponentLocation + (ComponentFoward * ClimbDownWalkableSurfaceTraceOffset);
+    const FVector WalkableSurfaceTraceEnd = WalkableSurfaceTraceStart + (DownVector * 100.f);
+
+    FHitResult WalkableSurfaceHit = DoLineTraceSingleByObject(WalkableSurfaceTraceStart, WalkableSurfaceTraceEnd, true);
+    
+    const FVector LedgeTraceStart = WalkableSurfaceHit.TraceStart + (ComponentFoward * ClimbDownLedgeTraceOffset);
+    const FVector LedgeTraceEnd = LedgeTraceStart + (DownVector * 300.f);
+
+    FHitResult LedgeTraceHit = DoLineTraceSingleByObject(LedgeTraceStart, LedgeTraceEnd, true);
+
+    if (WalkableSurfaceHit.bBlockingHit && false == LedgeTraceHit.bBlockingHit)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 void UJACustomMovementComponent::StartClimbing()
 {
     SetMovementMode(MOVE_Custom, ECustomMovementMode::MOVE_Climb);
