@@ -56,6 +56,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartClimbing();
 
+	UFUNCTION(BlueprintCallable)
 	void StopClimbing();
 
 private:
