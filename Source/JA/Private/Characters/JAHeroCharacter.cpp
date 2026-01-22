@@ -196,7 +196,11 @@ void AJAHeroCharacter::Input_Climb(const FInputActionValue& InputActionValue)
 		else if (CMC->CanClimbDownLedge())
 		{
 			ASC->TryActivateAbilityByTag(JAGameplayTags::Player_Ability_Climb_Hang_LedgeDown);
-		}		
+		}
+		else
+		{
+			ASC->TryActivateAbilityByTag(JAGameplayTags::Player_Ability_Climb_Vaulting);
+		}
 	}
 }
 

@@ -52,12 +52,16 @@ public:
 	bool IsClimbing() const;
 	bool CanStartClimbing();
 	bool CanClimbDownLedge();
+	bool CanStartVaulting(FVector& OutVaultStartPosition, FVector& OutVaultLandPosition);
 	
 	UFUNCTION(BlueprintCallable)
 	void StartClimbing();
 
 	UFUNCTION(BlueprintCallable)
 	void StopClimbing();
+
+	UFUNCTION(BlueprintCallable)
+	void TryStartVaulting();
 
 private:
 	void PhysClimb(float deltaTime, int32 Iterations);
@@ -66,6 +70,7 @@ private:
 	bool CheckShouldStopClimbing();
 	bool CheckHasReachedFloor();
 	bool CheckHasReachedLedge();
+
 	 
 	FQuat GetClimbRotation(float DeltaTime);
 
@@ -104,4 +109,14 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
 	float ClimbDownLedgeTraceOffset = 50.f;
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Vaulting", meta = (AllowPrivateAccess = "true"))
+	float MaxVaultScanIterations = 5.f; // 볼팅 지형을 탐색할 최대 횟수
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Vaulting", meta = (AllowPrivateAccess = "true"))
+	float VaultScanStepDistance = 100.f; // 각 트레이스 간의 간격 (간격이 넓을수록 넓은 지형 체크 가능)
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Vaulting", meta = (AllowPrivateAccess = "true"))
+	float VaultTraceVerticalExtent = 100.f; // 트레이스의 수직 탐색 범위
 };

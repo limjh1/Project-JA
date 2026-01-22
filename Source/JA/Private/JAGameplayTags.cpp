@@ -43,6 +43,7 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Hang_LedgeDown, "Player.Ability.Climb.Hang.LedgeDown");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Jump, "Player.Ability.Climb.Jump");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_LedgeUp, "Player.Ability.Climb.LedgeUp");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Vaulting, "Player.Ability.Climb.Vaulting");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Light, "Player.Cooldown.SpecialWeaponAbility.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Heavy, "Player.Cooldown.SpecialWeaponAbility.Heavy");

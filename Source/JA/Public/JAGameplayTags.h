@@ -44,6 +44,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Hang_LedgeDown);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Jump);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_LedgeUp);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Vaulting);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);

@@ -39,6 +39,11 @@ public:
 	//~ End IPawnUIInterface Interface
 
 public:
+	FORCEINLINE UJAAbilitySystemComponent*	GetJAAbilitySystemComponent() const { return JAAbilitySystemComponent; }
+	FORCEINLINE UJAAttributeSet*			GetJAAttributeSet() const { return JAAttributeSet; }
+	FORCEINLINE UMotionWarpingComponent*	GetMotionWarpingComponent() const { return MotionWarpingComponent; }
+
+public:
 	UFUNCTION(BlueprintCallable, Category = "JA|Physics")
 	void ActivateRagdoll();
 
@@ -58,8 +63,4 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;
-
-public:
-	FORCEINLINE UJAAbilitySystemComponent*	GetJAAbilitySystemComponent() const { return JAAbilitySystemComponent; }
-	FORCEINLINE UJAAttributeSet*			GetJAAttributeSet() const { return JAAttributeSet; }
 };

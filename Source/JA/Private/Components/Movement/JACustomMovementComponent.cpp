@@ -238,6 +238,50 @@ bool UJACustomMovementComponent::CanClimbDownLedge()
     return false;
 }
 
+bool UJACustomMovementComponent::CanStartVaulting(FVector& OutVaultStartPosition, FVector& OutVaultLandPosition)
+{
+    if (IsFalling())
+    {
+        return false;
+    }
+
+    OutVaultStartPosition = FVector::ZeroVector;
+    OutVaultLandPosition = FVector::ZeroVector;
+
+    const FVector ComponentLocation = UpdatedComponent->GetComponentLocation();
+    const FVector ComponentForward = UpdatedComponent->GetForwardVector();
+    const FVector UpVector = UpdatedComponent->GetUpVector();
+    const FVector DownVector = (UpdatedComponent->GetUpVector() * -1.f);
+
+    for (int32 i = 0; i < MaxVaultScanIterations; i++)
+    {
+        const FVector Start = ComponentLocation + (UpVector * VaultTraceVerticalExtent) + (ComponentForward * VaultScanStepDistance * (i + 1));
+        const FVector End = Start + (DownVector * VaultTraceVerticalExtent * (i + 1));
+
+        FHitResult VaultTraceHit = DoLineTraceSingleByObject(Start, End, true, true);
+
+        if (VaultTraceHit.bBlockingHit)
+        {
+            if (0 == i)
+            {
+                OutVaultStartPosition = VaultTraceHit.ImpactPoint; // 시작 지점 가능 여부
+            }
+
+            if ((MaxVaultScanIterations - 1) == i)
+            {
+                OutVaultLandPosition = VaultTraceHit.ImpactPoint; // 끝 지점 가능 여부 (안된다면, 낭떠러지거나 너무 두꺼운 벽)
+            }
+        }
+    }
+
+    if (FVector::ZeroVector != OutVaultStartPosition && FVector::ZeroVector != OutVaultLandPosition)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 void UJACustomMovementComponent::StartClimbing()
 {
     SetMovementMode(MOVE_Custom, ECustomMovementMode::MOVE_Climb);
@@ -248,6 +292,23 @@ void UJACustomMovementComponent::StopClimbing()
     if (IsClimbing())
     {
         SetMovementMode(MOVE_Falling);
+    }
+}
+
+void UJACustomMovementComponent::TryStartVaulting()
+{
+    FVector VaultStartPosition;
+    FVector VaultLandPosition;
+
+    if (CanStartVaulting(VaultStartPosition, VaultLandPosition))
+    {
+        // Start Vaulting
+        Debug::Print(TEXT("Start Pos: ") + VaultStartPosition.ToCompactString());
+        Debug::Print(TEXT("Land Pos: ") + VaultLandPosition.ToCompactString());
+    }
+    else
+    {
+        Debug::Print(TEXT("Unable to vault"));
     }
 }
 
