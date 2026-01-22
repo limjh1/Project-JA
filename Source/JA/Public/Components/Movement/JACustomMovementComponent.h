@@ -6,8 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "JACustomMovementComponent.generated.h"
 
-class UAnimMontage;
-class UAnimInstance;
+class AJABaseCharacter;
 
 UENUM(BlueprintType)
 namespace ECustomMovementMode 
@@ -61,7 +60,7 @@ public:
 	void StopClimbing();
 
 	UFUNCTION(BlueprintCallable)
-	void TryStartVaulting();
+	bool TryStartVaulting();
 
 private:
 	void PhysClimb(float deltaTime, int32 Iterations);
@@ -70,17 +69,22 @@ private:
 	bool CheckShouldStopClimbing();
 	bool CheckHasReachedFloor();
 	bool CheckHasReachedLedge();
-
 	 
 	FQuat GetClimbRotation(float DeltaTime);
 
 	void SnapMovementToClimableSurfaces(float DeltaTime);
+
+	void SetMotionWarpTarget(const FName& InWarpTargetName, const FVector& InTargetPosition);
 
 public:
 	TArray<FHitResult> ClimbableSurfacesTracedResults;
 	
 	FVector CurrentClimableSurfaceLocation;
 	FVector CurrentClimableSurfaceNormal;
+
+private:
+	UPROPERTY()
+	AJABaseCharacter* OwningCharacter;
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
@@ -113,6 +117,9 @@ public:
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Vaulting", meta = (AllowPrivateAccess = "true"))
 	float MaxVaultScanIterations = 5.f; // 볼팅 지형을 탐색할 최대 횟수
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Vaulting", meta = (AllowPrivateAccess = "true"))
+	float VaultLandIndexByLast = 2.f; // 마지막 지점을 기준으로 랜딩 인덱스
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Vaulting", meta = (AllowPrivateAccess = "true"))
 	float VaultScanStepDistance = 100.f; // 각 트레이스 간의 간격 (간격이 넓을수록 넓은 지형 체크 가능)

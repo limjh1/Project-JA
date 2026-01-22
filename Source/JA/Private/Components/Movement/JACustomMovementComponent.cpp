@@ -10,6 +10,8 @@
 #include "AbilitySystem/JAAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Characters/JABaseCharacter.h"
+#include "MotionWarpingComponent.h"
 
 #include "JADebugHelper.h"
 
@@ -22,6 +24,7 @@ void UJACustomMovementComponent::BeginPlay()
 {
     Super::BeginPlay();
 
+    OwningCharacter = Cast<AJABaseCharacter>(CharacterOwner);
 }
 
 void UJACustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
@@ -267,7 +270,7 @@ bool UJACustomMovementComponent::CanStartVaulting(FVector& OutVaultStartPosition
                 OutVaultStartPosition = VaultTraceHit.ImpactPoint; // 시작 지점 가능 여부
             }
 
-            if ((MaxVaultScanIterations - 1) == i)
+            if ((MaxVaultScanIterations - VaultLandIndexByLast) == i)
             {
                 OutVaultLandPosition = VaultTraceHit.ImpactPoint; // 끝 지점 가능 여부 (안된다면, 낭떠러지거나 너무 두꺼운 벽)
             }
@@ -295,21 +298,20 @@ void UJACustomMovementComponent::StopClimbing()
     }
 }
 
-void UJACustomMovementComponent::TryStartVaulting()
+bool UJACustomMovementComponent::TryStartVaulting()
 {
     FVector VaultStartPosition;
     FVector VaultLandPosition;
 
     if (CanStartVaulting(VaultStartPosition, VaultLandPosition))
     {
-        // Start Vaulting
-        Debug::Print(TEXT("Start Pos: ") + VaultStartPosition.ToCompactString());
-        Debug::Print(TEXT("Land Pos: ") + VaultLandPosition.ToCompactString());
+        SetMotionWarpTarget(FName("VaultStartPoint"), VaultStartPosition);
+        SetMotionWarpTarget(FName("VaultLandPoint"), VaultLandPosition);
+
+        return true;
     }
-    else
-    {
-        Debug::Print(TEXT("Unable to vault"));
-    }
+
+    return false;
 }
 
 void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
@@ -494,6 +496,16 @@ void UJACustomMovementComponent::SnapMovementToClimableSurfaces(float DeltaTime)
         UpdatedComponent->GetComponentQuat(),
         true
     );
+}
+
+void UJACustomMovementComponent::SetMotionWarpTarget(const FName& InWarpTargetName, const FVector& InTargetPosition)
+{
+    if (nullptr == OwningCharacter)
+    {
+        return;
+    }
+
+    OwningCharacter->GetMotionWarpingComponent()->AddOrUpdateWarpTargetFromLocation(InWarpTargetName, InTargetPosition);
 }
 
 FVector UJACustomMovementComponent::GetUnrotatedClimbVelocity() const
