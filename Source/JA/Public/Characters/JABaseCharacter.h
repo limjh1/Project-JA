@@ -25,7 +25,6 @@ public:
 	AJABaseCharacter();
 	AJABaseCharacter(const FObjectInitializer& ObjectInitializer);
 	
-
 	//~ Begin IAbilitySystemInterface Interface.
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface Interface

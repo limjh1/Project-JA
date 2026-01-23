@@ -9,6 +9,7 @@
 
 class UInputAction;
 class UInputMappingContext;
+class ULocalPlayer;
 
 USTRUCT(BlueprintType)
 struct FJAInputActionConfig
@@ -39,9 +40,15 @@ class JA_API UDataAsset_InputConfig : public UDataAsset
 public:
 	UInputAction* FindNativeInputActionByTag(const FGameplayTag& InInputTag) const;
 
+	void AddInputMappingContext(ULocalPlayer* LocalPlayer, UInputMappingContext* ContextToAdd, int32 InPriority);
+	void RemoveInputMappingContext(ULocalPlayer* LocalPlayer, UInputMappingContext* ContextToRemove);
+
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UInputMappingContext* ClimbMappingContext;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FJAInputActionConfig> NativeInputActions;

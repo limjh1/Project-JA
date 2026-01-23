@@ -5,7 +5,6 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/JAInputComponent.h"
 #include "AbilitySystem/JAAbilitySystemComponent.h"
@@ -108,6 +107,11 @@ void AJAHeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (JACustomMovementComponent)
+	{
+		JACustomMovementComponent->OnEnterClimbStateDelegate.BindUObject(this, &ThisClass::OnPlayerEnterClimbState);
+		JACustomMovementComponent->OnExitClimbStateDelegate.BindUObject(this, &ThisClass::OnPlayerExitClimbState);
+	}
 }
 
 void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -118,16 +122,15 @@ void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	ULocalPlayer* LocalPlayer = GetController<APlayerController>()->GetLocalPlayer();
 
-	UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
-	check(SubSystem);
-
-	SubSystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
+	InputConfigDataAsset->AddInputMappingContext(LocalPlayer, InputConfigDataAsset->DefaultMappingContext, (int32)EIMCPriority::Default);
 
 	UJAInputComponent* JAInputComponent = CastChecked<UJAInputComponent>(PlayerInputComponent);
 
-	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::HandleGroundMovementInput);
+	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Climb_Move, ETriggerEvent::Triggered, this, &ThisClass::HandleClimbMovementInput);
+
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
-	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Climb, ETriggerEvent::Started, this, &ThisClass::Input_Climb);
+	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_Climb_Action, ETriggerEvent::Started, this, &ThisClass::Input_Climb_Action);
 
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
@@ -137,20 +140,30 @@ void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	JAInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
-void AJAHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
+void AJAHeroCharacter::OnPlayerEnterClimbState()
 {
-	if (!JACustomMovementComponent)
+	if (nullptr == InputConfigDataAsset)
 	{
 		return;
 	}
 
-	if (JACustomMovementComponent->IsClimbing())
+	if (APlayerController* PC = GetController<APlayerController>())
 	{
-		HandleClimbMovementInput(InputActionValue);
+		ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
+		InputConfigDataAsset->AddInputMappingContext(LocalPlayer, InputConfigDataAsset->ClimbMappingContext, (int32)EIMCPriority::Climb);
 	}
-	else
+}
+
+void AJAHeroCharacter::OnPlayerExitClimbState()
+{
+	if (nullptr == InputConfigDataAsset)
 	{
-		HandleGroundMovementInput(InputActionValue);
+	}
+
+	if (APlayerController* PC = GetController<APlayerController>())
+	{
+		ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
+		InputConfigDataAsset->RemoveInputMappingContext(LocalPlayer, InputConfigDataAsset->ClimbMappingContext);
 	}
 }
 
@@ -170,7 +183,7 @@ void AJAHeroCharacter::Input_Look(const FInputActionValue& InputActionValue)
 	}
 }
 
-void AJAHeroCharacter::Input_Climb(const FInputActionValue& InputActionValue)
+void AJAHeroCharacter::Input_Climb_Action(const FInputActionValue& InputActionValue)
 {
 	UJAAbilitySystemComponent* ASC = GetJAAbilitySystemComponent();
 	UJACustomMovementComponent* CMC = GetJACustomMovementComponent();

@@ -7,8 +7,10 @@ namespace JAGameplayTags
 {
 	/* Input Tags */
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Move, "InputTag.Move");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Climb_Move, "InputTag.Climb.Move");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Look, "InputTag.Look");
-	UE_DEFINE_GAMEPLAY_TAG(InputTag_Climb, "InputTag.Climb");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Climb_Action, "InputTag.Climb.Action");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Climb_Hop, "InputTag.Climb.Hop");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Equip_Katana, "InputTag.Equip.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Unequip_Katana, "InputTag.Unequip.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_LightAttack_Katana, "InputTag.LightAttack.Katana");
@@ -41,7 +43,7 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_PickUp_Stones, "Player.Ability.PickUp.Stones");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Hang_Default, "Player.Ability.Climb.Hang.Default");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Hang_LedgeDown, "Player.Ability.Climb.Hang.LedgeDown");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Jump, "Player.Ability.Climb.Jump");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Hop, "Player.Ability.Climb.Hop");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_LedgeUp, "Player.Ability.Climb.LedgeUp");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Vaulting, "Player.Ability.Climb.Vaulting");
 
@@ -60,7 +62,6 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_AOE, "Player.Event.AOE");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_ConsumeStones, "Player.Event.ConsumeStones");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_InputPressed, "Player.Event.InputPressed");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_Jump, "Player.Event.Climb.Jump");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_Finished, "Player.Event.Climb.Finished");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_LedgeUp, "Player.Event.Climb.LedgeUp");
 

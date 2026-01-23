@@ -6,6 +6,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "JACustomMovementComponent.generated.h"
 
+DECLARE_DELEGATE(FOnEnterClimbState);
+DECLARE_DELEGATE(FOnExitClimbState);
+
 class AJABaseCharacter;
 
 UENUM(BlueprintType)
@@ -24,7 +27,11 @@ UCLASS()
 class JA_API UJACustomMovementComponent : public UCharacterMovementComponent
 {
 	GENERATED_BODY()
-	
+
+public:
+	FOnEnterClimbState OnEnterClimbStateDelegate;
+	FOnExitClimbState OnExitClimbStateDelegate;
+		
 protected:
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

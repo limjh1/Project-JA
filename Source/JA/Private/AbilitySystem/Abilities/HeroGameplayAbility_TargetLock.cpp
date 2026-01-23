@@ -267,7 +267,7 @@ void UHeroGameplayAbility_TargetLock::InitTargetLockMappingContext()
 
 	check(Subsystem);
 
-	Subsystem->AddMappingContext(TargetLockMappingContext, 3); // Priority DefaultMapping : 0 보다만 크면 됨
+	Subsystem->AddMappingContext(TargetLockMappingContext, (int32)EIMCPriority::LockOn);
 }
 
 void UHeroGameplayAbility_TargetLock::CancelTargetLockAbility()

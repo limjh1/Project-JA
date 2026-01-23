@@ -8,8 +8,10 @@ namespace JAGameplayTags
 {
 	/* Input Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Climb_Move);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Climb);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Climb_Action);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Climb_Hop);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Equip_Katana);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Unequip_Katana);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack_Katana);
@@ -42,7 +44,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stones);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Hang_Default);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Hang_LedgeDown);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Jump);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Hop);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_LedgeUp);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Vaulting);
 
@@ -61,7 +63,6 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ConsumeStones);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_InputPressed);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_Jump);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_Finished);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_LedgeUp);
 		

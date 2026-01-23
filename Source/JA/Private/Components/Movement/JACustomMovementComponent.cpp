@@ -41,6 +41,8 @@ void UJACustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMov
     {
         bOrientRotationToMovement = false;
         HeroCharacter->GetCapsuleComponent()->SetCapsuleHalfHeight(CharacterCapsuleHeight * 0.5f);
+
+        OnEnterClimbStateDelegate.ExecuteIfBound();
     }
 
     // 바로 이전 클라이밍 중이었다면
@@ -66,6 +68,8 @@ void UJACustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMov
                 Data
             );
         }
+
+        OnExitClimbStateDelegate.ExecuteIfBound();
     }
  
     Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
@@ -261,7 +265,7 @@ bool UJACustomMovementComponent::CanStartVaulting(FVector& OutVaultStartPosition
         const FVector Start = ComponentLocation + (UpVector * VaultTraceVerticalExtent) + (ComponentForward * VaultScanStepDistance * (i + 1));
         const FVector End = Start + (DownVector * VaultTraceVerticalExtent * (i + 1));
 
-        FHitResult VaultTraceHit = DoLineTraceSingleByObject(Start, End, true, true);
+        FHitResult VaultTraceHit = DoLineTraceSingleByObject(Start, End);
 
         if (VaultTraceHit.bBlockingHit)
         {

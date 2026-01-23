@@ -69,15 +69,17 @@ private:
 
 #pragma region Inputs
 
+	void OnPlayerEnterClimbState();
+	void OnPlayerExitClimbState();
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
 
 	UPROPERTY()
 	FVector2D SwitchDirection = FVector2D::ZeroVector;
 
-	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
-	void Input_Climb(const FInputActionValue& InputActionValue);
+	void Input_Climb_Action(const FInputActionValue& InputActionValue);
 
 	void Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue);
 	void Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue);	

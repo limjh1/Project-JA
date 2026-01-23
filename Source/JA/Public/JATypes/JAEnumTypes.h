@@ -51,3 +51,12 @@ enum class EJAInputMode : uint8
 	GameOnly,
 	UIOnly
 };
+
+UENUM(BlueprintType)
+enum class EIMCPriority : uint8
+{
+	Default,
+	Weapon,
+	Climb,
+	LockOn
+};
