@@ -30,25 +30,13 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 		bIsValidBlock = UJAFunctionLibrary::IsValidBlock(GetOwningPawn(), HitActor);
 	}
 
-	FGameplayEventData EventData;
-	EventData.Instigator = GetOwningPawn();
-	EventData.Target = HitActor;
-
 	if (bIsValidBlock)
 	{
-		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-			HitActor,
-			JAGameplayTags::Player_Event_SuccessfulBlock,
-			EventData
-		);
+		UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_SuccessfulBlock, HitActor, GetOwningPawn(), HitActor);
 	}
 	else
 	{
-		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-			GetOwningPawn(),
-			JAGameplayTags::Shared_Event_MeleeHit,
-			EventData
-		);
+		UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Shared_Event_MeleeHit, GetOwningPawn(), GetOwningPawn(), HitActor);
 	}
 }
 

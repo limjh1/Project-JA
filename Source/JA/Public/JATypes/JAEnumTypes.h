@@ -60,3 +60,22 @@ enum class EIMCPriority : uint8
 	Climb,
 	LockOn
 };
+
+UENUM(BlueprintType)
+namespace ECustomMovementMode
+{
+	enum Type
+	{
+		MOVE_Climb UMETA(DisplayName = "Climb Mode")
+	};
+}
+
+UENUM(BlueprintType)
+enum class EHopType : uint8
+{
+	HopUp,
+	HopDown,
+	HopLeft,
+	HopRight,
+	Max, // Invalid
+};

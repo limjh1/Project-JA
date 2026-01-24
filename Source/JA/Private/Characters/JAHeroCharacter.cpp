@@ -15,6 +15,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameModes/JABaseGameMode.h"
 #include "Components/Movement/JACustomMovementComponent.h"
+#include "JAFunctionLibrary.h"
 
 #include "JADebugHelper.h"
 
@@ -224,25 +225,15 @@ void AJAHeroCharacter::Input_SwitchTargetTriggered(const FInputActionValue& Inpu
 
 void AJAHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue)
 {
-	FGameplayEventData Data;
-
-	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-		this,
+	UJAFunctionLibrary::SendGameplayEventToActor(
 		(0.f < SwitchDirection.X) ? JAGameplayTags::Player_Event_SwitchTarget_Right : JAGameplayTags::Player_Event_SwitchTarget_Left,
-		Data
+		this
 	);
-
 }
 
 void AJAHeroCharacter::Input_PickUpStonesStarted(const FInputActionValue& InputActionValue)
 {
-	FGameplayEventData Data;
-
-	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-		this,
-		JAGameplayTags::Player_Event_ConsumeStones,
-		Data
-	);
+	UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_ConsumeStones, this);
 }
 
 void AJAHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

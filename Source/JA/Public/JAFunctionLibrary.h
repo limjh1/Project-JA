@@ -10,6 +10,7 @@
 class UJAAbilitySystemComponent;
 class UPawnCombatComponent;
 struct FScalableFloat;
+struct FGameplayEventData;
 class UJAGameInstance;
 
 /**
@@ -69,4 +70,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "JA|FunctionLibrary")
 	static bool TryLoadSavedGameDifficulty(EJAGameDifficulty& OutSavedDifficulty);
+
+	static void SendGameplayEventToActor(FGameplayTag EventTag, AActor* InActor, AActor* Instigator = nullptr, AActor* Target = nullptr);
+	static void SendGameplayEventToActor(FGameplayTag EventTag, AActor* InActor, const FGameplayEventData& InPayLoad);
 };

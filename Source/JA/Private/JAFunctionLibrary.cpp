@@ -275,3 +275,25 @@ bool UJAFunctionLibrary::TryLoadSavedGameDifficulty(EJAGameDifficulty& OutSavedD
 
     return false;
 }
+
+void UJAFunctionLibrary::SendGameplayEventToActor(FGameplayTag EventTag, AActor* InActor, AActor* Instigator, AActor* Target)
+{
+    FGameplayEventData Data;
+
+    if (nullptr != Instigator)
+    {
+        Data.Instigator = Instigator;
+    }
+    
+    if (nullptr != Target)
+    {
+        Data.Target = Target;
+    }    
+
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(InActor, EventTag, Data);
+}
+
+void UJAFunctionLibrary::SendGameplayEventToActor(FGameplayTag EventTag, AActor* InActor, const FGameplayEventData& InPayLoad)
+{
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(InActor, EventTag, InPayLoad);
+}

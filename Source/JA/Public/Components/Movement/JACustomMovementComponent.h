@@ -4,21 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "JATypes/JAEnumTypes.h"
 #include "JACustomMovementComponent.generated.h"
 
 DECLARE_DELEGATE(FOnEnterClimbState);
 DECLARE_DELEGATE(FOnExitClimbState);
 
 class AJABaseCharacter;
-
-UENUM(BlueprintType)
-namespace ECustomMovementMode 
-{
-	enum Type
-	{
-		MOVE_Climb UMETA(DisplayName = "Climb Mode")
-	};
-}
 
 /**
  * 
@@ -49,7 +41,7 @@ private:
 
 private:
 	bool TraceClimbableSurfaces();
-	FHitResult TraceFromEyeHeight(float TraceDist, float TraceStartOffset = 0.f);
+	FHitResult TraceFromEyeHeight(float TraceDist, float TraceStartOffset = 0.f, bool bShowDebugShape = false, bool bDrawPersistantShapes = false);
 
 public:
 	FORCEINLINE FVector GetClimbableSurfaceNormal() const { return CurrentClimableSurfaceNormal; }
@@ -69,6 +61,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool TryStartVaulting();
 
+	UFUNCTION(BlueprintCallable)
+	void RequestHopping();
+
 private:
 	void PhysClimb(float deltaTime, int32 Iterations);
 	void ProcessClimbableSurfaceInfo();
@@ -82,6 +77,9 @@ private:
 	void SnapMovementToClimableSurfaces(float DeltaTime);
 
 	void SetMotionWarpTarget(const FName& InWarpTargetName, const FVector& InTargetPosition);
+
+	void HandleHop(EHopType HopType);
+	bool CheckCanHop(EHopType HopType, FVector& OutHopTargetPostion);
 
 public:
 	TArray<FHitResult> ClimbableSurfacesTracedResults;
@@ -129,8 +127,16 @@ public:
 	float VaultLandIndexByLast = 2.f; // 마지막 지점을 기준으로 랜딩 인덱스
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Vaulting", meta = (AllowPrivateAccess = "true"))
-	float VaultScanStepDistance = 100.f; // 각 트레이스 간의 간격 (간격이 넓을수록 넓은 지형 체크 가능)
+	float VaultScanStepDistance = 80.f; // 각 트레이스 간의 간격 (간격이 넓을수록 넓은 지형 체크 가능)
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Vaulting", meta = (AllowPrivateAccess = "true"))
 	float VaultTraceVerticalExtent = 100.f; // 트레이스의 수직 탐색 범위
+
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Movement: Hop", meta = (AllowPrivateAccess = "true"))
+	EHopType CurrentActiveHopType;
+
+	const float HopEyeTraceDist[(int)EHopType::Max] = { 100.f, 100.f, 0.f, 0.f, };
+	const float HopStartOffset[(int)EHopType::Max] = { -20.f, -300.f, 0.f, 0.f, };
+	const float HopSafetyLedgeStartOffset[(uint8)EHopType::Max] = { 150.f, -150.f, 0.f, 0.f, };
 };

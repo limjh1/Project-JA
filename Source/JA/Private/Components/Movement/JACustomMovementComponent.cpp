@@ -59,14 +59,7 @@ void UJACustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMov
 
         if (CharacterOwner)
         {
-            FGameplayEventData Data;
-            Data.Instigator = CharacterOwner;
-
-            UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-                CharacterOwner,
-                JAGameplayTags::Player_Event_Climb_Finished,
-                Data
-            );
+            UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_Climb_Finished, CharacterOwner, CharacterOwner);
         }
 
         OnExitClimbStateDelegate.ExecuteIfBound();
@@ -185,7 +178,7 @@ bool UJACustomMovementComponent::TraceClimbableSurfaces()
     return !(ClimbableSurfacesTracedResults.IsEmpty());
 }
 
-FHitResult UJACustomMovementComponent::TraceFromEyeHeight(float TraceDist, float TraceStartOffset)
+FHitResult UJACustomMovementComponent::TraceFromEyeHeight(float TraceDist, float TraceStartOffset, bool bShowDebugShape, bool bDrawPersistantShapes)
 {
     const FVector ComponentLocation = UpdatedComponent->GetComponentLocation();
     const FVector EyeHeightOffset = UpdatedComponent->GetUpVector() * (CharacterOwner->BaseEyeHeight + TraceStartOffset);
@@ -193,7 +186,7 @@ FHitResult UJACustomMovementComponent::TraceFromEyeHeight(float TraceDist, float
     const FVector Start = ComponentLocation + EyeHeightOffset;
     const FVector End = Start + UpdatedComponent->GetForwardVector() * TraceDist;
 
-    return DoLineTraceSingleByObject(Start, End);
+    return DoLineTraceSingleByObject(Start, End, bShowDebugShape, bDrawPersistantShapes);
 }
 
 bool UJACustomMovementComponent::CanStartClimbing()
@@ -230,12 +223,12 @@ bool UJACustomMovementComponent::CanClimbDownLedge()
     const FVector WalkableSurfaceTraceStart = ComponentLocation + (ComponentFoward * ClimbDownWalkableSurfaceTraceOffset);
     const FVector WalkableSurfaceTraceEnd = WalkableSurfaceTraceStart + (DownVector * 100.f);
 
-    FHitResult WalkableSurfaceHit = DoLineTraceSingleByObject(WalkableSurfaceTraceStart, WalkableSurfaceTraceEnd, true);
+    FHitResult WalkableSurfaceHit = DoLineTraceSingleByObject(WalkableSurfaceTraceStart, WalkableSurfaceTraceEnd);
     
     const FVector LedgeTraceStart = WalkableSurfaceHit.TraceStart + (ComponentFoward * ClimbDownLedgeTraceOffset);
     const FVector LedgeTraceEnd = LedgeTraceStart + (DownVector * 300.f);
 
-    FHitResult LedgeTraceHit = DoLineTraceSingleByObject(LedgeTraceStart, LedgeTraceEnd, true);
+    FHitResult LedgeTraceHit = DoLineTraceSingleByObject(LedgeTraceStart, LedgeTraceEnd);
 
     if (WalkableSurfaceHit.bBlockingHit && false == LedgeTraceHit.bBlockingHit)
     {
@@ -318,6 +311,24 @@ bool UJACustomMovementComponent::TryStartVaulting()
     return false;
 }
 
+void UJACustomMovementComponent::RequestHopping()
+{
+    const FVector UnrotatedLastInputVector = UKismetMathLibrary::Quat_UnrotateVector(UpdatedComponent->GetComponentQuat(), GetLastInputVector());
+    
+    const float DotResult = FVector::DotProduct(UnrotatedLastInputVector.GetSafeNormal(), FVector::UpVector);
+
+    Debug::Print(TEXT("Dot Result: ") + FString::SanitizeFloat(DotResult));
+
+    if (0.9f <= DotResult)
+    {
+        HandleHop(EHopType::HopUp);
+    }
+    else if (-0.9f >= DotResult)
+    {
+        HandleHop(EHopType::HopDown);
+    }
+}
+
 void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
 {
     if (deltaTime < MIN_TICK_TIME)
@@ -371,14 +382,7 @@ void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
     {
         if (CharacterOwner)
         {
-            FGameplayEventData Data;
-            Data.Instigator = CharacterOwner;
-
-            UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-                CharacterOwner,
-                JAGameplayTags::Player_Event_Climb_LedgeUp,
-                Data
-            );
+            UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_Climb_LedgeUp, CharacterOwner, CharacterOwner);
         }
     }
 }
@@ -510,6 +514,35 @@ void UJACustomMovementComponent::SetMotionWarpTarget(const FName& InWarpTargetNa
     }
 
     OwningCharacter->GetMotionWarpingComponent()->AddOrUpdateWarpTargetFromLocation(InWarpTargetName, InTargetPosition);
+}
+
+void UJACustomMovementComponent::HandleHop(EHopType HopType)
+{
+    FVector HopUpTargetPoint;
+
+    if (CheckCanHop(HopType, HopUpTargetPoint))
+    {
+        CurrentActiveHopType = HopType;
+        SetMotionWarpTarget(FName("HopTargetPoint"), HopUpTargetPoint);
+    }
+    else
+    {
+        CurrentActiveHopType = EHopType::Max;
+    }
+}
+
+bool UJACustomMovementComponent::CheckCanHop(EHopType HopType, FVector& OutHopTargetPostion)
+{
+    FHitResult HopHit = TraceFromEyeHeight(HopEyeTraceDist[(uint8)HopType], HopStartOffset[(uint8)HopType]);
+    FHitResult SafetyLedgeHit = TraceFromEyeHeight(HopEyeTraceDist[(uint8)HopType], HopSafetyLedgeStartOffset[(uint8)HopType]);
+
+    if (HopHit.bBlockingHit && SafetyLedgeHit.bBlockingHit)
+    {
+        OutHopTargetPostion = HopHit.ImpactPoint;
+        return true;
+    }
+
+    return false;
 }
 
 FVector UJACustomMovementComponent::GetUnrotatedClimbVelocity() const

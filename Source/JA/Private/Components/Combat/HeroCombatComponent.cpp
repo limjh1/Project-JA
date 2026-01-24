@@ -5,6 +5,7 @@
 #include "Items/Weapons/JAHeroWeapon.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "JAGameplayTags.h"
+#include "JAFunctionLibrary.h"
 
 #include "JADebugHelper.h"
 
@@ -32,28 +33,11 @@ void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
 
     OverlappedActors.AddUnique(HitActor);
 
-    FGameplayEventData Data;
-    Data.Instigator = GetOwningPawn();
-    Data.Target = HitActor;
-
-    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-        GetOwningPawn(),
-        JAGameplayTags::Shared_Event_MeleeHit,
-        Data
-    );
-
-    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-        GetOwningPawn(),
-        JAGameplayTags::Player_Event_HitPause,
-        FGameplayEventData()
-    );
+    UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Shared_Event_MeleeHit, GetOwningPawn(), GetOwningPawn(), HitActor);
+    UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_HitPause, GetOwningPawn(), GetOwningPawn(), HitActor);
 }
 
 void UHeroCombatComponent::OnWeaponPulledFromTargetActor(AActor* InteractedActor)
 {
-    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-        GetOwningPawn(),
-        JAGameplayTags::Player_Event_HitPause,
-        FGameplayEventData()
-    );
+    UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_HitPause, GetOwningPawn());
 }

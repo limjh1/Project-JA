@@ -71,11 +71,7 @@ void AJAProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, AActo
 
 	if (bIsValidBlock)
 	{
-		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-			HitPawn,
-			JAGameplayTags::Player_Event_SuccessfulBlock,
-			Data
-		);
+		UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_SuccessfulBlock, HitPawn, this, HitPawn);
 	}
 	else
 	{
@@ -114,10 +110,6 @@ void AJAProjectileBase::HandleApplyProjectileDamage(APawn* InHitPawn, const FGam
 
 	if (bWasApplied)
 	{
-		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-			InHitPawn,
-			JAGameplayTags::Shared_Event_HitReact,
-			InPayLoad
-		);
+		UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Shared_Event_HitReact, InHitPawn, InPayLoad);
 	}
 }

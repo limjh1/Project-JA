@@ -83,15 +83,7 @@ void UJAGameplayAbility::ApplyGameplayEffectSpecHandleToHitResults(const FGamepl
 
 				if (ActiveGameplayEffectHandle.WasSuccessfullyApplied())
 				{
-					FGameplayEventData Data;
-					Data.Instigator = OwningPawn;
-					Data.Target = HitPawn;
-
-					UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-						HitPawn,
-						JAGameplayTags::Shared_Event_HitReact,
-						Data
-					);
+					UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Shared_Event_HitReact, OwningPawn, OwningPawn, HitPawn);
 				}
 			}
 		}
