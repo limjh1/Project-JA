@@ -13,6 +13,23 @@ DECLARE_DELEGATE(FOnExitClimbState);
 class AJABaseCharacter;
 
 /**
+ * 방향별 Hop 데이터를 관리하기 위한 구조체
+ */
+USTRUCT(BlueprintType)
+struct FHopData
+{
+	GENERATED_BODY()
+
+	// 벽을 탐색할 전방 거리
+	UPROPERTY(EditDefaultsOnly, Category = "Hop")
+	float EyeTraceDist = 150.f;
+
+	// 트레이스를 시작할 로컬 오프셋 (X:앞, Y:우, Z:위)
+	UPROPERTY(EditDefaultsOnly, Category = "Hop")
+	FVector TraceStartOffset = FVector::ZeroVector;
+};
+
+/**
  * 
  */
 UCLASS()
@@ -38,6 +55,7 @@ protected:
 private:
 	TArray<FHitResult> DoCapsuleTraceMultiByObject(const FVector& Start, const FVector& End, bool bShowDebugShape = false, bool bDrawPersistantShapes = false);
 	FHitResult DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape = false, bool bDrawPersistantShapes = false);
+	FHitResult DoSphereTraceSingleByObject(const FVector& Start, const FVector& End, float Radius, bool bShowDebugShape = false, bool bDrawPersistantShapes = false);
 
 private:
 	bool TraceClimbableSurfaces();
@@ -62,7 +80,7 @@ public:
 	bool TryStartVaulting();
 
 	UFUNCTION(BlueprintCallable)
-	void RequestHopping();
+	bool RequestHopping();
 
 private:
 	void PhysClimb(float deltaTime, int32 Iterations);
@@ -78,8 +96,8 @@ private:
 
 	void SetMotionWarpTarget(const FName& InWarpTargetName, const FVector& InTargetPosition);
 
-	void HandleHop(EHopType HopType);
-	bool CheckCanHop(EHopType HopType, FVector& OutHopTargetPostion);
+	bool HandleHop(EHopType HopType);
+	bool CheckCanHop(EHopType HopType, FVector& OutHopTargetPosition);
 
 public:
 	TArray<FHitResult> ClimbableSurfacesTracedResults;
@@ -136,7 +154,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Movement: Hop", meta = (AllowPrivateAccess = "true"))
 	EHopType CurrentActiveHopType;
 
-	const float HopEyeTraceDist[(int)EHopType::Max] = { 100.f, 100.f, 0.f, 0.f, };
-	const float HopStartOffset[(int)EHopType::Max] = { -20.f, -300.f, 0.f, 0.f, };
-	const float HopSafetyLedgeStartOffset[(uint8)EHopType::Max] = { 150.f, -150.f, 0.f, 0.f, };
+	UPROPERTY(EditDefaultsOnly, Category = "Character Movement: Hop")
+	TMap<EHopType, FHopData> HopDataMap;
 };

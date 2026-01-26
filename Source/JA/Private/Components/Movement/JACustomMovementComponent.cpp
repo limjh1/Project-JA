@@ -166,6 +166,33 @@ FHitResult UJACustomMovementComponent::DoLineTraceSingleByObject(const FVector& 
     return OutHit;
 }
 
+FHitResult UJACustomMovementComponent::DoSphereTraceSingleByObject(const FVector& Start, const FVector& End, float Radius, bool bShowDebugShape, bool bDrawPersistantShapes)
+{
+    FHitResult OutHit;
+
+    EDrawDebugTrace::Type DebugTraceType = EDrawDebugTrace::None;
+
+    if (bShowDebugShape)
+    {
+        DebugTraceType = bDrawPersistantShapes ? EDrawDebugTrace::Persistent : EDrawDebugTrace::ForOneFrame;
+    }
+
+    UKismetSystemLibrary::SphereTraceSingleForObjects(
+        this,
+        Start,
+        End,
+        Radius,
+        ClimbableSurfaceTraceTypes,
+        false,
+        TArray<AActor*>(),
+        DebugTraceType,
+        OutHit,
+        true
+    );
+
+    return OutHit;
+}
+
 // Trace for Climbable surfaces, return true if there are indeed valid surfaces, false otherwise
 bool UJACustomMovementComponent::TraceClimbableSurfaces()
 {
@@ -311,22 +338,40 @@ bool UJACustomMovementComponent::TryStartVaulting()
     return false;
 }
 
-void UJACustomMovementComponent::RequestHopping()
+bool UJACustomMovementComponent::RequestHopping()
 {
-    const FVector UnrotatedLastInputVector = UKismetMathLibrary::Quat_UnrotateVector(UpdatedComponent->GetComponentQuat(), GetLastInputVector());
-    
-    const float DotResult = FVector::DotProduct(UnrotatedLastInputVector.GetSafeNormal(), FVector::UpVector);
-
-    Debug::Print(TEXT("Dot Result: ") + FString::SanitizeFloat(DotResult));
-
-    if (0.9f <= DotResult)
+    const FVector LastInput = GetLastInputVector();
+    if (LastInput.IsNearlyZero()) 
     {
-        HandleHop(EHopType::HopUp);
+        return false;
     }
-    else if (-0.9f >= DotResult)
+
+    // 입력을 캐릭터 로컬 좌표계로 (X:앞, Y:오른쪽, Z:위)
+    const FVector LocalInput = UpdatedComponent->GetComponentQuat().UnrotateVector(LastInput);
+
+    // 방향 판정 (Dot Product 대신 Abs 비교가 직관적이고 빠름)
+    const float AbsY = FMath::Abs(LocalInput.Y);
+    const float AbsZ = FMath::Abs(LocalInput.Z);
+
+    EHopType DeterminedHopType = EHopType::Max;
+
+    if (AbsZ > AbsY)
     {
-        HandleHop(EHopType::HopDown);
+        DeterminedHopType = (LocalInput.Z > 0.f) ? EHopType::HopUp : EHopType::HopDown;
     }
+    else
+    {
+        DeterminedHopType = (LocalInput.Y > 0.f) ? EHopType::HopRight : EHopType::HopLeft;
+    }
+
+    bool Result = false;
+
+    if (DeterminedHopType != EHopType::Max)
+    {
+        Result = HandleHop(DeterminedHopType);
+    }
+
+    return Result;
 }
 
 void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
@@ -516,29 +561,41 @@ void UJACustomMovementComponent::SetMotionWarpTarget(const FName& InWarpTargetNa
     OwningCharacter->GetMotionWarpingComponent()->AddOrUpdateWarpTargetFromLocation(InWarpTargetName, InTargetPosition);
 }
 
-void UJACustomMovementComponent::HandleHop(EHopType HopType)
+bool UJACustomMovementComponent::HandleHop(EHopType HopType)
 {
-    FVector HopUpTargetPoint;
+    FVector HopTargetPoint;
 
-    if (CheckCanHop(HopType, HopUpTargetPoint))
+    if (CheckCanHop(HopType, HopTargetPoint))
     {
         CurrentActiveHopType = HopType;
-        SetMotionWarpTarget(FName("HopTargetPoint"), HopUpTargetPoint);
+        SetMotionWarpTarget(FName("HopTargetPoint"), HopTargetPoint);
+        return true;
     }
-    else
-    {
-        CurrentActiveHopType = EHopType::Max;
-    }
+    
+    CurrentActiveHopType = EHopType::Max;
+    return false;
 }
 
-bool UJACustomMovementComponent::CheckCanHop(EHopType HopType, FVector& OutHopTargetPostion)
+bool UJACustomMovementComponent::CheckCanHop(EHopType HopType, FVector& OutHopTargetPosition)
 {
-    FHitResult HopHit = TraceFromEyeHeight(HopEyeTraceDist[(uint8)HopType], HopStartOffset[(uint8)HopType]);
-    FHitResult SafetyLedgeHit = TraceFromEyeHeight(HopEyeTraceDist[(uint8)HopType], HopSafetyLedgeStartOffset[(uint8)HopType]);
-
-    if (HopHit.bBlockingHit && SafetyLedgeHit.bBlockingHit)
+    if (!HopDataMap.Contains(HopType))
     {
-        OutHopTargetPostion = HopHit.ImpactPoint;
+        return false;
+    }
+
+    const FHopData& Data = HopDataMap[HopType];
+    const FQuat ComponentQuat = UpdatedComponent->GetComponentQuat();
+    const FVector ComponentLocation = UpdatedComponent->GetComponentLocation();
+
+    const FVector WorldStartOffset = ComponentQuat.RotateVector(Data.TraceStartOffset);
+    const FVector TraceStart = ComponentLocation + WorldStartOffset;
+    const FVector TraceEnd = TraceStart + (UpdatedComponent->GetForwardVector() * Data.EyeTraceDist);
+
+    FHitResult WallHit = DoLineTraceSingleByObject(TraceStart, TraceEnd);
+
+    if (WallHit.bBlockingHit)
+    {
+        OutHopTargetPosition = WallHit.ImpactPoint;
         return true;
     }
 
