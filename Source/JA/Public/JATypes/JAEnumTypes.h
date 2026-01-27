@@ -77,5 +77,7 @@ enum class EHopType : uint8
 	HopDown,
 	HopLeft,
 	HopRight,
+	HopUpLeft,
+	HopUpRight,
 	Max, // Invalid
 };
