@@ -12,21 +12,29 @@ DECLARE_DELEGATE(FOnExitClimbState);
 
 class AJABaseCharacter;
 
-/**
- * 방향별 Hop 데이터를 관리하기 위한 구조체
- */
+// 구조체 선언 시 잡히는 메모리 큰 변수 부터 선언해서 패딩 바이트 고려
+// 방향별 Hop 데이터를 관리하기 위한 구조체
 USTRUCT(BlueprintType)
 struct FHopData
 {
 	GENERATED_BODY()
 
-	// 벽을 탐색할 전방 거리
-	UPROPERTY(EditDefaultsOnly, Category = "Hop")
-	float EyeTraceDist = 150.f;
-
 	// 트레이스를 시작할 로컬 오프셋 (X:앞, Y:우, Z:위)
 	UPROPERTY(EditDefaultsOnly, Category = "Hop")
 	FVector TraceStartOffset = FVector::ZeroVector;
+
+	// 벽을 탐색할 전방 거리
+	UPROPERTY(EditDefaultsOnly, Category = "Hop")
+	float EyeTraceDist = 150.f;
+};
+
+USTRUCT()
+struct FHopDir 
+{ 
+	GENERATED_BODY()
+
+	FVector Dir;
+	EHopType Type;
 };
 
 /**
@@ -36,6 +44,10 @@ UCLASS()
 class JA_API UJACustomMovementComponent : public UCharacterMovementComponent
 {
 	GENERATED_BODY()
+
+private:
+	static constexpr float InitBestDot = -1.1f;
+	static constexpr float MinRequiredSimilarity = 0.707f; // Cos(45 degree)
 
 public:
 	FOnEnterClimbState OnEnterClimbStateDelegate;
@@ -156,4 +168,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Character Movement: Hop")
 	TMap<EHopType, FHopData> HopDataMap;
+
+private:
+	static const FHopDir HopDirections[(uint8)EHopType::Max];
+
 };

@@ -15,6 +15,16 @@
 
 #include "JADebugHelper.h"
 
+const FHopDir UJACustomMovementComponent::HopDirections[(uint8)EHopType::Max] =
+{
+    { FVector(0.f, 0.f, 1.f),                   EHopType::HopUp},       // W
+    { FVector(0.f, 0.f, -1.f),                  EHopType::HopDown},     // S
+    { FVector(0.f, 1.f, 0.f),                   EHopType::HopRight},    // D
+    { FVector(0.f, -1.f, 0.f),                  EHopType::HopLeft},     // A
+    { FVector(0.f, 1.f, 1.f).GetSafeNormal(),   EHopType::HopUpRight}, // WD
+    { FVector(0.f, -1.f, 1.f).GetSafeNormal(),  EHopType::HopUpLeft}    // WA
+};
+
 void UJACustomMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType,  ThisTickFunction);
@@ -349,29 +359,28 @@ bool UJACustomMovementComponent::RequestHopping()
     // 입력을 캐릭터 로컬 좌표계로 (X:앞, Y:오른쪽, Z:위)
     const FVector LocalInput = UpdatedComponent->GetComponentQuat().UnrotateVector(LastInput);
 
-    // 방향 판정 (Dot Product 대신 Abs 비교가 직관적이고 빠름)
-    const float AbsY = FMath::Abs(LocalInput.Y);
-    const float AbsZ = FMath::Abs(LocalInput.Z);
+    EHopType BestHop = EHopType::Max;
+    float BestDot = InitBestDot; // 내적 최소값보다 낮게 설정
 
-    EHopType DeterminedHopType = EHopType::Max;
-
-    if (AbsZ > AbsY)
+    // 내적을 이용해 가장 유사한 방향 탐색
+    // 루프 분기 예측 최적화를 위해 입력 벡터와 각 방향 벡터 비교
+    for (const auto& Element : HopDirections)
     {
-        DeterminedHopType = (LocalInput.Z > 0.f) ? EHopType::HopUp : EHopType::HopDown;
-    }
-    else
-    {
-        DeterminedHopType = (LocalInput.Y > 0.f) ? EHopType::HopRight : EHopType::HopLeft;
-    }
-
-    bool Result = false;
-
-    if (DeterminedHopType != EHopType::Max)
-    {
-        Result = HandleHop(DeterminedHopType);
+        float CurrentDot = FVector::DotProduct(LocalInput, Element.Dir);
+        if (CurrentDot > BestDot)
+        {
+            BestDot = CurrentDot;
+            BestHop = Element.Type;
+        }
     }
 
-    return Result;
+    // 최소 유사도(임계값) 검증 (예: 약 45도 이내여야 인정), 스틱 대비(키마X)
+    if (BestDot < MinRequiredSimilarity)
+    {
+        return false;
+    }
+
+    return HandleHop(BestHop);
 }
 
 void UJACustomMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
