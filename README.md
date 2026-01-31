@@ -12,12 +12,12 @@
 1. [Overview](#1-overview)
 2. [Focus & Goals](#2-focus--goals)
 3. [Technical Stack](#3-technical-stack)
-4. [인게임 시연 (Preview)](#4-인게임-시연-preview)
-5. [주요 기능 (Key Features)](#5-주요-기능-key-features)
-6. [핵심 담당 기능 (Core Implementation)](#6-핵심-담당-기능-core-implementation)
-7. [트러블슈팅 (Troubleshooting)](#7-트러블슈팅-troubleshooting)
-8. [프로젝트 구조 (Project Structure)](#8-프로젝트-구조-project-structure)
-9. [아키텍처 (Architecture)](#9-아키텍처-architecture)
+4. [Game Preview](#4-game-preview)
+5. [Key Features](#5-key-features)
+6. [Core Implementation](#6-core-implementation)
+7. [Troubleshooting](#7-troubleshooting)
+8. [Project Structure](#8-project-structure)
+9. [Architecture](#9-architecture)
 10. [Repository Info](#10-repository-info)
 11. [License / Usage](#11-license--usage)
 12. [Author](#12-author)
@@ -58,14 +58,14 @@
 
 ---
 
-## 4. 인게임 시연 (Preview)
+## 4. Game Preview
 
 > *현재 개발 단계의 인게임 스크린샷 및 영상 링크입니다.*
 
 
 ---
 
-## 5. 주요 기능 (Key Features)
+## 5. key features
 
 * **Combat System**
   * 4타 콤보 공격 및 역경직(Hit Stop) 타격감 구현
@@ -73,7 +73,7 @@
 
 ---
 
-## 6. 핵심 담당 기능 (Core Implementation)
+## 6. Core Implementation
 
 ### 6.1. Data-Driven Skill Architecture
 * **설명:** 하드코딩을 배제하고 `UDataAsset`과 `DataTable`을 활용해 스킬 데이터(계수, 쿨타임, 몽타주)를 관리하도록 설계
@@ -87,7 +87,7 @@
 
 ---
 
-## 7. 트러블슈팅 (Troubleshooting)
+## 7. Troubleshooting
 
 ### 7.1. GAS Attribute Replication 순서 문제
 * **문제 상황:** 클라이언트에서 리스폰 시 HP UI가 0으로 표기되었다가 뒤늦게 갱신되는 글리치 발생
@@ -97,7 +97,7 @@
 
 ---
 
-## 8. 프로젝트 구조 (Project Structure)
+## 8. Project Structure
 
 ```text
 ProjectJA
@@ -117,7 +117,7 @@ ProjectJA
 
 ---
 
-## 9. 아키텍처 (Architecture)
+## 9. Architecture
 
 ### Core Workflow : Attack Validation Flow
 > *Server-Client 간의 공격 판정 및 데미지 적용 흐름*
