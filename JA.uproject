@@ -13,7 +13,8 @@
 				"EnhancedInput",
 				"GameplayAbilities",
 				"UMG",
-				"AIModule"
+				"AIModule",
+				"CommonUI"
 			]
 		}
 	],
@@ -35,6 +36,10 @@
 		},
 		{
 			"Name": "CascadeToNiagaraConverter",
+			"Enabled": true
+		},
+		{
+			"Name": "CommonUI",
 			"Enabled": true
 		}
 	]

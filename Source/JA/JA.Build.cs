@@ -21,7 +21,8 @@ public class JA : ModuleRules
             "MotionWarping",
             "Niagara",
             "NavigationSystem",
-			"MoviePlayer"
+			"MoviePlayer",
+			"UMG"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
