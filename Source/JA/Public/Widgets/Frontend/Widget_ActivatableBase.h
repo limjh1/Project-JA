@@ -6,6 +6,8 @@
 #include "CommonActivatableWidget.h"
 #include "Widget_ActivatableBase.generated.h"
 
+class AJAFrontendPlayerController;
+
 /**
  * 
  */
@@ -14,4 +16,11 @@ class JA_API UWidget_ActivatableBase : public UCommonActivatableWidget
 {
 	GENERATED_BODY()
 	
+protected:
+	UFUNCTION(BlueprintPure)
+	AJAFrontendPlayerController* GetOwningJAFrontendPlayerController();
+
+private:
+	TWeakObjectPtr<AJAFrontendPlayerController> CachedOwningJAFrontendPC;
+
 };

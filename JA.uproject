@@ -14,7 +14,8 @@
 				"GameplayAbilities",
 				"UMG",
 				"AIModule",
-				"CommonUI"
+				"CommonUI",
+				"DeveloperSettings"
 			]
 		}
 	],

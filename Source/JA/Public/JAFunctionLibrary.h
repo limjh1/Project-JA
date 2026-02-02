@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "JATypes/JAEnumTypes.h"
+#include "GameplayTagContainer.h"
 #include "JAFunctionLibrary.generated.h"
 
 class UJAAbilitySystemComponent;
@@ -12,6 +13,7 @@ class UPawnCombatComponent;
 struct FScalableFloat;
 struct FGameplayEventData;
 class UJAGameInstance;
+class UWidget_ActivatableBase;
 
 /**
  * 
@@ -73,4 +75,9 @@ public:
 
 	static void SendGameplayEventToActor(FGameplayTag EventTag, AActor* InActor, AActor* Instigator = nullptr, AActor* Target = nullptr);
 	static void SendGameplayEventToActor(FGameplayTag EventTag, AActor* InActor, const FGameplayEventData& InPayLoad);
+
+public:
+	UFUNCTION(BlueprintPure, Category = "JA|Frontend Function Library")
+	static TSoftClassPtr<UWidget_ActivatableBase> GetFrontendSoftWidgetClassByTag(UPARAM(meta = (Categories = "Frontend.Widget")) FGameplayTag InWidgetTag);
+
 };

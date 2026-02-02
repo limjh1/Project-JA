@@ -12,6 +12,7 @@
 #include "JAGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/JASaveGame.h"
+#include "JASettings/JADeveloperSettings.h"
 
 #include "JADebugHelper.h"
 
@@ -296,4 +297,13 @@ void UJAFunctionLibrary::SendGameplayEventToActor(FGameplayTag EventTag, AActor*
 void UJAFunctionLibrary::SendGameplayEventToActor(FGameplayTag EventTag, AActor* InActor, const FGameplayEventData& InPayLoad)
 {
     UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(InActor, EventTag, InPayLoad);
+}
+
+TSoftClassPtr<UWidget_ActivatableBase> UJAFunctionLibrary::GetFrontendSoftWidgetClassByTag(UPARAM(meta = (Categories = "Frontend.Widget")) FGameplayTag InWidgetTag)
+{
+    const UJADeveloperSettings* JADeveloperSettings = GetDefault<UJADeveloperSettings>();
+
+    checkf(JADeveloperSettings->JAFrontendWidgetMap.Contains(InWidgetTag), TEXT("Could not find the corresponding widget under the tag %s"), *InWidgetTag.ToString());
+
+    return JADeveloperSettings->JAFrontendWidgetMap.FindRef(InWidgetTag);
 }
