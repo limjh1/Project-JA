@@ -6,6 +6,9 @@
 #include "Widgets/Frontend/Widget_PrimaryLayout.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 #include "Widgets/Frontend/Widget_ActivatableBase.h"
+#include "Widgets/Frontend/Widget_ConfirmScreen.h"
+#include "JAGameplayTags.h"
+#include "JAFunctionLibrary.h"
 
 #include "JADebugHelper.h"
 
@@ -66,5 +69,42 @@ void UJAFrontendUISubsystem::PushSoftWidgetToStackAsync(const FGameplayTag& InWi
 				AsyncPushStateCallback(EAsyncPushWidgetState::AfterPush, CreatedWidget);
 			}
 		)
+	);
+}
+
+void UJAFrontendUISubsystem::PushConfirmScreenToModalStackAysnc(EConfirmScreenType InScreenType, const FText& InScreenTitle, const FText& InScreenMessage, TFunction<void(EConfirmScreenButtonType)> ButtonClickedCallback)
+{
+	UConfirmScreenInfoObject* CreatedInfoObject = nullptr;
+
+	switch (InScreenType)
+	{
+	case EConfirmScreenType::Ok:
+		CreatedInfoObject = UConfirmScreenInfoObject::CreateOkScreen(InScreenTitle, InScreenMessage);
+		break;
+	case EConfirmScreenType::YesNo:
+		CreatedInfoObject = UConfirmScreenInfoObject::CreateYesNoScreen(InScreenTitle, InScreenMessage);
+		break;
+	case EConfirmScreenType::OkCancel:
+		CreatedInfoObject = UConfirmScreenInfoObject::CreateOkCancelScreen(InScreenTitle, InScreenMessage);
+		break;
+	case EConfirmScreenType::Unknown:
+		break;
+	default:
+		break;
+	}
+
+	check(CreatedInfoObject);
+
+	PushSoftWidgetToStackAsync(
+		JAGameplayTags::Frontend_WidgetStack_Modal,
+		UJAFunctionLibrary::GetFrontendSoftWidgetClassByTag(JAGameplayTags::Frontend_Widget_ConfirmScreen),
+		[CreatedInfoObject, ButtonClickedCallback](EAsyncPushWidgetState InPushState, UWidget_ActivatableBase* PushedWidget)
+		{
+			if (InPushState == EAsyncPushWidgetState::OnCraetedBeforePush)
+			{
+				UWidget_ConfirmScreen* CreatedConfirmScreen = CastChecked<UWidget_ConfirmScreen>(PushedWidget);
+				CreatedConfirmScreen->InitConfirmScreen(CreatedInfoObject, ButtonClickedCallback);
+			}
+		}
 	);
 }

@@ -7,6 +7,7 @@
 #include "JAFrontendCommonButtonBase.generated.h"
 
 class UCommonTextBlock;
+class UJAFrontendUISubsystem;
 
 /**
  * 
@@ -22,6 +23,7 @@ public:
 
 private:
 	// ~Begin UUserWidget Interface
+	virtual void NativeOnInitialized() override;
 	virtual void NativePreConstruct() override;
 	// ~End UUserWidget Interface
 
@@ -44,5 +46,9 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "JAFrontend Button", meta = (AllowPrivateAccess = "true"))
 	FText ButtonDescriptionText;
+
+private:
+	// dangling 방지를 위해 약참조
+	TWeakObjectPtr<UJAFrontendUISubsystem> CachedFrontendSubsystem;
 
 };

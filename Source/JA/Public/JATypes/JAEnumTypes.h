@@ -81,3 +81,21 @@ enum class EHopType : uint8
 	HopUpRight,
 	Max, // Invalid
 };
+
+UENUM(BlueprintType)
+enum class EConfirmScreenType : uint8
+{
+	Ok,
+	YesNo,
+	OkCancel,
+	Unknown UMETA(Hidden)
+};
+
+UENUM(BlueprintType)
+enum class EConfirmScreenButtonType : uint8
+{
+	Confirmed,
+	Cancelled,
+	Closed,
+	Unknown UMETA(Hidden)
+};

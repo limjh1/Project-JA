@@ -28,7 +28,6 @@ public:
 		UPARAM(meta = (Categories = "Frontend.WidgetStack")) FGameplayTag InWidgetStackTag,
 		bool bFocusOnNewlyPushedWidget = true);
 
-
 	// ~ Begin UBlueprintAsyncActionBase Interface
 	virtual void Activate() override;
 	// ~ End UBlueprintAsyncActionBase Interface

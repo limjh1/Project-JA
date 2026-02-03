@@ -13,6 +13,13 @@ void UJAFrontendCommonButtonBase::SetButtonText(FText InText)
 	}
 }
 
+void UJAFrontendCommonButtonBase::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+	CachedFrontendSubsystem = UJAFrontendUISubsystem::Get(this);
+}
+
 void UJAFrontendCommonButtonBase::NativePreConstruct()
 {
 	Super::NativePreConstruct();
@@ -34,9 +41,9 @@ void UJAFrontendCommonButtonBase::NativeOnHovered()
 {
 	Super::NativeOnHovered();
 
-	if (!ButtonDescriptionText.IsEmpty())
+	if (CachedFrontendSubsystem.IsValid() && !ButtonDescriptionText.IsEmpty())
 	{
-		UJAFrontendUISubsystem::Get(this)->OnButtonDescriptionTextUpdated.Broadcast(this, ButtonDescriptionText);
+		CachedFrontendSubsystem->OnButtonDescriptionTextUpdated.Broadcast(this, ButtonDescriptionText);
 	}
 }
 
@@ -44,5 +51,8 @@ void UJAFrontendCommonButtonBase::NativeOnUnhovered()
 {
 	Super::NativeOnUnhovered();
 
-	UJAFrontendUISubsystem::Get(this)->OnButtonDescriptionTextUpdated.Broadcast(this, FText::GetEmpty());
+	if (CachedFrontendSubsystem.IsValid() && !ButtonDescriptionText.IsEmpty())
+	{
+		CachedFrontendSubsystem->OnButtonDescriptionTextUpdated.Broadcast(this, FText::GetEmpty());
+	}
 }

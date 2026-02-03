@@ -52,6 +52,7 @@ void UAsyncAction_PushSoftWidget::Activate()
 						WidgetToFocus->SetFocus();
 					}
 				}
+
 				SetReadyToDestroy();
 				break;
 			default:

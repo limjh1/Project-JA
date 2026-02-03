@@ -22,7 +22,8 @@ public class JA : ModuleRules
             "Niagara",
             "NavigationSystem",
 			"MoviePlayer",
-			"UMG"
+			"UMG",
+			"CommonInput"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
