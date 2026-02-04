@@ -90,9 +90,6 @@ void UWidget_ConfirmScreen::InitConfirmScreen(UConfirmScreenInfoObject* InScreen
 		switch (AvailableButtonInfo.ConfirmScreenButtonType)
 		{
 			// Data 설정한 것
-		case EConfirmScreenButtonType::Confirmed:
-			InputActionRowHandle = ICommonInputModule::GetSettings().GetDefaultClickAction();
-			break;
 		case EConfirmScreenButtonType::Cancelled:
 			InputActionRowHandle = ICommonInputModule::GetSettings().GetDefaultBackAction();
 			break;
@@ -105,7 +102,7 @@ void UWidget_ConfirmScreen::InitConfirmScreen(UConfirmScreenInfoObject* InScreen
 
 		UJAFrontendCommonButtonBase* AddedButton = DynamicEntryBox_Buttons->CreateEntry<UJAFrontendCommonButtonBase>();
 		AddedButton->SetButtonText(AvailableButtonInfo.ButtonTextToDisplay);
-		AddedButton->SetTriggeredInputAction(InputActionRowHandle);
+		AddedButton->SetTriggeringInputAction(InputActionRowHandle);
 		AddedButton->OnClicked().AddLambda(
 			[ClickedButtonCallback, AvailableButtonInfo, this]()
 			{
