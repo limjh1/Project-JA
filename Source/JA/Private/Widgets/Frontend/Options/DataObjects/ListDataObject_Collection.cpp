@@ -1,0 +1,26 @@
+// JhLim All Rights Reserved
+
+
+#include "Widgets/Frontend/Options/DataObjects/ListDataObject_Collection.h"
+
+
+TArray<UListDataObject_Base*> UListDataObject_Collection::GetAllChildListData() const
+{
+	return ChildListDataArray;
+}
+
+bool UListDataObject_Collection::HasAnyChildListData() const
+{
+	return (!ChildListDataArray.IsEmpty());
+}
+
+void UListDataObject_Collection::AddChildListData(UListDataObject_Base* InChildListData)
+{
+	// Notify the child list data to init itself
+	InChildListData->InitDataObject();
+
+	// Set the child list data's parent to this
+	InChildListData->SetParentData(this);
+
+	ChildListDataArray.Add(InChildListData);
+}

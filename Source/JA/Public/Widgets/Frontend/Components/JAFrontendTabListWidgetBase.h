@@ -1,0 +1,32 @@
+// JhLim All Rights Reserved
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "CommonTabListWidgetBase.h"
+#include "JAFrontendTabListWidgetBase.generated.h"
+
+class UJAFrontendCommonButtonBase;
+
+/**
+ * 
+ */
+UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
+class JA_API UJAFrontendTabListWidgetBase : public UCommonTabListWidgetBase
+{
+	GENERATED_BODY()
+	
+private:
+	//~ Begin UWidget Interface
+#if WITH_EDITOR	
+	virtual void ValidateCompiledDefaults(class IWidgetCompilerLog& CompileLog) const override;
+#endif
+	//~ End UWidget Interface
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Frontend Tab List Settings", meta = (AllowPrivateAccess = "true", ClampMin = "1", ClampMax = "10"))
+	int32 DebugEditorPreviewTabCount = 3;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Frontend Tab List Settings", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UJAFrontendCommonButtonBase> TabButtonEntryWidgetClass;
+};
