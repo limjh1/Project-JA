@@ -5,6 +5,16 @@
 #include "Editor/WidgetCompilerLog.h"
 #include "Widgets/Frontend/Components/JAFrontendCommonButtonBase.h"
 
+void UJAFrontendTabListWidgetBase::RequestRegisterTab(const FName& InTabID, const FText& InTabDisplayName)
+{
+	RegisterTab(InTabID, TabButtonEntryWidgetClass, nullptr);
+
+	if (UJAFrontendCommonButtonBase* FoundButton = Cast<UJAFrontendCommonButtonBase>(GetTabButtonBaseByID(InTabID)))
+	{
+		FoundButton->SetButtonText(InTabDisplayName);
+	}
+}
+
 #if WITH_EDITOR	
 void UJAFrontendTabListWidgetBase::ValidateCompiledDefaults(IWidgetCompilerLog& CompileLog) const
 {

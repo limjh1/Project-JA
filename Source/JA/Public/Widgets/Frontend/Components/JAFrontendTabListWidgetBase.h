@@ -16,6 +16,9 @@ class JA_API UJAFrontendTabListWidgetBase : public UCommonTabListWidgetBase
 {
 	GENERATED_BODY()
 	
+public:
+	void RequestRegisterTab(const FName& InTabID, const FText& InTabDisplayName);
+
 private:
 	//~ Begin UWidget Interface
 #if WITH_EDITOR	
