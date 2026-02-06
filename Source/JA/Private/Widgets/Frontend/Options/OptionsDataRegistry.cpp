@@ -3,6 +3,7 @@
 
 #include "Widgets/Frontend/Options/OptionsDataRegistry.h"
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_Collection.h"
+#include "Widgets/Frontend/Options/DataObjects/ListDataObject_String.h"
 
 void UOptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwiningLocalPlayer)
 {
@@ -13,11 +14,49 @@ void UOptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwiningLocalP
 	InitSystemCollectionTab();
 }
 
+TArray<UListDataObject_Base*> UOptionsDataRegistry::GetListSourceItemsBySelectedTabID(const FName& InSelectedTabID) const
+{
+	UListDataObject_Collection* const* FoundTabCollectionPtr = RegisteredOptionsTabCollections.FindByPredicate(
+		[InSelectedTabID](UListDataObject_Collection* AvailableTabCollection)->bool
+		{
+			return AvailableTabCollection->GetDataID() == InSelectedTabID;
+		}
+	);
+
+	checkf(FoundTabCollectionPtr, TEXT("No valid tab found under the ID %s"), *InSelectedTabID.ToString());
+
+	UListDataObject_Collection* FoundTabCollection = *FoundTabCollectionPtr;
+
+	return FoundTabCollection->GetAllChildListData();
+}
+
 void UOptionsDataRegistry::InitGameplayCollectionTab()
 {
 	UListDataObject_Collection* GameplayTabCollection = NewObject<UListDataObject_Collection>();
 	GameplayTabCollection->SetDataID(FName("GameplayTabCollection"));
 	GameplayTabCollection->SetDataDisplayName(FText::FromString(TEXT("게임플레이")));
+
+	// Game Difficulty
+	{
+		UListDataObject_String* GameDifficulty = NewObject<UListDataObject_String>();
+		GameDifficulty->SetDataID(FName("GameDifficulty"));
+		GameDifficulty->SetDataDisplayName(FText::FromString(TEXT("난이도")));
+		GameDifficulty->AddDynamicOption(TEXT("Easy"), FText::FromString(TEXT("쉬움")));
+		GameDifficulty->AddDynamicOption(TEXT("Normal"), FText::FromString(TEXT("보통")));
+		GameDifficulty->AddDynamicOption(TEXT("Hard"), FText::FromString(TEXT("어려움")));
+		GameDifficulty->AddDynamicOption(TEXT("Very Hard"), FText::FromString(TEXT("매우 어려움")));
+
+		GameplayTabCollection->AddChildListData(GameDifficulty);
+	}
+
+	// Test Item
+	{
+		UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
+		TestItem->SetDataID(FName("TestItem"));
+		TestItem->SetDataDisplayName(FText::FromString(TEXT("TEST ITEM")));
+
+		GameplayTabCollection->AddChildListData(TestItem);
+	}
 
 	RegisteredOptionsTabCollections.Add(GameplayTabCollection);
 }

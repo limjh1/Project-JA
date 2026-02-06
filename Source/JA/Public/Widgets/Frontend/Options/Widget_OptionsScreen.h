@@ -8,6 +8,7 @@
 
 class UOptionsDataRegistry;
 class UJAFrontendTabListWidgetBase;
+class UJAFrontendCommonListView;
 
 /**
  * 
@@ -39,6 +40,9 @@ private:
 	// ~Bound Widgets
 	UPROPERTY(meta = (BindWidget))
 	UJAFrontendTabListWidgetBase* TabListWidget_OptionsTabs;
+
+	UPROPERTY(meta = (BindWidget))
+	UJAFrontendCommonListView* CommonListView_OptionsList;
 	// ~Bound Widgets
 
 private:

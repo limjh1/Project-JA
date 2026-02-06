@@ -13,7 +13,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class JA_API UListDataObject_Base : public UObject
 {
 	GENERATED_BODY()
@@ -30,8 +30,6 @@ public:
 protected:
 	// Empty in base class. the child classes should override it to handle the init needed accordingly
 	virtual void OnDataObjectInitialized();
-
-
 
 public:
 	LIST_DATA_ACCESSOR(FName, DataID);
