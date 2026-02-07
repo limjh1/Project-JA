@@ -6,6 +6,8 @@
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_Base.h"
 #include "ListDataObject_Value.generated.h"
 
+class FOptionsDataInteractionHelper;
+
 /**
  * 
  */
@@ -14,4 +16,12 @@ class JA_API UListDataObject_Value : public UListDataObject_Base
 {
 	GENERATED_BODY()
 	
+public:
+	void SetDataDynamicGetter(const TSharedPtr<FOptionsDataInteractionHelper>& InDynamicGetter);
+	void SetDataDynamicSetter(const TSharedPtr<FOptionsDataInteractionHelper>& InDynamicSetter);
+
+protected:
+	TSharedPtr<FOptionsDataInteractionHelper> DataDynamicGetter;
+	TSharedPtr<FOptionsDataInteractionHelper> DataDynamicSetter;
+
 };

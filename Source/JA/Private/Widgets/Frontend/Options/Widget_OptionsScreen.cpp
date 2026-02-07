@@ -8,6 +8,7 @@
 #include "Widgets/Frontend/Components/JAFrontendTabListWidgetBase.h"
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_Collection.h"
 #include "Widgets/Frontend/Components/JAFrontendCommonListView.h"
+#include "JASettings/JAGameUserSettings.h"
 
 #include "JADebugHelper.h"
 
@@ -57,6 +58,13 @@ void UWidget_OptionsScreen::NativeOnActivated()
 
 		TabListWidget_OptionsTabs->RequestRegisterTab(TabID, TabCollection->GetDataDisplayName());
 	}
+}
+
+void UWidget_OptionsScreen::NativeOnDeactivated()
+{
+	Super::NativeOnDeactivated();
+
+	UJAGameUserSettings::Get()->ApplySettings(true);
 }
 
 UOptionsDataRegistry* UWidget_OptionsScreen::GetOrCreateDataRegistry()

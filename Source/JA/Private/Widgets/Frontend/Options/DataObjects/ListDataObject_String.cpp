@@ -2,11 +2,80 @@
 
 
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_String.h"
+#include "Widgets/Frontend/Options/OptionsDataInteractionHelper.h"
+
+#include "JADebugHelper.h"
 
 void UListDataObject_String::AddDynamicOption(const FString& InStringValue, const FText& InDisplayText)
 {
 	AvailableOptionsStringArray.Add(InStringValue); // config 저장
 	AvailableOptionsTextArray.Add(InDisplayText); // display
+}
+
+void UListDataObject_String::AdvanceToNextOption()
+{
+	if (AvailableOptionsStringArray.IsEmpty() || AvailableOptionsTextArray.IsEmpty())
+	{
+		return;
+	}
+
+	const int32 CurrentDisplayIndex = AvailableOptionsStringArray.IndexOfByKey(CurrentStringValue);
+	const int32 NextIndexToDisplay = CurrentDisplayIndex + 1;
+
+	const bool bIsNextIndexValid = AvailableOptionsStringArray.IsValidIndex(NextIndexToDisplay);
+
+	if (bIsNextIndexValid)
+	{
+		CurrentStringValue = AvailableOptionsStringArray[NextIndexToDisplay];
+	}
+	else
+	{
+		CurrentStringValue = AvailableOptionsStringArray[0];
+	}
+
+	TrySetDisplayTextFromStringValue(CurrentStringValue);
+
+	if (DataDynamicSetter)
+	{
+		DataDynamicSetter->SetValueFromString(CurrentStringValue);
+
+		Debug::Print(TEXT("DataDynamicSetter is used. The latest value from  getter: ") + DataDynamicGetter->GetValueAsString());
+
+		NotifyListDataModified(this);
+	}
+}
+
+void UListDataObject_String::BackToPreviousOption()
+{
+	if (AvailableOptionsStringArray.IsEmpty() || AvailableOptionsTextArray.IsEmpty())
+	{
+		return;
+	}
+
+	const int32 CurrentDisplayIndex = AvailableOptionsStringArray.IndexOfByKey(CurrentStringValue);
+	const int32 PreviousIndexToDisplay = CurrentDisplayIndex - 1;
+
+	const bool bIsPreviousIndexValid = AvailableOptionsStringArray.IsValidIndex(PreviousIndexToDisplay);
+
+	if (bIsPreviousIndexValid)
+	{
+		CurrentStringValue = AvailableOptionsStringArray[PreviousIndexToDisplay];
+	}
+	else
+	{
+		CurrentStringValue = AvailableOptionsStringArray.Last();
+	}
+
+	TrySetDisplayTextFromStringValue(CurrentStringValue);
+	
+	if (DataDynamicSetter)
+	{
+		DataDynamicSetter->SetValueFromString(CurrentStringValue);
+
+		Debug::Print(TEXT("DataDynamicSetter is used. The latest value from  getter: ") + DataDynamicGetter->GetValueAsString());
+
+		NotifyListDataModified(this);
+	}
 }
 
 void UListDataObject_String::OnDataObjectInitialized()
@@ -16,7 +85,13 @@ void UListDataObject_String::OnDataObjectInitialized()
 		CurrentStringValue = AvailableOptionsStringArray[0];
 	}
 
-	// TODO: Read from the saved string value and use it to set the currentstring value
+	if (DataDynamicGetter)
+	{
+		if (!DataDynamicGetter->GetValueAsString().IsEmpty())
+		{
+			CurrentStringValue = DataDynamicGetter->GetValueAsString();
+		}
+	}
 
 	if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
 	{

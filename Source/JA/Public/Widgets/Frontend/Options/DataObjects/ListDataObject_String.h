@@ -19,6 +19,8 @@ public:
 	FORCEINLINE FText GetCurrentDisplayText() const { return CurrentDisplayText; }
 
 	void AddDynamicOption(const FString& InStringValue, const FText& InDisplayText);
+	void AdvanceToNextOption();
+	void BackToPreviousOption();
 
 protected:
 	//~ Begin UListDataObject_Base Interface

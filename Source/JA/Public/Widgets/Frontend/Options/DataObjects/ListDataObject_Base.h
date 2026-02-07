@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "JATypes/JAEnumTypes.h"
 #include "ListDataObject_Base.generated.h"
 
 #define LIST_DATA_ACCESSOR(DataType, PropertyName) \
@@ -19,10 +20,23 @@ class JA_API UListDataObject_Base : public UObject
 	GENERATED_BODY()
 
 public:
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnListDataModifiedDelegate, UListDataObject_Base*, EOptionListDataModifyReason);
+	FOnListDataModifiedDelegate OnListDataModified;
+
+	LIST_DATA_ACCESSOR(FName, DataID);
+	LIST_DATA_ACCESSOR(FText, DataDisplayName);
+	LIST_DATA_ACCESSOR(FText, DescriptionRichText);
+	LIST_DATA_ACCESSOR(FText, DisabledRichText);
+	LIST_DATA_ACCESSOR(TSoftObjectPtr<UTexture2D>, SoftDescriptionImage);
+	LIST_DATA_ACCESSOR(UListDataObject_Base*, ParentData);
+
+public:
 	// Empty in the base class. child class ListDataObject_Collection should override it.
 	// The Function should return all the child data a tab has
 	virtual TArray<UListDataObject_Base*> GetAllChildListData() const { return TArray<UListDataObject_Base*>(); }
 	virtual bool HasAnyChildListData() const { return false; }
+
+	void SetShouldApplySettingsImmediatly(bool bShouldApplyRightAway) { bShouldApplyChangeImmedialty = bShouldApplyRightAway; }
 
 public:
 	void InitDataObject();
@@ -31,13 +45,7 @@ protected:
 	// Empty in base class. the child classes should override it to handle the init needed accordingly
 	virtual void OnDataObjectInitialized();
 
-public:
-	LIST_DATA_ACCESSOR(FName, DataID);
-	LIST_DATA_ACCESSOR(FText, DataDisplayName);
-	LIST_DATA_ACCESSOR(FText, DescriptionRichText);
-	LIST_DATA_ACCESSOR(FText, DisabledRichText);
-	LIST_DATA_ACCESSOR(TSoftObjectPtr<UTexture2D>, SoftDescriptionImage);
-	LIST_DATA_ACCESSOR(UListDataObject_Base*, ParentData);
+	virtual void NotifyListDataModified(UListDataObject_Base* ModifiedData, EOptionListDataModifyReason ModifyReason = EOptionListDataModifyReason::DirectlyModified);
 	
 private:
 	FName DataID;
@@ -49,4 +57,5 @@ private:
 	UPROPERTY(Transient)
 	UListDataObject_Base* ParentData;
 
+	bool bShouldApplyChangeImmedialty = false;
 };

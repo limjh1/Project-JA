@@ -4,6 +4,11 @@
 #include "Widgets/Frontend/Options/OptionsDataRegistry.h"
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_Collection.h"
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_String.h"
+#include "Widgets/Frontend/Options/OptionsDataInteractionHelper.h"
+#include "JASettings/JAGameUserSettings.h"
+
+#define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
+	MakeShared<FOptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UJAGameUserSettings, SetterOrGetterFuncName))
 
 void UOptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwiningLocalPlayer)
 {
@@ -36,6 +41,10 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 	GameplayTabCollection->SetDataID(FName("GameplayTabCollection"));
 	GameplayTabCollection->SetDataDisplayName(FText::FromString(TEXT("게임플레이")));
 
+	// This is the full code for contructor data interactor helper
+	/*TSharedPtr<FOptionsDataInteractionHelper> ConstructedHelper =
+		MakeShared<FOptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UJAGameUserSettings, GetCurrentGameDifficulty));*/
+
 	// Game Difficulty
 	{
 		UListDataObject_String* GameDifficulty = NewObject<UListDataObject_String>();
@@ -45,6 +54,9 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 		GameDifficulty->AddDynamicOption(TEXT("Normal"), FText::FromString(TEXT("보통")));
 		GameDifficulty->AddDynamicOption(TEXT("Hard"), FText::FromString(TEXT("어려움")));
 		GameDifficulty->AddDynamicOption(TEXT("Very Hard"), FText::FromString(TEXT("매우 어려움")));
+		GameDifficulty->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentGameDifficulty));
+		GameDifficulty->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentGameDifficulty));
+		GameDifficulty->SetShouldApplySettingsImmediatly(true);
 
 		GameplayTabCollection->AddChildListData(GameDifficulty);
 	}

@@ -23,7 +23,8 @@ public class JA : ModuleRules
             "NavigationSystem",
 			"MoviePlayer",
 			"UMG",
-			"CommonInput"
+			"CommonInput",
+			"PropertyPath"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

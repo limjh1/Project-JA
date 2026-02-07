@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "CommonUserWidget.h"
 #include "Blueprint/IUserObjectListEntry.h"
+#include "JATypes/JAEnumTypes.h"
 #include "Widget_ListEntry_Base.generated.h"
 
 class UCommonTextBlock;
@@ -25,6 +26,9 @@ protected:
 
 	// the child class should override this function to handle the init needed. Super call is expected
 	virtual void OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject);
+
+	// the child class should override this function to update the UI Values after the data object has been modified. Super call not needed
+	virtual void OnOwningListDataObjectModified(UListDataObject_Base* OwningModifiedData, EOptionListDataModifyReason ModifyReason);
 
 private:
 	// ~Bound Widgets
