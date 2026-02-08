@@ -130,4 +130,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Frontend_Widget_OptionsScreen);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Frontend_Widget_ConfirmScreen);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Frontend_Widget_StoryScreen);
+
+	/* Fronted Options Image Tags */
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Frontend_Image_TestImage);
 }

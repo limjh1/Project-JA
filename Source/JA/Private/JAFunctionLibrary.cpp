@@ -307,3 +307,12 @@ TSoftClassPtr<UWidget_ActivatableBase> UJAFunctionLibrary::GetFrontendSoftWidget
 
     return JADeveloperSettings->JAFrontendWidgetMap.FindRef(InWidgetTag);
 }
+
+TSoftObjectPtr<UTexture2D> UJAFunctionLibrary::GetOptionsSoftImageByTag(UPARAM(meta = (Categories = "Frontend.Image")) FGameplayTag InImageTag)
+{
+    const UJADeveloperSettings* JADeveloperSettings = GetDefault<UJADeveloperSettings>();
+
+    checkf(JADeveloperSettings->OptionsScreenSoftImageMap.Contains(InImageTag), TEXT("Could not find an image accociated with tag %s"), *InImageTag.ToString());
+
+    return JADeveloperSettings->OptionsScreenSoftImageMap.FindRef(InImageTag);
+}

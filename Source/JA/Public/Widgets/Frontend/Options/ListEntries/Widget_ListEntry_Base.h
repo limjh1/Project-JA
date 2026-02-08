@@ -18,17 +18,33 @@ UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class JA_API UWidget_ListEntry_Base : public UCommonUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
-	
+
+public:
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "On List Entry Widget Hovered"))
+	void BP_OnListEntryWidgetHovered(bool bWasHovered, bool bIsEntryWidgetStillSelected);
+	void NativeOnListEntryWidgetHovered(bool bWasHovered);
+
 protected:
+	// The child wbp should override this function for the gamepad interaction to function properly
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Get Widget To Focus For Gamepad"))
+	UWidget* BP_GetWidgetToFocusForGamepad() const;
+
 	//~ Begin IUserObjectListEntry Interface
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+	virtual void NativeOnEntryReleased() override;
 	//~ End IUserObjectListEntry Interface
 
+	//~ Begin UUserWidget Interface
+	virtual FReply NativeOnFocusReceived(const FGeometry& InGeometry, const FFocusEvent& InFocusEvent) override;
+	//~ End UUserWidget Interface
+	
 	// the child class should override this function to handle the init needed. Super call is expected
 	virtual void OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject);
 
 	// the child class should override this function to update the UI Values after the data object has been modified. Super call not needed
 	virtual void OnOwningListDataObjectModified(UListDataObject_Base* OwningModifiedData, EOptionListDataModifyReason ModifyReason);
+
+	void SelectThisEntryWidget();
 
 private:
 	// ~Bound Widgets

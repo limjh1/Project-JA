@@ -13,6 +13,16 @@ void UJAFrontendCommonButtonBase::SetButtonText(FText InText)
 	}
 }
 
+FText UJAFrontendCommonButtonBase::GetButtonDisplayText() const
+{
+	if (CommonTextBlock_ButtonText)
+	{
+		return CommonTextBlock_ButtonText->GetText();
+	}
+
+	return FText();
+}
+
 void UJAFrontendCommonButtonBase::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();

@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Widgets/Frontend/Widget_ActivatableBase.h"
+#include "JATypes/JAEnumTypes.h"
 #include "Widget_OptionsScreen.generated.h"
 
 class UOptionsDataRegistry;
 class UJAFrontendTabListWidgetBase;
 class UJAFrontendCommonListView;
+class UWidget_OptionsDetailsView;
+class UListDataObject_Base;
 
 /**
  * 
@@ -26,6 +29,7 @@ protected:
 	//~ Begin UCommonActivatableWidget Interface
 	virtual void NativeOnActivated() override;
 	virtual void NativeOnDeactivated() override;
+	virtual UWidget* NativeGetDesiredFocusTarget() const override;
 	//~ End UCommonActivatableWidget Interface
 
 private:
@@ -37,6 +41,12 @@ private:
 	UFUNCTION()
 	void OnOptionsTabSelected(FName TabId);
 
+	void OnListViewItemHovered(UObject* InHoveredItem, bool bWasHovered);
+	void OnListViewItemSelected(UObject* InSelectedItem);
+	void OnListViewListDataModified(UListDataObject_Base* ModifiedData, EOptionListDataModifyReason ModifyReason);
+
+	FString TryGetEntryWidgetClassName(UObject* InOwningListItem) const;
+
 private:
 	// ~Bound Widgets
 	UPROPERTY(meta = (BindWidget))
@@ -44,6 +54,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UJAFrontendCommonListView* CommonListView_OptionsList;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidget_OptionsDetailsView* DetailsView_ListEntryInfo;
 	// ~Bound Widgets
 
 private:
@@ -55,4 +68,9 @@ private:
 	FDataTableRowHandle ResetAction;
 
 	FUIActionBindingHandle ResetActionHandle;
+
+	UPROPERTY(Transient)
+	TArray<UListDataObject_Base*> ResettableDataArray;
+
+	bool bIsResettingData = false;
 };

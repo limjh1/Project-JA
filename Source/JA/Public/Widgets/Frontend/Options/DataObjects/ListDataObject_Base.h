@@ -38,6 +38,11 @@ public:
 
 	void SetShouldApplySettingsImmediatly(bool bShouldApplyRightAway) { bShouldApplyChangeImmedialty = bShouldApplyRightAway; }
 
+	// The childe class should override them to provide implementations for resetting the data
+	virtual bool HasDefaultValue() const { return false; }
+	virtual bool CanResetBackToDefaultValue() const { return false; }
+	virtual bool TryResetBackToDefaultValue() { return false; }
+
 public:
 	void InitDataObject();
 

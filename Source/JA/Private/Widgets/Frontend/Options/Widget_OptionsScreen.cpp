@@ -9,6 +9,10 @@
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_Collection.h"
 #include "Widgets/Frontend/Components/JAFrontendCommonListView.h"
 #include "JASettings/JAGameUserSettings.h"
+#include "Widgets/Frontend/Options/ListEntries/Widget_ListEntry_Base.h"
+#include "Widgets/Frontend/Options/Widget_OptionsDetailsView.h"
+#include "Subsystems/JAFrontendUISubsystem.h"
+#include "Widgets/Frontend/Components/JAFrontendCommonButtonBase.h"
 
 #include "JADebugHelper.h"
 
@@ -36,6 +40,9 @@ void UWidget_OptionsScreen::NativeOnInitialized()
 	);
 
 	TabListWidget_OptionsTabs->OnTabSelected.AddUniqueDynamic(this, &ThisClass::OnOptionsTabSelected);
+
+	CommonListView_OptionsList->OnItemIsHoveredChanged().AddUObject(this, &ThisClass::OnListViewItemHovered);
+	CommonListView_OptionsList->OnItemSelectionChanged().AddUObject(this, &ThisClass::OnListViewItemSelected);
 }
 
 void UWidget_OptionsScreen::NativeOnActivated()
@@ -67,6 +74,19 @@ void UWidget_OptionsScreen::NativeOnDeactivated()
 	UJAGameUserSettings::Get()->ApplySettings(true);
 }
 
+UWidget* UWidget_OptionsScreen::NativeGetDesiredFocusTarget() const
+{
+	if (UObject* SelectedObject = CommonListView_OptionsList->GetSelectedItem())
+	{
+		if (UUserWidget* SelectedEntryWidget = CommonListView_OptionsList->GetEntryWidgetFromItem(SelectedObject))
+		{
+			return SelectedEntryWidget;
+		}
+	}
+
+	return Super::NativeGetDesiredFocusTarget();
+}
+
 UOptionsDataRegistry* UWidget_OptionsScreen::GetOrCreateDataRegistry()
 {
 	if (!CreatedOwningDataRegistry)
@@ -82,7 +102,57 @@ UOptionsDataRegistry* UWidget_OptionsScreen::GetOrCreateDataRegistry()
 
 void UWidget_OptionsScreen::OnResetBoundActionTriggered()
 {
-	Debug::Print(TEXT("Reset Bound Action Tiggered"));
+	if (ResettableDataArray.IsEmpty())
+	{
+		return;
+	}
+
+	UCommonButtonBase* SelectedTabButton = TabListWidget_OptionsTabs->GetTabButtonBaseByID(TabListWidget_OptionsTabs->GetActiveTab());
+
+	const FString SelectedTabButtonName = CastChecked<UJAFrontendCommonButtonBase>(SelectedTabButton)->GetButtonDisplayText().ToString();
+
+	UJAFrontendUISubsystem::Get(this)->PushConfirmScreenToModalStackAysnc(
+		EConfirmScreenType::YesNo,
+		FText::FromString(TEXT("초기화")),
+		FText::FromString(SelectedTabButtonName + TEXT(" 탭의 모든 설정을 초기화하시겠습니까?")),
+		[this](EConfirmScreenButtonType ClickedButtonType)
+		{
+			if (ClickedButtonType != EConfirmScreenButtonType::Confirmed)
+			{
+				return;
+			}
+
+			bIsResettingData = true;
+			bool bHasDataFailedToReset = false;
+
+			for (UListDataObject_Base* DataToReset : ResettableDataArray)
+			{
+				if (!DataToReset)
+				{
+					continue;
+				}
+
+				// 변경됨에 따라서, Modified 콜백 호출됨. bIsResettingData활용해서 막음.
+				if (DataToReset->TryResetBackToDefaultValue())
+				{
+					//Debug::Print(DataToReset->GetDataDisplayName().ToString() + TEXT(" was reset"));
+				}
+				else
+				{
+					bHasDataFailedToReset = true;
+					//Debug::Print(DataToReset->GetDataDisplayName().ToString() + TEXT(" failed to reset"));
+				}
+			}
+
+			if (!bHasDataFailedToReset)
+			{
+				ResettableDataArray.Empty();
+				RemoveActionBinding(ResetActionHandle);
+			}
+
+			bIsResettingData = false;
+		}
+	);
 }
 
 void UWidget_OptionsScreen::OnBackBoundActionTriggerd()
@@ -92,6 +162,8 @@ void UWidget_OptionsScreen::OnBackBoundActionTriggerd()
 
 void UWidget_OptionsScreen::OnOptionsTabSelected(FName TabId)
 {	
+	DetailsView_ListEntryInfo->ClearDetailsViewInfo();
+
 	TArray<UListDataObject_Base*> FoundListSourceItems = GetOrCreateDataRegistry()->GetListSourceItemsBySelectedTabID(TabId);
 
 	CommonListView_OptionsList->SetListItems(FoundListSourceItems);
@@ -102,4 +174,121 @@ void UWidget_OptionsScreen::OnOptionsTabSelected(FName TabId)
 		CommonListView_OptionsList->NavigateToIndex(0); // First Item
 		CommonListView_OptionsList->SetSelectedIndex(0);
 	}
+
+	ResettableDataArray.Empty();
+
+	for (UListDataObject_Base* FoundListSourceItem : FoundListSourceItems)
+	{
+		if (!FoundListSourceItem)
+		{
+			continue;
+		}
+
+		if (!FoundListSourceItem->OnListDataModified.IsBoundToObject(this))
+		{
+			FoundListSourceItem->OnListDataModified.AddUObject(this, &ThisClass::OnListViewListDataModified);
+		}		
+
+		if (FoundListSourceItem->CanResetBackToDefaultValue())
+		{
+			ResettableDataArray.AddUnique(FoundListSourceItem);
+		}
+	}
+
+	if (ResettableDataArray.IsEmpty())
+	{
+		RemoveActionBinding(ResetActionHandle);
+	}
+	else
+	{
+		if (!GetActionBindings().Contains(ResetActionHandle))
+		{
+			AddActionBinding(ResetActionHandle);
+		}
+	}
+}
+
+void UWidget_OptionsScreen::OnListViewItemHovered(UObject* InHoveredItem, bool bWasHovered)
+{
+	if (!InHoveredItem)
+	{
+		return;
+	}
+
+	UWidget_ListEntry_Base* HoveredEntryWidget = CommonListView_OptionsList->GetEntryWidgetFromItem<UWidget_ListEntry_Base>(InHoveredItem);
+
+	check(HoveredEntryWidget);
+
+	HoveredEntryWidget->NativeOnListEntryWidgetHovered(bWasHovered);
+
+	if (bWasHovered)
+	{
+		DetailsView_ListEntryInfo->UpdateDetailsViewInfo(
+			CastChecked<UListDataObject_Base>(InHoveredItem),
+			TryGetEntryWidgetClassName(InHoveredItem)
+		);
+	}
+	else
+	{
+		if (UListDataObject_Base* SelectedItem = CommonListView_OptionsList->GetSelectedItem<UListDataObject_Base>())
+		{
+			DetailsView_ListEntryInfo->UpdateDetailsViewInfo(
+				SelectedItem,
+				TryGetEntryWidgetClassName(SelectedItem)
+			);
+		}
+	}
+}
+
+void UWidget_OptionsScreen::OnListViewItemSelected(UObject* InSelectedItem)
+{
+	if (!InSelectedItem)
+	{
+		return;
+	}
+
+	DetailsView_ListEntryInfo->UpdateDetailsViewInfo(
+		CastChecked<UListDataObject_Base>(InSelectedItem),
+		TryGetEntryWidgetClassName(InSelectedItem)
+	);
+}
+
+void UWidget_OptionsScreen::OnListViewListDataModified(UListDataObject_Base* ModifiedData, EOptionListDataModifyReason ModifyReason)
+{
+	if (!ModifiedData || bIsResettingData)
+	{
+		return;
+	}
+
+	if (ModifiedData->CanResetBackToDefaultValue())
+	{
+		ResettableDataArray.AddUnique(ModifiedData);
+
+		if (!GetActionBindings().Contains(ResetActionHandle))
+		{
+			AddActionBinding(ResetActionHandle);
+		}
+	}
+	else
+	{
+		if (ResettableDataArray.Contains(ModifiedData))
+		{
+			ResettableDataArray.Remove(ModifiedData);
+		}
+	}
+
+	if (ResettableDataArray.IsEmpty())
+	{
+		RemoveActionBinding(ResetActionHandle);
+	}
+}
+
+FString UWidget_OptionsScreen::TryGetEntryWidgetClassName(UObject* InOwningListItem) const
+{
+	if (UUserWidget* FoundEntryWidget = CommonListView_OptionsList->GetEntryWidgetFromItem(InOwningListItem))
+	{
+		return FoundEntryWidget->GetClass()->GetName();
+	}
+
+	return TEXT("Entry Widget Not Valid");
 }

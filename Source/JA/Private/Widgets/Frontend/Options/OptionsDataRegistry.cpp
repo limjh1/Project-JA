@@ -6,6 +6,8 @@
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_String.h"
 #include "Widgets/Frontend/Options/OptionsDataInteractionHelper.h"
 #include "JASettings/JAGameUserSettings.h"
+#include "JAFunctionLibrary.h"
+#include "JAGameplayTags.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FOptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UJAGameUserSettings, SetterOrGetterFuncName))
@@ -50,12 +52,18 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 		UListDataObject_String* GameDifficulty = NewObject<UListDataObject_String>();
 		GameDifficulty->SetDataID(FName("GameDifficulty"));
 		GameDifficulty->SetDataDisplayName(FText::FromString(TEXT("난이도")));
+
+		GameDifficulty->SetDescriptionRichText(FText::FromString(TEXT("게임 난이도를 조절합니다.\n\n<Bold>쉬움:</> 전투 부담이 적고 가장 여유로운 플레이가 가능합니다.\n\n<Bold>보통:</> 표준적인 전투 난이도로 적절한 긴장감을 제공합니다.\n\n<Bold>어려움:</> 더 강력한 적들이 등장하며 정교한 조작을 요구합니다.\n\n<Bold>매우 어려움:</> 극한의 도전적인 전투를 제공하며, 1회차 플레이 시 권장하지 않습니다.")));
+
 		GameDifficulty->AddDynamicOption(TEXT("Easy"), FText::FromString(TEXT("쉬움")));
 		GameDifficulty->AddDynamicOption(TEXT("Normal"), FText::FromString(TEXT("보통")));
 		GameDifficulty->AddDynamicOption(TEXT("Hard"), FText::FromString(TEXT("어려움")));
 		GameDifficulty->AddDynamicOption(TEXT("Very Hard"), FText::FromString(TEXT("매우 어려움")));
+		GameDifficulty->SetDefaultValueFromString(TEXT("Normal"));
+
 		GameDifficulty->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentGameDifficulty));
 		GameDifficulty->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentGameDifficulty));
+
 		GameDifficulty->SetShouldApplySettingsImmediatly(true);
 
 		GameplayTabCollection->AddChildListData(GameDifficulty);
@@ -65,7 +73,9 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 	{
 		UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
 		TestItem->SetDataID(FName("TestItem"));
-		TestItem->SetDataDisplayName(FText::FromString(TEXT("TEST ITEM")));
+		TestItem->SetDataDisplayName(FText::FromString(TEXT("Text Image Item")));
+		TestItem->SetSoftDescriptionImage(UJAFunctionLibrary::GetOptionsSoftImageByTag(JAGameplayTags::Frontend_Image_TestImage));
+		TestItem->SetDescriptionRichText(FText::FromString(TEXT("테스트 이미지 입니다.")));
 
 		GameplayTabCollection->AddChildListData(TestItem);
 	}
