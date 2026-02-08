@@ -4,17 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Widgets/Frontend/Options/ListEntries/Widget_ListEntry_Base.h"
-#include "Widget_ListEntry_String.generated.h"
+#include "Widget_ListEntry_Scalar.generated.h"
 
-class UJAFrontendCommonButtonBase;
-class UJAFrontendCommonRotator;
-class UListDataObject_String;
+class UCommonNumericTextBlock;
+class UAnalogSlider;
 
 /**
  * 
  */
 UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
-class JA_API UWidget_ListEntry_String : public UWidget_ListEntry_Base
+class JA_API UWidget_ListEntry_Scalar : public UWidget_ListEntry_Base
 {
 	GENERATED_BODY()
 	
@@ -29,23 +28,11 @@ protected:
 	//~ End UWidget_ListEntry_Base Interface
 
 private:
-	void OnPreviousOptionButtonClicked();
-	void OnNextOptionButtonClicked();
-	
-	void OnRotatorValueChanged(int32 Value, bool bUserInitiated);
-
-private:
-	// ~Bound Widgets
+	//~ Bound Widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UJAFrontendCommonButtonBase* CommonButton_PreviousOption;
+	UCommonNumericTextBlock* CommonNumeric_SettingValue;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UJAFrontendCommonRotator* CommonRotator_AvailableOptions;
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UJAFrontendCommonButtonBase* CommonButton_NextOption;
-	// ~Bound Widgets
-
-	UPROPERTY(Transient)
-	UListDataObject_String* CachedOwningStringDataObject;
+	UAnalogSlider* AnalogSlider_SettingSlider;
+	//~ Bound Widgets
 };

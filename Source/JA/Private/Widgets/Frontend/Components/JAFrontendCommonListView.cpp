@@ -6,6 +6,7 @@
 #include "Widgets/Frontend/Options/DataAsset_DataListEntryMapping.h"
 #include "Widgets/Frontend/Options/ListEntries/Widget_ListEntry_Base.h"
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_Base.h"
+#include "Widgets/Frontend/Options/DataObjects/ListDataObject_Collection.h"
 
 UUserWidget& UJAFrontendCommonListView::OnGenerateEntryWidgetInternal(UObject* Item, TSubclassOf<UUserWidget> DesiredEntryClass, const TSharedRef<STableViewBase>& OwnerTable)
 {
@@ -20,6 +21,11 @@ UUserWidget& UJAFrontendCommonListView::OnGenerateEntryWidgetInternal(UObject* I
 	}
 
 	return Super::OnGenerateEntryWidgetInternal(Item, DesiredEntryClass, OwnerTable);
+}
+
+bool UJAFrontendCommonListView::OnIsSelectableOrNavigableInternal(UObject* FirstSelectedItem)
+{
+	return !FirstSelectedItem->IsA<UListDataObject_Collection>();
 }
 
 #if WITH_EDITOR	
