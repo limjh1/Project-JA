@@ -8,6 +8,7 @@
 #include "JASettings/JAGameUserSettings.h"
 #include "JAFunctionLibrary.h"
 #include "JAGameplayTags.h"
+#include "Widgets/Frontend/Options/DataObjects/ListDataObject_Scalar.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FOptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UJAGameUserSettings, SetterOrGetterFuncName))
@@ -92,18 +93,14 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 		UListDataObject_String* GameDifficulty = NewObject<UListDataObject_String>();
 		GameDifficulty->SetDataID(FName("GameDifficulty"));
 		GameDifficulty->SetDataDisplayName(FText::FromString(TEXT("난이도")));
-
 		GameDifficulty->SetDescriptionRichText(FText::FromString(TEXT("게임 난이도를 조절합니다.\n\n<Bold>쉬움:</> 전투 부담이 적고 가장 여유로운 플레이가 가능합니다.\n\n<Bold>보통:</> 표준적인 전투 난이도로 적절한 긴장감을 제공합니다.\n\n<Bold>어려움:</> 더 강력한 적들이 등장하며 정교한 조작을 요구합니다.\n\n<Bold>매우 어려움:</> 극한의 도전적인 전투를 제공하며, 1회차 플레이 시 권장하지 않습니다.")));
-
 		GameDifficulty->AddDynamicOption(TEXT("Easy"), FText::FromString(TEXT("쉬움")));
 		GameDifficulty->AddDynamicOption(TEXT("Normal"), FText::FromString(TEXT("보통")));
 		GameDifficulty->AddDynamicOption(TEXT("Hard"), FText::FromString(TEXT("어려움")));
 		GameDifficulty->AddDynamicOption(TEXT("Very Hard"), FText::FromString(TEXT("매우 어려움")));
 		GameDifficulty->SetDefaultValueFromString(TEXT("Normal"));
-
 		GameDifficulty->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentGameDifficulty));
 		GameDifficulty->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentGameDifficulty));
-
 		GameDifficulty->SetShouldApplySettingsImmediatly(true);
 
 		GameplayTabCollection->AddChildListData(GameDifficulty);
@@ -127,23 +124,33 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 {
 	UListDataObject_Collection* AudioTabCollection = NewObject<UListDataObject_Collection>();
 	AudioTabCollection->SetDataID(FName("AudioTabCollection"));
-	AudioTabCollection->SetDataDisplayName(FText::FromString(TEXT("사운드")));
+	AudioTabCollection->SetDataDisplayName(FText::FromString(TEXT("오디오")));
 
 	// Volume Category
 	{
 		UListDataObject_Collection* VolumeCategoryCollection = NewObject<UListDataObject_Collection>();
 		VolumeCategoryCollection->SetDataID(FName("VolumeCategoryCollection"));
-		VolumeCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("볼륨")));
+		VolumeCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("음량")));
 
 		AudioTabCollection->AddChildListData(VolumeCategoryCollection);
 
-		// Test Item for category
+		// Overall Volume
 		{
-			UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
-			TestItem->SetDataID(FName("TestItem"));
-			TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Item")));
+			UListDataObject_Scalar* OverallVolume = NewObject<UListDataObject_Scalar>();
+			OverallVolume->SetDataID(FName("OverallVolume"));
+			OverallVolume->SetDataDisplayName(FText::FromString(TEXT("전체 음량")));
+			OverallVolume->SetDescriptionRichText(FText::FromString(TEXT("전체 음량을 조정합니다.")));
+			OverallVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			OverallVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			OverallVolume->SetSliderStepSize(0.01f);
+			OverallVolume->SetDefaultValueFromString(LexToString(1.f));
+			OverallVolume->SetDisplayNumericType(ECommonNumericType::Percentage);
+			OverallVolume->SetNumberFormattingOptions(UListDataObject_Scalar::NoDecimal()); // No Decimal: 50% // One Decimal: 50.5%
+			OverallVolume->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallVolume));
+			OverallVolume->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallVolume));
+			OverallVolume->SetShouldApplySettingsImmediatly(true);
 
-			VolumeCategoryCollection->AddChildListData(TestItem);
+			VolumeCategoryCollection->AddChildListData(OverallVolume);
 		}
 	}
 

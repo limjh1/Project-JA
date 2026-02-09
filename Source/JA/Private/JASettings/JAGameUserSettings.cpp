@@ -3,6 +3,11 @@
 
 #include "JASettings/JAGameUserSettings.h"
 
+UJAGameUserSettings::UJAGameUserSettings()
+	: OverallVolume(1.f)
+{
+}
+
 UJAGameUserSettings* UJAGameUserSettings::Get()
 {
 	if (GEngine)
@@ -11,4 +16,11 @@ UJAGameUserSettings* UJAGameUserSettings::Get()
 	}
 
 	return nullptr;
+}
+
+void UJAGameUserSettings::SetOverallVolume(float InVolume)
+{
+	OverallVolume = InVolume;
+
+	//the actual logic for controlling the volume goes here
 }
