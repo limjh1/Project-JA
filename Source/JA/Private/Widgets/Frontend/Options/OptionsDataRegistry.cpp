@@ -138,7 +138,7 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 		{
 			UListDataObject_Scalar* OverallVolume = NewObject<UListDataObject_Scalar>();
 			OverallVolume->SetDataID(FName("OverallVolume"));
-			OverallVolume->SetDataDisplayName(FText::FromString(TEXT("전체 음량")));
+			OverallVolume->SetDataDisplayName(FText::FromString(TEXT("전체")));
 			OverallVolume->SetDescriptionRichText(FText::FromString(TEXT("전체 음량을 조정합니다.")));
 			OverallVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			OverallVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
@@ -151,6 +151,55 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 			OverallVolume->SetShouldApplySettingsImmediatly(true);
 
 			VolumeCategoryCollection->AddChildListData(OverallVolume);
+		}
+
+		// BGM Volume
+		{
+			UListDataObject_Scalar* BGMVolume = NewObject<UListDataObject_Scalar>();
+			BGMVolume->SetDataID(FName("BGMVolume"));
+			BGMVolume->SetDataDisplayName(FText::FromString(TEXT("BGM")));
+			BGMVolume->SetDescriptionRichText(FText::FromString(TEXT("BGM 음량을 조정합니다.")));
+			BGMVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			BGMVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			BGMVolume->SetSliderStepSize(0.01f);
+			BGMVolume->SetDefaultValueFromString(LexToString(1.f));
+			BGMVolume->SetDisplayNumericType(ECommonNumericType::Percentage);
+			BGMVolume->SetNumberFormattingOptions(UListDataObject_Scalar::NoDecimal()); // No Decimal: 50% // One Decimal: 50.5%
+			BGMVolume->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetBGMVolume));
+			BGMVolume->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetBGMVolume));
+			BGMVolume->SetShouldApplySettingsImmediatly(true);
+
+			VolumeCategoryCollection->AddChildListData(BGMVolume);
+		}
+
+		// SoundFX Volume
+		{
+			UListDataObject_Scalar* SoundFXVolume = NewObject<UListDataObject_Scalar>();
+			SoundFXVolume->SetDataID(FName("SoundFXVolume"));
+			SoundFXVolume->SetDataDisplayName(FText::FromString(TEXT("효과음")));
+			SoundFXVolume->SetDescriptionRichText(FText::FromString(TEXT("효과음 음량을 조정합니다.")));
+			SoundFXVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			SoundFXVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			SoundFXVolume->SetSliderStepSize(0.01f);
+			SoundFXVolume->SetDefaultValueFromString(LexToString(1.f));
+			SoundFXVolume->SetDisplayNumericType(ECommonNumericType::Percentage);
+			SoundFXVolume->SetNumberFormattingOptions(UListDataObject_Scalar::NoDecimal()); // No Decimal: 50% // One Decimal: 50.5%
+			SoundFXVolume->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetSoundFXVolume));
+			SoundFXVolume->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetSoundFXVolume));
+			SoundFXVolume->SetShouldApplySettingsImmediatly(true);
+
+			VolumeCategoryCollection->AddChildListData(SoundFXVolume);
+		}
+
+		// Test Item
+		{
+			UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
+			TestItem->SetDataID(FName("TestItem"));
+			TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Image Item")));
+			TestItem->SetSoftDescriptionImage(UJAFunctionLibrary::GetOptionsSoftImageByTag(JAGameplayTags::Frontend_Image_TestImage));
+			TestItem->SetDescriptionRichText(FText::FromString(TEXT("테스트 이미지 입니다.")));
+
+			VolumeCategoryCollection->AddChildListData(TestItem);
 		}
 	}
 
