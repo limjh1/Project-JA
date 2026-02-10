@@ -198,7 +198,7 @@ void UListDataObject_StringBool::SetFalseAsDefaultValue()
 void UListDataObject_StringBool::OnDataObjectInitialized()
 {
 	TryInitBoolValues();
-
+	
 	Super::OnDataObjectInitialized();
 }
 
@@ -206,12 +206,12 @@ void UListDataObject_StringBool::TryInitBoolValues()
 {
 	if (!AvailableOptionsStringArray.Contains(TrueString))
 	{
-		AddDynamicOption(TrueString, FText::FromString(TEXT("활성화")));
+		AddDynamicOption(TrueString, FText::FromString(TEXT("TRUE")));
 	}
 
 	if (!AvailableOptionsStringArray.Contains(FalseString))
 	{
-		AddDynamicOption(FalseString, FText::FromString(TEXT("비활성화")));
+		AddDynamicOption(FalseString, FText::FromString(TEXT("FALSE")));
 	}
 }
 

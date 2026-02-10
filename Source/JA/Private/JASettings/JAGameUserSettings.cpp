@@ -4,7 +4,7 @@
 #include "JASettings/JAGameUserSettings.h"
 
 UJAGameUserSettings::UJAGameUserSettings()
-	: OverallVolume(1.f), BGMVolume(1.f), SoundFXVolume(1.f)
+	: OverallVolume(1.f), BGMVolume(1.f), SoundFXVolume(1.f), bAllowBackgroundAudio(false), bUseHDRAudioMode(false)
 {
 }
 
@@ -33,4 +33,14 @@ void UJAGameUserSettings::SetBGMVolume(float InVolume)
 void UJAGameUserSettings::SetSoundFXVolume(float InVolume)
 {
 	SoundFXVolume = InVolume;
+}
+
+void UJAGameUserSettings::SetAllowBackgroundAudio(bool bIsAllowed)
+{
+	bAllowBackgroundAudio = bIsAllowed;
+}
+
+void UJAGameUserSettings::SetUseHDRAudioMode(bool bIsAllowed)
+{
+	bUseHDRAudioMode = bIsAllowed;
 }

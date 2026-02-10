@@ -190,16 +190,44 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 
 			VolumeCategoryCollection->AddChildListData(SoundFXVolume);
 		}
+	}
 
-		// Test Item
+	// Sound Category
+	{
+		UListDataObject_Collection* SoundCategoryCollection = NewObject<UListDataObject_Collection>();
+		SoundCategoryCollection->SetDataID(FName("SoundCategoryCollection"));
+		SoundCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("옵션")));
+
+		AudioTabCollection->AddChildListData(SoundCategoryCollection);
+
+		// Allow Background Audio
 		{
-			UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
-			TestItem->SetDataID(FName("TestItem"));
-			TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Image Item")));
-			TestItem->SetSoftDescriptionImage(UJAFunctionLibrary::GetOptionsSoftImageByTag(JAGameplayTags::Frontend_Image_TestImage));
-			TestItem->SetDescriptionRichText(FText::FromString(TEXT("테스트 이미지 입니다.")));
+			UListDataObject_StringBool* AllowBackgrounAudio = NewObject<UListDataObject_StringBool>();
+			AllowBackgrounAudio->SetDataID(FName("AllowBackgrounAudio"));
+			AllowBackgrounAudio->SetDataDisplayName(FText::FromString(TEXT("BGM")));
+			AllowBackgrounAudio->OverrideTrueDisplayText(FText::FromString(TEXT("활성화")));
+			AllowBackgrounAudio->OverrideFalseDisplayText(FText::FromString(TEXT("비활성화")));
+			AllowBackgrounAudio->SetFalseAsDefaultValue();
+			AllowBackgrounAudio->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetAllowBackgroundAudio));
+			AllowBackgrounAudio->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetAllowBackgroundAudio));
+			AllowBackgrounAudio->SetShouldApplySettingsImmediatly(true);
 
-			VolumeCategoryCollection->AddChildListData(TestItem);
+			SoundCategoryCollection->AddChildListData(AllowBackgrounAudio);
+		}
+
+		// Use HDR Audio
+		{
+			UListDataObject_StringBool* UseHDRAudioMode = NewObject<UListDataObject_StringBool>();
+			UseHDRAudioMode->SetDataID(FName("UseHDRAudioMode"));
+			UseHDRAudioMode->SetDataDisplayName(FText::FromString(TEXT("HDR")));
+			UseHDRAudioMode->OverrideTrueDisplayText(FText::FromString(TEXT("활성화")));
+			UseHDRAudioMode->OverrideFalseDisplayText(FText::FromString(TEXT("비활성화")));
+			UseHDRAudioMode->SetFalseAsDefaultValue();
+			UseHDRAudioMode->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetUseHDRAudioMode));
+			UseHDRAudioMode->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetUseHDRAudioMode));
+			UseHDRAudioMode->SetShouldApplySettingsImmediatly(true);
+
+			SoundCategoryCollection->AddChildListData(UseHDRAudioMode);
 		}
 	}
 

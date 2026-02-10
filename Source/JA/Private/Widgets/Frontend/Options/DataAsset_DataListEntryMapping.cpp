@@ -9,7 +9,7 @@ TSubclassOf<UWidget_ListEntry_Base> UDataAsset_DataListEntryMapping::FindEntryWi
 {
 	check(InDataObject);
 
-	for (UClass* DataObjectClass = InDataObject->GetClass(); DataObjectClass; DataObjectClass->GetSuperClass())
+	for (UClass* DataObjectClass = InDataObject->GetClass(); DataObjectClass; DataObjectClass = DataObjectClass->GetSuperClass())
 	{
 		if (TSubclassOf<UListDataObject_Base> ConvertedDataObjectClass = TSubclassOf<UListDataObject_Base>(DataObjectClass))
 		{
