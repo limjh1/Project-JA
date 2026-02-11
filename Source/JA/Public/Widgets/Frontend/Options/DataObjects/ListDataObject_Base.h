@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "JATypes/JAEnumTypes.h"
+#include "JATypes/JAStructTypes.h"
 #include "ListDataObject_Base.generated.h"
 
 #define LIST_DATA_ACCESSOR(DataType, PropertyName) \
@@ -43,6 +44,11 @@ public:
 	virtual bool CanResetBackToDefaultValue() const { return false; }
 	virtual bool TryResetBackToDefaultValue() { return false; }
 
+	// Gets called from OptionsDataRegister for adding in edit conditions for the contructed list data objects
+	void AddEditCondition(const FOptionsDataEditConditionDescriptor& InEditCondition);
+
+	bool IsDataCurrentlyEditable();
+
 public:
 	void InitDataObject();
 
@@ -52,6 +58,12 @@ protected:
 
 	virtual void NotifyListDataModified(UListDataObject_Base* ModifiedData, EOptionListDataModifyReason ModifyReason = EOptionListDataModifyReason::DirectlyModified);
 	
+	// The child class should override this to allow the value be set to the forced string value
+	virtual bool CanSetToForcedStringValue(const FString& InForcedValue) const { return false; }
+
+	// The child class should override this to specify how to set the current value to the forced value
+	virtual void OnSetToForcedStringValue(const FString& InForcedValue) {}
+
 private:
 	FName DataID;
 	FText DataDisplayName;
@@ -63,4 +75,7 @@ private:
 	UListDataObject_Base* ParentData;
 
 	bool bShouldApplyChangeImmedialty = false;
+
+	UPROPERTY(Transient)
+	TArray<FOptionsDataEditConditionDescriptor> EditConditionDescArray;
 };

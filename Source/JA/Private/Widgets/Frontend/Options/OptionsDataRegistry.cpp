@@ -9,6 +9,7 @@
 #include "JAFunctionLibrary.h"
 #include "JAGameplayTags.h"
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_Scalar.h"
+#include "Widgets/Frontend/Options/DataObjects/ListDataObject_StringResolution.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FOptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UJAGameUserSettings, SetterOrGetterFuncName))
@@ -139,7 +140,7 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 			UListDataObject_Scalar* OverallVolume = NewObject<UListDataObject_Scalar>();
 			OverallVolume->SetDataID(FName("OverallVolume"));
 			OverallVolume->SetDataDisplayName(FText::FromString(TEXT("전체")));
-			OverallVolume->SetDescriptionRichText(FText::FromString(TEXT("전체 음량을 조정합니다.")));
+			OverallVolume->SetDescriptionRichText(FText::FromString(TEXT("게임 내 모든 사운드의 마스터 볼륨을 조절합니다.")));
 			OverallVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			OverallVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
 			OverallVolume->SetSliderStepSize(0.01f);
@@ -157,8 +158,8 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 		{
 			UListDataObject_Scalar* BGMVolume = NewObject<UListDataObject_Scalar>();
 			BGMVolume->SetDataID(FName("BGMVolume"));
-			BGMVolume->SetDataDisplayName(FText::FromString(TEXT("BGM")));
-			BGMVolume->SetDescriptionRichText(FText::FromString(TEXT("BGM 음량을 조정합니다.")));
+			BGMVolume->SetDataDisplayName(FText::FromString(TEXT("배경음")));
+			BGMVolume->SetDescriptionRichText(FText::FromString(TEXT("배경 음악의 볼륨을 조정합니다.")));
 			BGMVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			BGMVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
 			BGMVolume->SetSliderStepSize(0.01f);
@@ -177,7 +178,7 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 			UListDataObject_Scalar* SoundFXVolume = NewObject<UListDataObject_Scalar>();
 			SoundFXVolume->SetDataID(FName("SoundFXVolume"));
 			SoundFXVolume->SetDataDisplayName(FText::FromString(TEXT("효과음")));
-			SoundFXVolume->SetDescriptionRichText(FText::FromString(TEXT("효과음 음량을 조정합니다.")));
+			SoundFXVolume->SetDescriptionRichText(FText::FromString(TEXT("스킬, 타격음, UI 등 효과음의 볼륨을 조정합니다.")));
 			SoundFXVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			SoundFXVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
 			SoundFXVolume->SetSliderStepSize(0.01f);
@@ -196,15 +197,16 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 	{
 		UListDataObject_Collection* SoundCategoryCollection = NewObject<UListDataObject_Collection>();
 		SoundCategoryCollection->SetDataID(FName("SoundCategoryCollection"));
-		SoundCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("옵션")));
+		SoundCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("소리 옵션")));
 
 		AudioTabCollection->AddChildListData(SoundCategoryCollection);
 
 		// Allow Background Audio
 		{
 			UListDataObject_StringBool* AllowBackgrounAudio = NewObject<UListDataObject_StringBool>();
-			AllowBackgrounAudio->SetDataID(FName("AllowBackgrounAudio"));
-			AllowBackgrounAudio->SetDataDisplayName(FText::FromString(TEXT("BGM")));
+			AllowBackgrounAudio->SetDataID(FName("AllowBackgroundAudio"));
+			AllowBackgrounAudio->SetDataDisplayName(FText::FromString(TEXT("백그라운드 재생")));
+			AllowBackgrounAudio->SetDescriptionRichText(FText::FromString(TEXT("게임 화면이 비활성화된 상태에서도 소리를 출력합니다.")));
 			AllowBackgrounAudio->OverrideTrueDisplayText(FText::FromString(TEXT("활성화")));
 			AllowBackgrounAudio->OverrideFalseDisplayText(FText::FromString(TEXT("비활성화")));
 			AllowBackgrounAudio->SetFalseAsDefaultValue();
@@ -219,7 +221,8 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 		{
 			UListDataObject_StringBool* UseHDRAudioMode = NewObject<UListDataObject_StringBool>();
 			UseHDRAudioMode->SetDataID(FName("UseHDRAudioMode"));
-			UseHDRAudioMode->SetDataDisplayName(FText::FromString(TEXT("HDR")));
+			UseHDRAudioMode->SetDataDisplayName(FText::FromString(TEXT("HDR 오디오")));
+			UseHDRAudioMode->SetDescriptionRichText(FText::FromString(TEXT("넓은 다이나믹 레인지를 활용해 더욱 사실적이고 입체적인 사운드를 제공합니다.")));
 			UseHDRAudioMode->OverrideTrueDisplayText(FText::FromString(TEXT("활성화")));
 			UseHDRAudioMode->OverrideFalseDisplayText(FText::FromString(TEXT("비활성화")));
 			UseHDRAudioMode->SetFalseAsDefaultValue();
@@ -252,10 +255,10 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringEnum* WindowMode = NewObject<UListDataObject_StringEnum>();
 			WindowMode->SetDataID(FName("WindowMode"));
-			WindowMode->SetDataDisplayName(FText::FromString(TEXT("윈도우 모드")));
-			WindowMode->SetDescriptionRichText(FText::FromString(TEXT("이것은 윈도우 모드에 대한 설명입니다.")));
+			WindowMode->SetDataDisplayName(FText::FromString(TEXT("화면 모드")));
+			WindowMode->SetDescriptionRichText(FText::FromString(TEXT("전체 화면, 창 모드 등 표시 형태를 설정합니다.")));
 			WindowMode->AddEnumOption(EWindowMode::Fullscreen, FText::FromString(TEXT("전체 화면")));
-			WindowMode->AddEnumOption(EWindowMode::WindowedFullscreen, FText::FromString(TEXT("Borderless Window")));
+			WindowMode->AddEnumOption(EWindowMode::WindowedFullscreen, FText::FromString(TEXT("전체 창 모드")));
 			WindowMode->AddEnumOption(EWindowMode::Windowed, FText::FromString(TEXT("창 모드")));
 			WindowMode->SetDefaultValueFromEnumOption(EWindowMode::WindowedFullscreen);
 			WindowMode->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetFullscreenMode));
@@ -263,6 +266,20 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			WindowMode->SetShouldApplySettingsImmediatly(true);
 
 			DisplayCategoryCollection->AddChildListData(WindowMode);
+		}
+
+		// Screen Resolution
+		{
+			UListDataObject_StringResolution* ScreenResolution = NewObject<UListDataObject_StringResolution>();
+			ScreenResolution->SetDataID(FName("ScreenResolution"));
+			ScreenResolution->SetDataDisplayName(FText::FromString(TEXT("해상도")));
+			ScreenResolution->SetDescriptionRichText(FText::FromString(TEXT("화면에 출력되는 픽셀 해상도를 설정합니다.")));
+			ScreenResolution->InitResolutionValues();
+			ScreenResolution->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetScreenResolution));
+			ScreenResolution->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetScreenResolution));
+			ScreenResolution->SetShouldApplySettingsImmediatly(true);
+
+			DisplayCategoryCollection->AddChildListData(ScreenResolution);
 		}
 	}
 
