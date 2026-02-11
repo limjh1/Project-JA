@@ -240,6 +240,32 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 	VideoTabCollection->SetDataID(FName("VideoTabCollection"));
 	VideoTabCollection->SetDataDisplayName(FText::FromString(TEXT("그래픽")));
 
+	// Display Category
+	{
+		UListDataObject_Collection* DisplayCategoryCollection = NewObject<UListDataObject_Collection>();
+		DisplayCategoryCollection->SetDataID(FName("DisplayCategoryCollection"));
+		DisplayCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("화면")));
+
+		VideoTabCollection->AddChildListData(DisplayCategoryCollection);
+		
+		// Window Mode
+		{
+			UListDataObject_StringEnum* WindowMode = NewObject<UListDataObject_StringEnum>();
+			WindowMode->SetDataID(FName("WindowMode"));
+			WindowMode->SetDataDisplayName(FText::FromString(TEXT("윈도우 모드")));
+			WindowMode->SetDescriptionRichText(FText::FromString(TEXT("이것은 윈도우 모드에 대한 설명입니다.")));
+			WindowMode->AddEnumOption(EWindowMode::Fullscreen, FText::FromString(TEXT("전체 화면")));
+			WindowMode->AddEnumOption(EWindowMode::WindowedFullscreen, FText::FromString(TEXT("Borderless Window")));
+			WindowMode->AddEnumOption(EWindowMode::Windowed, FText::FromString(TEXT("창 모드")));
+			WindowMode->SetDefaultValueFromEnumOption(EWindowMode::WindowedFullscreen);
+			WindowMode->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetFullscreenMode));
+			WindowMode->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetFullscreenMode));
+			WindowMode->SetShouldApplySettingsImmediatly(true);
+
+			DisplayCategoryCollection->AddChildListData(WindowMode);
+		}
+	}
+
 	RegisteredOptionsTabCollections.Add(VideoTabCollection);
 }
 

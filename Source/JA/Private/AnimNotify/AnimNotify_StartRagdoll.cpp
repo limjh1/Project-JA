@@ -8,7 +8,9 @@
 
 UAnimNotify_StartRagdoll::UAnimNotify_StartRagdoll()
 {
+#if WITH_EDITORONLY_DATA
 	NotifyColor = FColor::Red;
+#endif // WITH_EDITORONLY_DATA
 }
 
 void UAnimNotify_StartRagdoll::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)

@@ -79,7 +79,6 @@ private:
 	bool bAllowBackgroundAudio;
 
 	UPROPERTY(Config)
-	bool bUseHDRAudioMode;
-	
+	bool bUseHDRAudioMode;	
 	// Audio Collection Tab
 };
