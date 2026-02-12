@@ -43,9 +43,12 @@ void UListDataObject_Scalar::SetCurrentValueFromSlider(float InNewValue)
 		);
 
 		DataDynamicSetter->SetValueFromString(LexToString(ClampedValue));
-
-		NotifyListDataModified(this);
 	}
+}
+
+void UListDataObject_Scalar::NotifySliderModfiedEnd()
+{
+	NotifyListDataModified(this);
 }
 
 bool UListDataObject_Scalar::CanResetBackToDefaultValue() const

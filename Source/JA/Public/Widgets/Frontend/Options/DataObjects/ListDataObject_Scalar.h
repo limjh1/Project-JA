@@ -27,6 +27,7 @@ public:
 
 	float GetCurrentValue() const;
 	void SetCurrentValueFromSlider(float InNewValue);
+	void NotifySliderModfiedEnd();
 
 private:
 	//~ Begin UListDataObject_Base Interface

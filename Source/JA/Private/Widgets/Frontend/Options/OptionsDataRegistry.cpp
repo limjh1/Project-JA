@@ -249,8 +249,21 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		DisplayCategoryCollection->SetDataID(FName("DisplayCategoryCollection"));
 		DisplayCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("화면")));
 
+		UListDataObject_StringEnum* CreatedWindowMode = nullptr;
+
 		VideoTabCollection->AddChildListData(DisplayCategoryCollection);
 		
+		FOptionsDataEditConditionDescriptor PackagedBuildOnlyCondition;
+		PackagedBuildOnlyCondition.SetEditConditionFunc(
+			[]()->bool
+			{
+				const bool bIsInEditor = (GIsEditor || GIsPlayInEditorWorld);
+
+				return !bIsInEditor;
+			}
+		);
+		PackagedBuildOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>패키지 빌드 버전에서만 설정 가능한 옵션입니다.</>"));
+
 		// Window Mode
 		{
 			UListDataObject_StringEnum* WindowMode = NewObject<UListDataObject_StringEnum>();
@@ -265,6 +278,10 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			WindowMode->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetFullscreenMode));
 			WindowMode->SetShouldApplySettingsImmediatly(true);
 
+			WindowMode->AddEditCondition(PackagedBuildOnlyCondition);
+
+			CreatedWindowMode = WindowMode;
+
 			DisplayCategoryCollection->AddChildListData(WindowMode);
 		}
 
@@ -278,6 +295,24 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			ScreenResolution->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetScreenResolution));
 			ScreenResolution->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetScreenResolution));
 			ScreenResolution->SetShouldApplySettingsImmediatly(true);
+
+			ScreenResolution->AddEditCondition(PackagedBuildOnlyCondition);
+
+			FOptionsDataEditConditionDescriptor WindowModeEditCondition;
+			WindowModeEditCondition.SetEditConditionFunc(
+				[CreatedWindowMode]()->bool
+				{
+					const bool bIsBoderlessWindow = CreatedWindowMode->GetCurrentValueAsEnum<EWindowMode::Type>() == EWindowMode::WindowedFullscreen;
+
+					return !bIsBoderlessWindow;
+				}
+			);
+			WindowModeEditCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>전체 창 모드에서는 화면 해상도를 조정할 수 없습니다. 해상도 설정값은 현재 디스플레이의 최대 해상도와 일치해야 합니다.</>"));
+			WindowModeEditCondition.SetDisabledForcedStringValue(ScreenResolution->GetMaximumAllowedResolution());
+
+			ScreenResolution->AddEditCondition(WindowModeEditCondition);			
+
+			ScreenResolution->AddEditDependencyData(CreatedWindowMode);
 
 			DisplayCategoryCollection->AddChildListData(ScreenResolution);
 		}
