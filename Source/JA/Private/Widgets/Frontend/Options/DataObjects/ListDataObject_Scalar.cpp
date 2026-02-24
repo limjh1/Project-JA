@@ -43,12 +43,9 @@ void UListDataObject_Scalar::SetCurrentValueFromSlider(float InNewValue)
 		);
 
 		DataDynamicSetter->SetValueFromString(LexToString(ClampedValue));
-	}
-}
 
-void UListDataObject_Scalar::NotifySliderModfiedEnd()
-{
-	NotifyListDataModified(this);
+		NotifyListDataModified(this);
+	}
 }
 
 bool UListDataObject_Scalar::CanResetBackToDefaultValue() const
@@ -86,6 +83,12 @@ void UListDataObject_Scalar::OnEditDependencyDataModified(UListDataObject_Base* 
 	NotifyListDataModified(this, EOptionListDataModifyReason::DependencyModified);
 
 	Super::OnEditDependencyDataModified(ModifiedDependencyData, ModifyReason);
+}
+
+void UListDataObject_Scalar::NotifyListDataModified(UListDataObject_Base* ModifiedData, EOptionListDataModifyReason ModifyReason)
+{
+	//#TODO 추후, 저장해야할 객체 저장해서, 탭 옮길때 일괄저장되게 구조 수정할 것.
+	Super::NotifyListDataModified(ModifiedData, ModifyReason);
 }
 
 float UListDataObject_Scalar::StringToFloat(const FString& InString) const

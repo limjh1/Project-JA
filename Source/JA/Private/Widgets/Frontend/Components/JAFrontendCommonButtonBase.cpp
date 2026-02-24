@@ -4,6 +4,7 @@
 #include "Widgets/Frontend/Components/JAFrontendCommonButtonBase.h"
 #include "CommonTextBlock.h"
 #include "Subsystems/JAFrontendUISubsystem.h"
+#include "CommonLazyImage.h"
 
 void UJAFrontendCommonButtonBase::SetButtonText(FText InText)
 {
@@ -21,6 +22,14 @@ FText UJAFrontendCommonButtonBase::GetButtonDisplayText() const
 	}
 
 	return FText();
+}
+
+void UJAFrontendCommonButtonBase::SetButtonDisplayImage(const FSlateBrush& InBrush)
+{
+	if (CommonLazyImage_ButtonImage)
+	{
+		CommonLazyImage_ButtonImage->SetBrush(InBrush);
+	}
 }
 
 void UJAFrontendCommonButtonBase::NativeOnInitialized()

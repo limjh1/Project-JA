@@ -35,9 +35,6 @@ private:
 	UFUNCTION()
 	void OnSliderMouseCaptureBegin();
 
-	UFUNCTION()
-	void OnSliderMouseCaptureEnd();
-
 private:
 	//~ Bound Widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))

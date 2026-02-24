@@ -1,0 +1,13 @@
+// JhLim All Rights Reserved
+
+
+#include "Widgets/Frontend/Options/DataObjects/ListDataObject_KeyRemap.h"
+
+void UListDataObject_KeyRemap::InitKeyRemapData(UEnhancedInputUserSettings* InOwningInputUserSettings, UEnhancedPlayerMappableKeyProfile* InKeyProfile, ECommonInputType InDesiredInputKeyType, const FPlayerKeyMapping& InOwningPlayerKeyMapping)
+{
+	CachedOwningInputUserSettings = InOwningInputUserSettings;
+	CachedOwningKeyProfile = InKeyProfile;
+	CachedDesiredInputKeyType = InDesiredInputKeyType;
+	CachedOwningMappingName = InOwningPlayerKeyMapping.GetMappingName();
+	CachedOwningMappableKeySlot = InOwningPlayerKeyMapping.GetSlot();
+}

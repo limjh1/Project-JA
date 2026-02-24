@@ -27,13 +27,13 @@ public:
 
 	float GetCurrentValue() const;
 	void SetCurrentValueFromSlider(float InNewValue);
-	void NotifySliderModfiedEnd();
 
 private:
 	//~ Begin UListDataObject_Base Interface
 	virtual bool CanResetBackToDefaultValue() const override;
 	virtual bool TryResetBackToDefaultValue() override;
 	virtual void OnEditDependencyDataModified(UListDataObject_Base* ModifiedDependencyData, EOptionListDataModifyReason ModifyReason) override;
+	virtual void NotifyListDataModified(UListDataObject_Base* ModifiedData, EOptionListDataModifyReason ModifyReason = EOptionListDataModifyReason::DirectlyModified) override;
 	//~ End UListDataObject_Base Interface
 
 	float StringToFloat(const FString& InString) const;

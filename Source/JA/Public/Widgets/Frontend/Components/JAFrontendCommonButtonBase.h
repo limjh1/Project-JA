@@ -8,6 +8,7 @@
 
 class UCommonTextBlock;
 class UJAFrontendUISubsystem;
+class UCommonLazyImage;
 
 /**
  * 
@@ -24,6 +25,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FText GetButtonDisplayText() const;
 
+	UFUNCTION(BlueprintCallable)
+	void SetButtonDisplayImage(const FSlateBrush& InBrush);
+
 private:
 	// ~Begin UUserWidget Interface
 	virtual void NativeOnInitialized() override;
@@ -39,6 +43,9 @@ private:
 	// Bound Widgets
 	UPROPERTY(meta = (BindWidgetOptional))
 	UCommonTextBlock* CommonTextBlock_ButtonText;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional, AllowPrivateAccess = "true"))
+	UCommonLazyImage* CommonLazyImage_ButtonImage;
 	// Bound Widgets
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "JAFrontend Button", meta = (AllowPrivateAccess = "true"))
