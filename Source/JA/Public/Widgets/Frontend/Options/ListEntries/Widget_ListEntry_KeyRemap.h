@@ -7,6 +7,7 @@
 #include "Widget_ListEntry_KeyRemap.generated.h"
 
 class UJAFrontendCommonButtonBase;
+class UListDataObject_KeyRemap;
 
 /**
  * 
@@ -16,10 +17,23 @@ class JA_API UWidget_ListEntry_KeyRemap : public UWidget_ListEntry_Base
 {
 	GENERATED_BODY()
 	
+protected:
+	//~ Begin UWidget_ListEntry_Base Interface
+	virtual void OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject) override;
+	virtual void OnOwningListDataObjectModified(UListDataObject_Base* OwningModifiedData, EOptionListDataModifyReason ModifyReason) override;
+	//~ End UWidget_ListEntry_Base Interface
+
 private:
+	// ~Bound Widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
 	UJAFrontendCommonButtonBase* CommonButton_RemapKey;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
 	UJAFrontendCommonButtonBase* CommonButton_ResetKeyBinding;
+	// ~Bound Widgets
+
+private:
+	UPROPERTY(Transient)
+	UListDataObject_KeyRemap* CachedOwningKeyRemapDataObject;
+
 };
