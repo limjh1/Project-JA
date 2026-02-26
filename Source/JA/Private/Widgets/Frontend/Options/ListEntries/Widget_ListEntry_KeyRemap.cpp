@@ -7,6 +7,7 @@
 #include "Subsystems/JAFrontendUISubsystem.h"
 #include "JAGameplayTags.h"
 #include "JAFunctionLibrary.h"
+#include "Widgets/Frontend/Options/Widget_KeyRemapScreen.h"
 
 #include "JADebugHelper.h"
 
@@ -40,9 +41,17 @@ void UWidget_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 	UJAFrontendUISubsystem::Get(this)->PushSoftWidgetToStackAsync(
 		JAGameplayTags::Frontend_WidgetStack_Modal,
 		UJAFunctionLibrary::GetFrontendSoftWidgetClassByTag(JAGameplayTags::Frontend_Widget_KeyRemapScreen),
-		[](EAsyncPushWidgetState PushState, UWidget_ActivatableBase* PushedWidget)
+		[this](EAsyncPushWidgetState PushState, UWidget_ActivatableBase* PushedWidget)
 		{
+			if (PushState == EAsyncPushWidgetState::OnCraetedBeforePush)
+			{
+				UWidget_KeyRemapScreen* CreatedKeyRemapScreen =CastChecked<UWidget_KeyRemapScreen>(PushedWidget);
 
+				if (CachedOwningKeyRemapDataObject)
+				{
+					CreatedKeyRemapScreen->SetDesiredInputTypeToFilter(CachedOwningKeyRemapDataObject->GetDesiredInputKeyType());
+				}
+			}
 		}
 	);
 }

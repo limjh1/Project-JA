@@ -24,6 +24,8 @@ public:
 
 	FSlateBrush GetIconFromCurrentKey() const;
 
+	FORCEINLINE ECommonInputType GetDesiredInputKeyType() const { return CachedDesiredInputKeyType; }
+
 private:
 	FPlayerKeyMapping* GetOwningKeyMapping() const;
 
