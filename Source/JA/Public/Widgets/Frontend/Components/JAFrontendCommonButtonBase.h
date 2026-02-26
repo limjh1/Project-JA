@@ -40,13 +40,13 @@ private:
 	virtual void NativeOnUnhovered() override;
 	// ~End UCommonButtonBase Interface
 
-	// Bound Widgets
+	// ~Bound Widgets
 	UPROPERTY(meta = (BindWidgetOptional))
 	UCommonTextBlock* CommonTextBlock_ButtonText;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional, AllowPrivateAccess = "true"))
 	UCommonLazyImage* CommonLazyImage_ButtonImage;
-	// Bound Widgets
+	// ~Bound Widgets
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "JAFrontend Button", meta = (AllowPrivateAccess = "true"))
 	FText ButtonDisplayText;

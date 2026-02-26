@@ -4,6 +4,19 @@
 #include "Widgets/Frontend/Options/ListEntries/Widget_ListEntry_KeyRemap.h"
 #include "Widgets/Frontend/Options/DataObjects/ListDataObject_KeyRemap.h"
 #include "Widgets/Frontend/Components/JAFrontendCommonButtonBase.h"
+#include "Subsystems/JAFrontendUISubsystem.h"
+#include "JAGameplayTags.h"
+#include "JAFunctionLibrary.h"
+
+#include "JADebugHelper.h"
+
+void UWidget_ListEntry_KeyRemap::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+	CommonButton_RemapKey->OnClicked().AddUObject(this, &ThisClass::OnRemapKeyButtonClicked);
+	CommonButton_ResetKeyBinding->OnClicked().AddUObject(this, &ThisClass::OnResetKeyBindingButtonClicked);
+}
 
 void UWidget_ListEntry_KeyRemap::OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject)
 {
@@ -20,4 +33,21 @@ void UWidget_ListEntry_KeyRemap::OnOwningListDataObjectModified(UListDataObject_
 	{
 		CommonButton_RemapKey->SetButtonDisplayImage(CachedOwningKeyRemapDataObject->GetIconFromCurrentKey());
 	}
+}
+
+void UWidget_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
+{
+	UJAFrontendUISubsystem::Get(this)->PushSoftWidgetToStackAsync(
+		JAGameplayTags::Frontend_WidgetStack_Modal,
+		UJAFunctionLibrary::GetFrontendSoftWidgetClassByTag(JAGameplayTags::Frontend_Widget_KeyRemapScreen),
+		[](EAsyncPushWidgetState PushState, UWidget_ActivatableBase* PushedWidget)
+		{
+
+		}
+	);
+}
+
+void UWidget_ListEntry_KeyRemap::OnResetKeyBindingButtonClicked()
+{
+	Debug::Print(TEXT("Reset Key Binding Button Clicked"));
 }
