@@ -31,6 +31,9 @@ private:
 	void OnRemapKeyButtonClicked();
 	void OnResetKeyBindingButtonClicked();
 
+	void OnKeyToRemapPressed(const FKey& PressedKey);
+	void OnKeyRemapCanceled(const FString& CanceledReason);
+
 private:
 	// ~Bound Widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))

@@ -657,10 +657,6 @@ void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwiningLocal
 			KeyboardMouseOnly.KeyToMatch = EKeys::S; // Anykey
 			KeyboardMouseOnly.bMatchBasicKeyTypes = true;
 
-			//FPlayerMappableKeyQueryOptions GamepadOnly;
-			//GamepadOnly.KeyToMatch = EKeys::Gamepad_FaceButton_Bottom; // Anykey
-			//GamepadOnly.bMatchBasicKeyTypes = true;
-
 			for (const TPair<FGameplayTag, UEnhancedPlayerMappableKeyProfile*>& ProfilePair : EIUserSettings->GetAllSavedKeyProfiles())
 			{
 				UEnhancedPlayerMappableKeyProfile* MappableKeyProfile = ProfilePair.Value;
@@ -684,6 +680,50 @@ void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwiningLocal
 							KeyRemapDataObject->InitKeyRemapData(EIUserSettings, MappableKeyProfile, ECommonInputType::MouseAndKeyboard, KeyMapping);
 
 							KeyboardMouseCategoryCollection->AddChildListData(KeyRemapDataObject);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Gamepad Category
+	{
+		UListDataObject_Collection* GamepadCategoryCollection = NewObject<UListDataObject_Collection>();
+		GamepadCategoryCollection->SetDataID(FName("GamepadCategoryCollection"));
+		GamepadCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("게임 패드")));
+
+		ControlTabCollection->AddChildListData(GamepadCategoryCollection);
+
+		// Gamepad Inputs
+		{
+			FPlayerMappableKeyQueryOptions GamepadOnly;
+			GamepadOnly.KeyToMatch = EKeys::Gamepad_FaceButton_Bottom; // Anykey
+			GamepadOnly.bMatchBasicKeyTypes = true;
+
+			for (const TPair<FGameplayTag, UEnhancedPlayerMappableKeyProfile*>& ProfilePair : EIUserSettings->GetAllSavedKeyProfiles())
+			{
+				UEnhancedPlayerMappableKeyProfile* MappableKeyProfile = ProfilePair.Value;
+				check(MappableKeyProfile);
+
+				for (const TPair<FName, FKeyMappingRow>& MappingRowPair : MappableKeyProfile->GetPlayerMappingRows())
+				{
+					for (const FPlayerKeyMapping& KeyMapping : MappingRowPair.Value.Mappings) // Set
+					{
+						if (MappableKeyProfile->DoesMappingPassQueryOptions(KeyMapping, GamepadOnly))
+						{
+							/*Debug::Print(
+								TEXT(" Mapping ID: ") + KeyMapping.GetMappingName().ToString() +
+								TEXT(" Display Name: ") + KeyMapping.GetDisplayName().ToString() +
+								TEXT(" Bound Key: ") + KeyMapping.GetCurrentKey().GetDisplayName().ToString()
+							);*/
+
+							UListDataObject_KeyRemap* KeyRemapDataObject = NewObject<UListDataObject_KeyRemap>();
+							KeyRemapDataObject->SetDataID(KeyMapping.GetMappingName());
+							KeyRemapDataObject->SetDataDisplayName(KeyMapping.GetDisplayName());
+							KeyRemapDataObject->InitKeyRemapData(EIUserSettings, MappableKeyProfile, ECommonInputType::Gamepad, KeyMapping);
+
+							GamepadCategoryCollection->AddChildListData(KeyRemapDataObject);
 						}
 					}
 				}
