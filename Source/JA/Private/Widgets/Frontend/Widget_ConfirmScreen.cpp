@@ -96,11 +96,16 @@ void UWidget_ConfirmScreen::InitConfirmScreen(UConfirmScreenInfoObject* InScreen
 			}
 		);
 	}
+}
 
+UWidget* UWidget_ConfirmScreen::NativeGetDesiredFocusTarget() const
+{
 	if (0 != DynamicEntryBox_Buttons->GetNumEntries())
 	{
 		// 마지막 버튼으로 포커스 설정.
 		// Yes, No라면 Gamepad는 No에 포커스가 먼저 잡힌다.
 		DynamicEntryBox_Buttons->GetAllEntries().Last()->SetFocus();
 	}
+
+	return Super::NativeGetDesiredFocusTarget();
 }

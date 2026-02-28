@@ -8,9 +8,10 @@ void UJAGameInstance::Init()
 {
 	Super::Init();
 
-	// Loading Screen
-	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ThisClass::OnPreLoadMap);
-	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ThisClass::OnDestinationWorldLoaded);
+	// 임시 주석 처리. 이후 로딩 방향성 정해지면 수정 필요
+	//// Loading Screen
+	//FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ThisClass::OnPreLoadMap);
+	//FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ThisClass::OnDestinationWorldLoaded);
 }
 
 TSoftObjectPtr<UWorld> UJAGameInstance::GetGameLevelByTag(FGameplayTag InTag) const
