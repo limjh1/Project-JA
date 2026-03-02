@@ -130,6 +130,7 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Frontend_Widget_ConfirmScreen, "Frontend.Widget.ConfirmScreen");
 	UE_DEFINE_GAMEPLAY_TAG(Frontend_Widget_StoryScreen, "Frontend.Widget.StoryScreen");
 	UE_DEFINE_GAMEPLAY_TAG(Frontend_Widget_KeyRemapScreen, "Frontend.Widget.KeyRemapScreen");
+	UE_DEFINE_GAMEPLAY_TAG(Frontend_Widget_CreditScreen, "Frontend.Widget.CreditScreen");
 
 	/* Fronted Options Image Tags */
 	UE_DEFINE_GAMEPLAY_TAG(Frontend_Image_TestImage, "Frontend.Image.TestImage");	

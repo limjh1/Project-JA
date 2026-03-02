@@ -24,7 +24,8 @@ public class JA : ModuleRules
 			"MoviePlayer",
 			"UMG",
 			"CommonInput",
-			"PropertyPath"
+			"PropertyPath",
+			"PreLoadScreen"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
