@@ -41,7 +41,7 @@ TArray<UListDataObject_Base*> UOptionsDataRegistry::GetListSourceItemsBySelected
 	);
 
 	checkf(FoundTabCollectionPtr, TEXT("No valid tab found under the ID %s"), *InSelectedTabID.ToString());
-	
+
 	UListDataObject_Collection* FoundTabCollection = *FoundTabCollectionPtr;
 
 	TArray<UListDataObject_Base*> AllChildListItems;
@@ -91,7 +91,7 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 {
 	UListDataObject_Collection* GameplayTabCollection = NewObject<UListDataObject_Collection>();
 	GameplayTabCollection->SetDataID(FName("GameplayTabCollection"));
-	GameplayTabCollection->SetDataDisplayName(FText::FromString(TEXT("게임플레이")));
+	GameplayTabCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Tab_Gameplay"));
 
 	// This is the full code for contructor data interactor helper
 	/*TSharedPtr<FOptionsDataInteractionHelper> ConstructedHelper =
@@ -101,12 +101,12 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 	{
 		UListDataObject_String* GameDifficulty = NewObject<UListDataObject_String>();
 		GameDifficulty->SetDataID(FName("GameDifficulty"));
-		GameDifficulty->SetDataDisplayName(FText::FromString(TEXT("난이도")));
-		GameDifficulty->SetDescriptionRichText(FText::FromString(TEXT("게임 난이도를 조절합니다.\n\n<Bold>쉬움:</> 전투 부담이 적고 가장 여유로운 플레이가 가능합니다.\n\n<Bold>보통:</> 표준적인 전투 난이도로 적절한 긴장감을 제공합니다.\n\n<Bold>어려움:</> 더 강력한 적들이 등장하며 정교한 조작을 요구합니다.\n\n<Bold>매우 어려움:</> 극한의 도전적인 전투를 제공하며, 1회차 플레이 시 권장하지 않습니다.")));
-		GameDifficulty->AddDynamicOption(TEXT("Easy"), FText::FromString(TEXT("쉬움")));
-		GameDifficulty->AddDynamicOption(TEXT("Normal"), FText::FromString(TEXT("보통")));
-		GameDifficulty->AddDynamicOption(TEXT("Hard"), FText::FromString(TEXT("어려움")));
-		GameDifficulty->AddDynamicOption(TEXT("Very Hard"), FText::FromString(TEXT("매우 어려움")));
+		GameDifficulty->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_GameDifficulty"));
+		GameDifficulty->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_GameDifficulty"));
+		GameDifficulty->AddDynamicOption(TEXT("Easy"), GET_DESCRIPTION("UI_Options_Value_Difficulty_Easy"));
+		GameDifficulty->AddDynamicOption(TEXT("Normal"), GET_DESCRIPTION("UI_Options_Value_Difficulty_Normal"));
+		GameDifficulty->AddDynamicOption(TEXT("Hard"), GET_DESCRIPTION("UI_Options_Value_Difficulty_Hard"));
+		GameDifficulty->AddDynamicOption(TEXT("Very Hard"), GET_DESCRIPTION("UI_Options_Value_Difficulty_VeryHard"));
 		GameDifficulty->SetDefaultValueFromString(TEXT("Normal"));
 		GameDifficulty->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentGameDifficulty));
 		GameDifficulty->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentGameDifficulty));
@@ -119,9 +119,9 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 	{
 		UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
 		TestItem->SetDataID(FName("TestItem"));
-		TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Image Item")));
+		TestItem->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_TestItem"));
 		TestItem->SetSoftDescriptionImage(UJAFunctionLibrary::GetOptionsSoftImageByTag(JAGameplayTags::Frontend_Image_TestImage));
-		TestItem->SetDescriptionRichText(FText::FromString(TEXT("테스트 이미지 입니다.")));
+		TestItem->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_TestItem"));
 
 		GameplayTabCollection->AddChildListData(TestItem);
 	}
@@ -133,13 +133,13 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 {
 	UListDataObject_Collection* AudioTabCollection = NewObject<UListDataObject_Collection>();
 	AudioTabCollection->SetDataID(FName("AudioTabCollection"));
-	AudioTabCollection->SetDataDisplayName(FText::FromString(TEXT("오디오")));
+	AudioTabCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Tab_Audio"));
 
 	// Volume Category
 	{
 		UListDataObject_Collection* VolumeCategoryCollection = NewObject<UListDataObject_Collection>();
 		VolumeCategoryCollection->SetDataID(FName("VolumeCategoryCollection"));
-		VolumeCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("음량")));
+		VolumeCategoryCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Category_Volume"));
 
 		AudioTabCollection->AddChildListData(VolumeCategoryCollection);
 
@@ -147,8 +147,8 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 		{
 			UListDataObject_Scalar* OverallVolume = NewObject<UListDataObject_Scalar>();
 			OverallVolume->SetDataID(FName("OverallVolume"));
-			OverallVolume->SetDataDisplayName(FText::FromString(TEXT("전체")));
-			OverallVolume->SetDescriptionRichText(FText::FromString(TEXT("게임 내 모든 사운드의 마스터 볼륨을 조절합니다.")));
+			OverallVolume->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_OverallVolume"));
+			OverallVolume->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_OverallVolume"));
 			OverallVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			OverallVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
 			OverallVolume->SetSliderStepSize(0.01f);
@@ -166,8 +166,8 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 		{
 			UListDataObject_Scalar* BGMVolume = NewObject<UListDataObject_Scalar>();
 			BGMVolume->SetDataID(FName("BGMVolume"));
-			BGMVolume->SetDataDisplayName(FText::FromString(TEXT("배경음")));
-			BGMVolume->SetDescriptionRichText(FText::FromString(TEXT("배경 음악의 볼륨을 조정합니다.")));
+			BGMVolume->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_BGMVolume"));
+			BGMVolume->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_BGMVolume"));
 			BGMVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			BGMVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
 			BGMVolume->SetSliderStepSize(0.01f);
@@ -185,8 +185,8 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 		{
 			UListDataObject_Scalar* SoundFXVolume = NewObject<UListDataObject_Scalar>();
 			SoundFXVolume->SetDataID(FName("SoundFXVolume"));
-			SoundFXVolume->SetDataDisplayName(FText::FromString(TEXT("효과음")));
-			SoundFXVolume->SetDescriptionRichText(FText::FromString(TEXT("스킬, 타격음, UI 등 효과음의 볼륨을 조정합니다.")));
+			SoundFXVolume->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_SoundFXVolume"));
+			SoundFXVolume->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_SoundFXVolume"));
 			SoundFXVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			SoundFXVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
 			SoundFXVolume->SetSliderStepSize(0.01f);
@@ -205,7 +205,7 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 	{
 		UListDataObject_Collection* SoundCategoryCollection = NewObject<UListDataObject_Collection>();
 		SoundCategoryCollection->SetDataID(FName("SoundCategoryCollection"));
-		SoundCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("소리 옵션")));
+		SoundCategoryCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Category_Sound"));
 
 		AudioTabCollection->AddChildListData(SoundCategoryCollection);
 
@@ -213,10 +213,10 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 		{
 			UListDataObject_StringBool* AllowBackgrounAudio = NewObject<UListDataObject_StringBool>();
 			AllowBackgrounAudio->SetDataID(FName("AllowBackgroundAudio"));
-			AllowBackgrounAudio->SetDataDisplayName(FText::FromString(TEXT("백그라운드 재생")));
-			AllowBackgrounAudio->SetDescriptionRichText(FText::FromString(TEXT("게임 화면이 비활성화된 상태에서도 소리를 출력합니다.")));
-			AllowBackgrounAudio->OverrideTrueDisplayText(FText::FromString(TEXT("활성화")));
-			AllowBackgrounAudio->OverrideFalseDisplayText(FText::FromString(TEXT("비활성화")));
+			AllowBackgrounAudio->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_AllowBackgroundAudio"));
+			AllowBackgrounAudio->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_AllowBackgroundAudio"));
+			AllowBackgrounAudio->OverrideTrueDisplayText(GET_DESCRIPTION("UI_Options_Value_Enable"));
+			AllowBackgrounAudio->OverrideFalseDisplayText(GET_DESCRIPTION("UI_Options_Value_Disable"));
 			AllowBackgrounAudio->SetFalseAsDefaultValue();
 			AllowBackgrounAudio->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetAllowBackgroundAudio));
 			AllowBackgrounAudio->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetAllowBackgroundAudio));
@@ -229,10 +229,10 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 		{
 			UListDataObject_StringBool* UseHDRAudioMode = NewObject<UListDataObject_StringBool>();
 			UseHDRAudioMode->SetDataID(FName("UseHDRAudioMode"));
-			UseHDRAudioMode->SetDataDisplayName(FText::FromString(TEXT("HDR 오디오")));
-			UseHDRAudioMode->SetDescriptionRichText(FText::FromString(TEXT("넓은 다이나믹 레인지를 활용해 더욱 사실적이고 입체적인 사운드를 제공합니다.")));
-			UseHDRAudioMode->OverrideTrueDisplayText(FText::FromString(TEXT("활성화")));
-			UseHDRAudioMode->OverrideFalseDisplayText(FText::FromString(TEXT("비활성화")));
+			UseHDRAudioMode->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_UseHDRAudioMode"));
+			UseHDRAudioMode->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_UseHDRAudioMode"));
+			UseHDRAudioMode->OverrideTrueDisplayText(GET_DESCRIPTION("UI_Options_Value_Enable"));
+			UseHDRAudioMode->OverrideFalseDisplayText(GET_DESCRIPTION("UI_Options_Value_Disable"));
 			UseHDRAudioMode->SetFalseAsDefaultValue();
 			UseHDRAudioMode->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetUseHDRAudioMode));
 			UseHDRAudioMode->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetUseHDRAudioMode));
@@ -249,7 +249,7 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 {
 	UListDataObject_Collection* VideoTabCollection = NewObject<UListDataObject_Collection>();
 	VideoTabCollection->SetDataID(FName("VideoTabCollection"));
-	VideoTabCollection->SetDataDisplayName(FText::FromString(TEXT("그래픽")));
+	VideoTabCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Tab_Video"));
 
 	UListDataObject_StringEnum* CreatedWindowMode = nullptr;
 
@@ -257,10 +257,10 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 	{
 		UListDataObject_Collection* DisplayCategoryCollection = NewObject<UListDataObject_Collection>();
 		DisplayCategoryCollection->SetDataID(FName("DisplayCategoryCollection"));
-		DisplayCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("화면")));
+		DisplayCategoryCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Category_Display"));
 
 		VideoTabCollection->AddChildListData(DisplayCategoryCollection);
-		
+
 		FOptionsDataEditConditionDescriptor PackagedBuildOnlyCondition;
 		PackagedBuildOnlyCondition.SetEditConditionFunc(
 			[]()->bool
@@ -270,17 +270,17 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 				return !bIsInEditor;
 			}
 		);
-		PackagedBuildOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>패키지 빌드 버전에서만 설정 가능한 옵션입니다.</>"));
+		PackagedBuildOnlyCondition.SetDisabledRichReason(GET_DESCRIPTION("UI_Options_Warning_PackagedBuildOnly").ToString());
 
 		// Window Mode
 		{
 			UListDataObject_StringEnum* WindowMode = NewObject<UListDataObject_StringEnum>();
 			WindowMode->SetDataID(FName("WindowMode"));
-			WindowMode->SetDataDisplayName(FText::FromString(TEXT("화면 모드")));
-			WindowMode->SetDescriptionRichText(GET_DESCRIPTION("WindowModeDescKey"));// FText::FromString(TEXT("전체 화면, 창 모드 등 표시 형태를 설정합니다.")));
-			WindowMode->AddEnumOption(EWindowMode::Fullscreen, FText::FromString(TEXT("전체 화면")));
-			WindowMode->AddEnumOption(EWindowMode::WindowedFullscreen, FText::FromString(TEXT("전체 창 모드")));
-			WindowMode->AddEnumOption(EWindowMode::Windowed, FText::FromString(TEXT("창 모드")));
+			WindowMode->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_WindowMode"));
+			WindowMode->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_WindowMode"));// FText::FromString(TEXT("전체 화면, 창 모드 등 표시 형태를 설정합니다.")));
+			WindowMode->AddEnumOption(EWindowMode::Fullscreen, GET_DESCRIPTION("UI_Options_Value_WindowMode_Fullscreen"));
+			WindowMode->AddEnumOption(EWindowMode::WindowedFullscreen, GET_DESCRIPTION("UI_Options_Value_WindowMode_WindowedFullscreen"));
+			WindowMode->AddEnumOption(EWindowMode::Windowed, GET_DESCRIPTION("UI_Options_Value_WindowMode_Windowed"));
 			WindowMode->SetDefaultValueFromEnumOption(EWindowMode::WindowedFullscreen);
 			WindowMode->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetFullscreenMode));
 			WindowMode->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetFullscreenMode));
@@ -297,8 +297,8 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringResolution* ScreenResolution = NewObject<UListDataObject_StringResolution>();
 			ScreenResolution->SetDataID(FName("ScreenResolution"));
-			ScreenResolution->SetDataDisplayName(FText::FromString(TEXT("해상도")));
-			ScreenResolution->SetDescriptionRichText(GET_DESCRIPTION("ScreenResolutionsDescKey"));// FText::FromString(TEXT("화면에 출력되는 픽셀 해상도를 설정합니다.")));
+			ScreenResolution->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_ScreenResolution"));
+			ScreenResolution->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_ScreenResolutions"));// FText::FromString(TEXT("화면에 출력되는 픽셀 해상도를 설정합니다.")));
 			ScreenResolution->InitResolutionValues();
 			ScreenResolution->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetScreenResolution));
 			ScreenResolution->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetScreenResolution));
@@ -315,10 +315,10 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 					return !bIsBoderlessWindow;
 				}
 			);
-			WindowModeEditCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>전체 창 모드에서는 화면 해상도를 조정할 수 없습니다. 해상도 설정값은 현재 디스플레이의 최대 해상도와 일치해야 합니다.</>"));
+			WindowModeEditCondition.SetDisabledRichReason(GET_DESCRIPTION("UI_Options_Warning_ResolutionBorderless").ToString());
 			WindowModeEditCondition.SetDisabledForcedStringValue(ScreenResolution->GetMaximumAllowedResolution());
 
-			ScreenResolution->AddEditCondition(WindowModeEditCondition);			
+			ScreenResolution->AddEditCondition(WindowModeEditCondition);
 
 			ScreenResolution->AddEditDependencyData(CreatedWindowMode);
 
@@ -330,7 +330,7 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 	{
 		UListDataObject_Collection* GraphicsCategoryCollection = NewObject<UListDataObject_Collection>();
 		GraphicsCategoryCollection->SetDataID(FName("GraphicsCategoryCollection"));
-		GraphicsCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("그래픽")));
+		GraphicsCategoryCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Category_Graphics"));
 
 		VideoTabCollection->AddChildListData(GraphicsCategoryCollection);
 
@@ -338,8 +338,8 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_Scalar* DisplayGamma = NewObject<UListDataObject_Scalar>();
 			DisplayGamma->SetDataID(FName("DisplayGamma"));
-			DisplayGamma->SetDataDisplayName(FText::FromString(TEXT("밝기")));
-			DisplayGamma->SetDescriptionRichText(GET_DESCRIPTION("DisplayGammaDescKey"));
+			DisplayGamma->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_DisplayGamma"));
+			DisplayGamma->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_DisplayGamma"));
 			DisplayGamma->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			DisplayGamma->SetOutputValueRange(TRange<float>(1.7f, 2.7f)); // The Default value unreal has is: 2.2f
 			DisplayGamma->SetSliderStepSize(0.01f);
@@ -358,13 +358,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* OverallQuality = NewObject<UListDataObject_StringInteger>();
 			OverallQuality->SetDataID(FName("OverallQuality"));
-			OverallQuality->SetDataDisplayName(FText::FromString(TEXT("전체 품질")));
-			OverallQuality->SetDescriptionRichText(GET_DESCRIPTION("OverallQualityDescKey"));
-			OverallQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
-			OverallQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			OverallQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
-			OverallQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
-			OverallQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			OverallQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_OverallQuality"));
+			OverallQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_OverallQuality"));
+			OverallQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Quality_Low"));
+			OverallQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Quality_Medium"));
+			OverallQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Quality_High"));
+			OverallQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Quality_Epic"));
+			OverallQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Quality_Cinematic"));
 			OverallQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallScalabilityLevel));
 			OverallQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallScalabilityLevel));
 			OverallQuality->SetShouldApplySettingsImmediatly(true);
@@ -378,8 +378,8 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_Scalar* ResolutionScale = NewObject<UListDataObject_Scalar>();
 			ResolutionScale->SetDataID(FName("ResolutionScale"));
-			ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D 해상도")));
-			ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
+			ResolutionScale->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_ResolutionScale"));
+			ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_ResolutionScale"));
 			ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
 			ResolutionScale->SetSliderStepSize(0.01f);
@@ -388,7 +388,7 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
 			ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
 			ResolutionScale->SetShouldApplySettingsImmediatly(true);
-			
+
 			ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
 
 			CreatedOverallQuality->AddEditDependencyData(ResolutionScale);
@@ -400,13 +400,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* GlobalIlluminationQuality = NewObject<UListDataObject_StringInteger>();
 			GlobalIlluminationQuality->SetDataID(FName("GlobalIlluminationQuality"));
-			GlobalIlluminationQuality->SetDataDisplayName(FText::FromString(TEXT("Global Illumination")));
-			GlobalIlluminationQuality->SetDescriptionRichText(GET_DESCRIPTION("GlobalIlluminationQualityDescKey"));
-			GlobalIlluminationQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
-			GlobalIlluminationQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			GlobalIlluminationQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
-			GlobalIlluminationQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
-			GlobalIlluminationQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			GlobalIlluminationQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_GlobalIlluminationQuality"));
+			GlobalIlluminationQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_GlobalIlluminationQuality"));
+			GlobalIlluminationQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Quality_Low"));
+			GlobalIlluminationQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Quality_Medium"));
+			GlobalIlluminationQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Quality_High"));
+			GlobalIlluminationQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Quality_Epic"));
+			GlobalIlluminationQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Quality_Cinematic"));
 			GlobalIlluminationQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetGlobalIlluminationQuality));
 			GlobalIlluminationQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetGlobalIlluminationQuality));
 			GlobalIlluminationQuality->SetShouldApplySettingsImmediatly(true);
@@ -422,13 +422,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* ShadowQuality = NewObject<UListDataObject_StringInteger>();
 			ShadowQuality->SetDataID(FName("ShadowQuality"));
-			ShadowQuality->SetDataDisplayName(FText::FromString(TEXT("그림자 품질")));
-			ShadowQuality->SetDescriptionRichText(GET_DESCRIPTION("ShadowQualityDescKey"));
-			ShadowQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
-			ShadowQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			ShadowQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
-			ShadowQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
-			ShadowQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			ShadowQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_ShadowQuality"));
+			ShadowQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_ShadowQuality"));
+			ShadowQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Quality_Low"));
+			ShadowQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Quality_Medium"));
+			ShadowQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Quality_High"));
+			ShadowQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Quality_Epic"));
+			ShadowQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Quality_Cinematic"));
 			ShadowQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetShadowQuality));
 			ShadowQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetShadowQuality));
 			ShadowQuality->SetShouldApplySettingsImmediatly(true);
@@ -444,13 +444,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* AntiAliasingQuality = NewObject<UListDataObject_StringInteger>();
 			AntiAliasingQuality->SetDataID(FName("AntiAliasingQuality"));
-			AntiAliasingQuality->SetDataDisplayName(FText::FromString(TEXT("Anti Aliasing")));
-			AntiAliasingQuality->SetDescriptionRichText(GET_DESCRIPTION("AntiAliasingDescKey"));
-			AntiAliasingQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
-			AntiAliasingQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			AntiAliasingQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
-			AntiAliasingQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
-			AntiAliasingQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			AntiAliasingQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_AntiAliasingQuality"));
+			AntiAliasingQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_AntiAliasing"));
+			AntiAliasingQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Quality_Low"));
+			AntiAliasingQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Quality_Medium"));
+			AntiAliasingQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Quality_High"));
+			AntiAliasingQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Quality_Epic"));
+			AntiAliasingQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Quality_Cinematic"));
 			AntiAliasingQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetAntiAliasingQuality));
 			AntiAliasingQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetAntiAliasingQuality));
 			AntiAliasingQuality->SetShouldApplySettingsImmediatly(true);
@@ -466,13 +466,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* ViewDistanceQuality = NewObject<UListDataObject_StringInteger>();
 			ViewDistanceQuality->SetDataID(FName("ViewDistanceQuality"));
-			ViewDistanceQuality->SetDataDisplayName(FText::FromString(TEXT("View Distance")));
-			ViewDistanceQuality->SetDescriptionRichText(GET_DESCRIPTION("ViewDistanceDescKey"));
-			ViewDistanceQuality->AddIntegerOption(0, FText::FromString(TEXT("Near")));
-			ViewDistanceQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			ViewDistanceQuality->AddIntegerOption(2, FText::FromString(TEXT("Far")));
-			ViewDistanceQuality->AddIntegerOption(3, FText::FromString(TEXT("Very Far")));
-			ViewDistanceQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			ViewDistanceQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_ViewDistanceQuality"));
+			ViewDistanceQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_ViewDistance"));
+			ViewDistanceQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Distance_Near"));
+			ViewDistanceQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Distance_Medium"));
+			ViewDistanceQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Distance_Far"));
+			ViewDistanceQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Distance_VeryFar"));
+			ViewDistanceQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Distance_Cinematic"));
 			ViewDistanceQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetViewDistanceQuality));
 			ViewDistanceQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetViewDistanceQuality));
 			ViewDistanceQuality->SetShouldApplySettingsImmediatly(true);
@@ -488,13 +488,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* TextureQuality = NewObject<UListDataObject_StringInteger>();
 			TextureQuality->SetDataID(FName("TextureQuality"));
-			TextureQuality->SetDataDisplayName(FText::FromString(TEXT("텍스처 품질")));
-			TextureQuality->SetDescriptionRichText(GET_DESCRIPTION("TextureQualityDescKey"));
-			TextureQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
-			TextureQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			TextureQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
-			TextureQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
-			TextureQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			TextureQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_TextureQuality"));
+			TextureQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_TextureQuality"));
+			TextureQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Quality_Low"));
+			TextureQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Quality_Medium"));
+			TextureQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Quality_High"));
+			TextureQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Quality_Epic"));
+			TextureQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Quality_Cinematic"));
 			TextureQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetTextureQuality));
 			TextureQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetTextureQuality));
 			TextureQuality->SetShouldApplySettingsImmediatly(true);
@@ -510,13 +510,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* VisualEffectQuality = NewObject<UListDataObject_StringInteger>();
 			VisualEffectQuality->SetDataID(FName("VisualEffectQuality"));
-			VisualEffectQuality->SetDataDisplayName(FText::FromString(TEXT("Visual Effect 품질")));
-			VisualEffectQuality->SetDescriptionRichText(GET_DESCRIPTION("VisualEffectQualityDescKey"));
-			VisualEffectQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
-			VisualEffectQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			VisualEffectQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
-			VisualEffectQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
-			VisualEffectQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			VisualEffectQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_VisualEffectQuality"));
+			VisualEffectQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_VisualEffectQuality"));
+			VisualEffectQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Quality_Low"));
+			VisualEffectQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Quality_Medium"));
+			VisualEffectQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Quality_High"));
+			VisualEffectQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Quality_Epic"));
+			VisualEffectQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Quality_Cinematic"));
 			VisualEffectQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetVisualEffectQuality));
 			VisualEffectQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetVisualEffectQuality));
 			VisualEffectQuality->SetShouldApplySettingsImmediatly(true);
@@ -532,13 +532,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* ReflectionQuality = NewObject<UListDataObject_StringInteger>();
 			ReflectionQuality->SetDataID(FName("ReflectionQuality"));
-			ReflectionQuality->SetDataDisplayName(FText::FromString(TEXT("Reflection 품질")));
-			ReflectionQuality->SetDescriptionRichText(GET_DESCRIPTION("ReflectionQualityDescKey"));
-			ReflectionQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
-			ReflectionQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			ReflectionQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
-			ReflectionQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
-			ReflectionQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			ReflectionQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_ReflectionQuality"));
+			ReflectionQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_ReflectionQuality"));
+			ReflectionQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Quality_Low"));
+			ReflectionQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Quality_Medium"));
+			ReflectionQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Quality_High"));
+			ReflectionQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Quality_Epic"));
+			ReflectionQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Quality_Cinematic"));
 			ReflectionQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetReflectionQuality));
 			ReflectionQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetReflectionQuality));
 			ReflectionQuality->SetShouldApplySettingsImmediatly(true);
@@ -554,13 +554,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringInteger* PostProcessingQuality = NewObject<UListDataObject_StringInteger>();
 			PostProcessingQuality->SetDataID(FName("PostProcessingQuality"));
-			PostProcessingQuality->SetDataDisplayName(FText::FromString(TEXT("Post Processing 품질")));
-			PostProcessingQuality->SetDescriptionRichText(GET_DESCRIPTION("PostProcessingQualityDescKey"));
-			PostProcessingQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
-			PostProcessingQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
-			PostProcessingQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
-			PostProcessingQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
-			PostProcessingQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			PostProcessingQuality->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_PostProcessingQuality"));
+			PostProcessingQuality->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_PostProcessingQuality"));
+			PostProcessingQuality->AddIntegerOption(0, GET_DESCRIPTION("UI_Options_Value_Quality_Low"));
+			PostProcessingQuality->AddIntegerOption(1, GET_DESCRIPTION("UI_Options_Value_Quality_Medium"));
+			PostProcessingQuality->AddIntegerOption(2, GET_DESCRIPTION("UI_Options_Value_Quality_High"));
+			PostProcessingQuality->AddIntegerOption(3, GET_DESCRIPTION("UI_Options_Value_Quality_Epic"));
+			PostProcessingQuality->AddIntegerOption(4, GET_DESCRIPTION("UI_Options_Value_Quality_Cinematic"));
 			PostProcessingQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetPostProcessingQuality));
 			PostProcessingQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetPostProcessingQuality));
 			PostProcessingQuality->SetShouldApplySettingsImmediatly(true);
@@ -577,7 +577,7 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 	{
 		UListDataObject_Collection* AdvancedGraphicsCategoryCollection = NewObject<UListDataObject_Collection>();
 		AdvancedGraphicsCategoryCollection->SetDataID(FName("AdvancedGraphicsCategoryCollection"));
-		AdvancedGraphicsCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Advanced 그래픽")));
+		AdvancedGraphicsCategoryCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Category_AdvancedGraphics"));
 
 		VideoTabCollection->AddChildListData(AdvancedGraphicsCategoryCollection);
 
@@ -585,8 +585,8 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_StringBool* VerticalSync = NewObject<UListDataObject_StringBool>();
 			VerticalSync->SetDataID(FName("VerticalSync"));
-			VerticalSync->SetDataDisplayName(FText::FromString(TEXT("V-Sync")));
-			VerticalSync->SetDescriptionRichText(GET_DESCRIPTION("VerticalSyncDescKey"));
+			VerticalSync->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_VerticalSync"));
+			VerticalSync->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_VerticalSync"));
 			VerticalSync->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(IsVSyncEnabled));
 			VerticalSync->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetVSyncEnabled));
 			VerticalSync->SetFalseAsDefaultValue();
@@ -600,7 +600,7 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 				}
 			);
 
-			FullscreenOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>이 기능 쓰려면 윈도우모두에서 풀스크린으로해라.</>"));
+			FullscreenOnlyCondition.SetDisabledRichReason(GET_DESCRIPTION("UI_Options_Warning_VSyncFullscreenOnly").ToString());
 			FullscreenOnlyCondition.SetDisabledForcedStringValue(TEXT("false"));
 
 			VerticalSync->AddEditCondition(FullscreenOnlyCondition);
@@ -612,13 +612,13 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		{
 			UListDataObject_String* FrameRateLimit = NewObject<UListDataObject_String>();
 			FrameRateLimit->SetDataID("FrameRateLimit");
-			FrameRateLimit->SetDataDisplayName(FText::FromString(TEXT("Frame Rate Limit")));
-			FrameRateLimit->SetDescriptionRichText(GET_DESCRIPTION("FrameRateLimitDescKey"));
-			FrameRateLimit->AddDynamicOption(LexToString(30.f), FText::FromString(TEXT("30 FPS")));
-			FrameRateLimit->AddDynamicOption(LexToString(60.f), FText::FromString(TEXT("60 FPS")));
-			FrameRateLimit->AddDynamicOption(LexToString(90.f), FText::FromString(TEXT("90 FPS")));
-			FrameRateLimit->AddDynamicOption(LexToString(120.f), FText::FromString(TEXT("120 FPS")));
-			FrameRateLimit->AddDynamicOption(LexToString(0.f), FText::FromString(TEXT("No Limit")));
+			FrameRateLimit->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_FrameRateLimit"));
+			FrameRateLimit->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_FrameRateLimit"));
+			FrameRateLimit->AddDynamicOption(LexToString(30.f), GET_DESCRIPTION("UI_Options_Value_FPS_30"));
+			FrameRateLimit->AddDynamicOption(LexToString(60.f), GET_DESCRIPTION("UI_Options_Value_FPS_60"));
+			FrameRateLimit->AddDynamicOption(LexToString(90.f), GET_DESCRIPTION("UI_Options_Value_FPS_90"));
+			FrameRateLimit->AddDynamicOption(LexToString(120.f), GET_DESCRIPTION("UI_Options_Value_FPS_120"));
+			FrameRateLimit->AddDynamicOption(LexToString(0.f), GET_DESCRIPTION("UI_Options_Value_FPS_Uncapped"));
 			FrameRateLimit->SetDefaultValueFromString(LexToString(0.f));
 			FrameRateLimit->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetFrameRateLimit));
 			FrameRateLimit->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetFrameRateLimit));
@@ -635,19 +635,19 @@ void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwiningLocal
 {
 	UListDataObject_Collection* ControlTabCollection = NewObject<UListDataObject_Collection>();
 	ControlTabCollection->SetDataID(FName("ControlTabCollection"));
-	ControlTabCollection->SetDataDisplayName(FText::FromString(TEXT("조작")));
+	ControlTabCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Tab_Control"));
 
 	UEnhancedInputLocalPlayerSubsystem* EISubsystem = InOwiningLocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 	check(EISubsystem);
 
 	UEnhancedInputUserSettings* EIUserSettings = EISubsystem->GetUserSettings();
 	check(EIUserSettings);
-	
+
 	// Keyboard Mouse Category
 	{
 		UListDataObject_Collection* KeyboardMouseCategoryCollection = NewObject<UListDataObject_Collection>();
 		KeyboardMouseCategoryCollection->SetDataID(FName("KeyboardMouseCategoryCollection"));
-		KeyboardMouseCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("키보드 / 마우스")));
+		KeyboardMouseCategoryCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Category_KeyboardMouse"));
 
 		ControlTabCollection->AddChildListData(KeyboardMouseCategoryCollection);
 
@@ -691,7 +691,7 @@ void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwiningLocal
 	{
 		UListDataObject_Collection* GamepadCategoryCollection = NewObject<UListDataObject_Collection>();
 		GamepadCategoryCollection->SetDataID(FName("GamepadCategoryCollection"));
-		GamepadCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("게임 패드")));
+		GamepadCategoryCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Category_Gamepad"));
 
 		ControlTabCollection->AddChildListData(GamepadCategoryCollection);
 
@@ -738,7 +738,7 @@ void UOptionsDataRegistry::InitSystemCollectionTab()
 {
 	UListDataObject_Collection* SystemTabCollection = NewObject<UListDataObject_Collection>();
 	SystemTabCollection->SetDataID(FName("SystemTabCollection"));
-	SystemTabCollection->SetDataDisplayName(FText::FromString(TEXT("시스템")));
+	SystemTabCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Tab_System"));
 
 	RegisteredOptionsTabCollections.Add(SystemTabCollection);
 }
