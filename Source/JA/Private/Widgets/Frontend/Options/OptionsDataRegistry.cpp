@@ -740,5 +740,21 @@ void UOptionsDataRegistry::InitSystemCollectionTab()
 	SystemTabCollection->SetDataID(FName("SystemTabCollection"));
 	SystemTabCollection->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Tab_System"));
 
+	// Language
+	{
+		UListDataObject_String* Language = NewObject<UListDataObject_String>();
+		Language->SetDataID(FName("Language"));
+		Language->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_Language"));
+		Language->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_Language"));
+		Language->AddDynamicOption(TEXT("Ko"), GET_DESCRIPTION("UI_Options_Value_Ko"));
+		Language->AddDynamicOption(TEXT("En"), GET_DESCRIPTION("UI_Options_Value_En"));
+		Language->SetDefaultValueFromString(TEXT("Ko"));
+		Language->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentLanguage));
+		Language->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentLanguage));
+		Language->SetShouldApplySettingsImmediatly(true);
+
+		SystemTabCollection->AddChildListData(Language);
+	}
+
 	RegisteredOptionsTabCollections.Add(SystemTabCollection);
 }

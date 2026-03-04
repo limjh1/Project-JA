@@ -68,6 +68,14 @@ public:
 
 	// Video Collection Tab
 
+	// System Collection Tab
+	UFUNCTION()
+	FString GetCurrentLanguage() const { return CurrentLanguageCode; }
+
+	UFUNCTION()
+	void SetCurrentLanguage(const FString& InNewLanguageCode) { CurrentLanguageCode = InNewLanguageCode; }
+	// System Collection Tab	
+
 private:
 	// Gameplay Collection Tab
 	UPROPERTY(Config)
@@ -90,4 +98,9 @@ private:
 	UPROPERTY(Config)
 	bool bUseHDRAudioMode;	
 	// Audio Collection Tab
+
+	// System Collection Tab
+	UPROPERTY(Config)
+	FString CurrentLanguageCode;
+	// System Collection Tab
 };
