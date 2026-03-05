@@ -6,6 +6,7 @@
 #include "JASettings/JALoadingScreenSettings.h"
 #include "Blueprint/UserWidget.h"
 #include "Interfaces/JALoadingScreenInterface.h"
+#include "JASettings/JAGameUserSettings.h"
 
 #include "JADebugHelper.h"
 
@@ -115,6 +116,13 @@ void UJALoadingScreenSubsystem::TryUpdateLoadingScreen()
 
 		// Disable
 		SetTickableTickType(ETickableTickType::Never);
+
+		// Init Sound
+		if (UJAGameUserSettings* UserSettings = UJAGameUserSettings::Get())
+		{
+			// 사운드 클래스와 믹스 포인터를 메모리에 올림
+			UserSettings->InitializeAudioResources();
+		}
 	}
 }
 

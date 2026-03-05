@@ -13,8 +13,11 @@
 #include "Widgets/Frontend/Options/Widget_OptionsDetailsView.h"
 #include "Subsystems/JAFrontendUISubsystem.h"
 #include "Widgets/Frontend/Components/JAFrontendCommonButtonBase.h"
+#include "Internationalization/StringTableRegistry.h"
 
 #include "JADebugHelper.h"
+
+#define GET_DESCRIPTION(InKey) LOCTABLE("/Game/UI/StringTable/ST_OptionsScreenDescription.ST_OptionsScreenDescription", InKey)
 
 void UWidget_OptionsScreen::NativeOnInitialized()
 {
@@ -110,11 +113,12 @@ void UWidget_OptionsScreen::OnResetBoundActionTriggered()
 	UCommonButtonBase* SelectedTabButton = TabListWidget_OptionsTabs->GetTabButtonBaseByID(TabListWidget_OptionsTabs->GetActiveTab());
 
 	const FString SelectedTabButtonName = CastChecked<UJAFrontendCommonButtonBase>(SelectedTabButton)->GetButtonDisplayText().ToString();
+	const FText ResetTitle = GET_DESCRIPTION("UI_Options_Name_Reset");
 
 	UJAFrontendUISubsystem::Get(this)->PushConfirmScreenToModalStackAysnc(
 		EConfirmScreenType::YesNo,
-		FText::FromString(TEXT("초기화")),
-		FText::FromString(SelectedTabButtonName + TEXT(" 탭의 모든 설정을 초기화하시겠습니까?")),
+		FText::FromString("[" + SelectedTabButtonName + "] " + ResetTitle.ToString()),
+		GET_DESCRIPTION("UI_Options_Desc_Reset"),
 		[this](EConfirmScreenButtonType ClickedButtonType)
 		{
 			if (ClickedButtonType != EConfirmScreenButtonType::Confirmed)

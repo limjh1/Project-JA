@@ -746,9 +746,9 @@ void UOptionsDataRegistry::InitSystemCollectionTab()
 		Language->SetDataID(FName("Language"));
 		Language->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_Language"));
 		Language->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_Language"));
-		Language->AddDynamicOption(TEXT("Ko"), GET_DESCRIPTION("UI_Options_Value_Ko"));
-		Language->AddDynamicOption(TEXT("En"), GET_DESCRIPTION("UI_Options_Value_En"));
-		Language->SetDefaultValueFromString(TEXT("Ko"));
+		Language->AddDynamicOption(TEXT("ko"), GET_DESCRIPTION("UI_Options_Value_Ko"));
+		Language->AddDynamicOption(TEXT("en"), GET_DESCRIPTION("UI_Options_Value_En"));
+		Language->SetDefaultValueFromString(TEXT("ko"));
 		Language->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentLanguage));
 		Language->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentLanguage));
 		Language->SetShouldApplySettingsImmediatly(true);

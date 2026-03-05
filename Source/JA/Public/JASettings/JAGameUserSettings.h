@@ -6,10 +6,13 @@
 #include "GameFramework/GameUserSettings.h"
 #include "JAGameUserSettings.generated.h"
 
+class USoundClass;
+class USoundMix;
+
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class JA_API UJAGameUserSettings : public UGameUserSettings
 {
 	GENERATED_BODY()
@@ -18,6 +21,13 @@ public:
 	UJAGameUserSettings();
 
 	static UJAGameUserSettings* Get();
+
+	// Audio Init
+	// 게임 인스턴스 초기화 시점에 단 한 번 호출하여 사운드 에셋을 캐싱
+	void InitializeAudioResources();
+
+	UFUNCTION(BlueprintCallable)
+	void ApplyAudioSettings();
 
 	// Gameplay Collection Tab
 	UFUNCTION()
@@ -70,10 +80,10 @@ public:
 
 	// System Collection Tab
 	UFUNCTION()
-	FString GetCurrentLanguage() const { return CurrentLanguageCode; }
+	FString GetCurrentLanguage() const;
 
 	UFUNCTION()
-	void SetCurrentLanguage(const FString& InNewLanguageCode) { CurrentLanguageCode = InNewLanguageCode; }
+	void SetCurrentLanguage(const FString& InNewLanguageCode);
 	// System Collection Tab	
 
 private:
@@ -103,4 +113,20 @@ private:
 	UPROPERTY(Config)
 	FString CurrentLanguageCode;
 	// System Collection Tab
+
+private:
+	// 런타임 전용 캐싱
+	UPROPERTY(Transient)
+	TObjectPtr<USoundClass> CachedMasterSoundClass;
+
+	UPROPERTY(Transient)
+	TObjectPtr<USoundClass> CachedBGMSoundClass;
+
+	UPROPERTY(Transient)
+	TObjectPtr<USoundClass> CachedSFXSoundClass;
+
+	UPROPERTY(Transient)
+	TObjectPtr<USoundMix> CachedDefaultSoundMix;
+
+	bool bIsAudioInitialized = false;
 };
