@@ -115,17 +115,6 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 		GameplayTabCollection->AddChildListData(GameDifficulty);
 	}
 
-	// Test Item
-	{
-		UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
-		TestItem->SetDataID(FName("TestItem"));
-		TestItem->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_TestItem"));
-		TestItem->SetSoftDescriptionImage(UJAFunctionLibrary::GetOptionsSoftImageByTag(JAGameplayTags::Frontend_Image_TestImage));
-		TestItem->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_TestItem"));
-
-		GameplayTabCollection->AddChildListData(TestItem);
-	}
-
 	RegisteredOptionsTabCollections.Add(GameplayTabCollection);
 }
 
@@ -755,6 +744,17 @@ void UOptionsDataRegistry::InitSystemCollectionTab()
 
 		SystemTabCollection->AddChildListData(Language);
 	}
+
+	//// Test Item
+	//{
+	//	UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
+	//	TestItem->SetDataID(FName("TestItem"));
+	//	TestItem->SetDataDisplayName(GET_DESCRIPTION("UI_Options_Name_TestItem"));
+	//	TestItem->SetSoftDescriptionImage(UJAFunctionLibrary::GetOptionsSoftImageByTag(JAGameplayTags::Frontend_Image_TestImage));
+	//	TestItem->SetDescriptionRichText(GET_DESCRIPTION("UI_Options_Desc_TestItem"));
+
+	//	SystemTabCollection->AddChildListData(TestItem);
+	//}
 
 	RegisteredOptionsTabCollections.Add(SystemTabCollection);
 }
