@@ -666,6 +666,11 @@ void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwiningLocal
 							UListDataObject_KeyRemap* KeyRemapDataObject = NewObject<UListDataObject_KeyRemap>();
 							KeyRemapDataObject->SetDataID(KeyMapping.GetMappingName());
 							KeyRemapDataObject->SetDataDisplayName(KeyMapping.GetDisplayName());
+
+							FString DescKeyString = "UI_Options_Desc_" + KeyMapping.GetMappingName().ToString();
+							FText DescText = FText::FromStringTable(TEXT("/Game/UI/StringTable/ST_OptionsScreenDescription"), DescKeyString);
+							KeyRemapDataObject->SetDescriptionRichText(DescText);
+							
 							KeyRemapDataObject->InitKeyRemapData(EIUserSettings, MappableKeyProfile, ECommonInputType::MouseAndKeyboard, KeyMapping);
 
 							KeyboardMouseCategoryCollection->AddChildListData(KeyRemapDataObject);
@@ -710,6 +715,11 @@ void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwiningLocal
 							UListDataObject_KeyRemap* KeyRemapDataObject = NewObject<UListDataObject_KeyRemap>();
 							KeyRemapDataObject->SetDataID(KeyMapping.GetMappingName());
 							KeyRemapDataObject->SetDataDisplayName(KeyMapping.GetDisplayName());
+
+							FString DescKeyString = "UI_Options_Desc_" + KeyMapping.GetMappingName().ToString();
+							FText DescText = FText::FromStringTable(TEXT("/Game/UI/StringTable/ST_OptionsScreenDescription"), DescKeyString);
+							KeyRemapDataObject->SetDescriptionRichText(DescText);
+
 							KeyRemapDataObject->InitKeyRemapData(EIUserSettings, MappableKeyProfile, ECommonInputType::Gamepad, KeyMapping);
 
 							GamepadCategoryCollection->AddChildListData(KeyRemapDataObject);
