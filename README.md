@@ -152,8 +152,19 @@ graph TD
 
 
 * **Assets:**
-  * Bossy Enemy Animation Pack — by kampinis (Epic Games Fab)
-  * Paragon Assets — by Epic Games
+  * 배경 리소스
+  * Dwarven City Modular Environment – Scale Z (ArtStation / Fab)
+
+  * 애니메이션
+  * Bossy Enemy Animation Pack – kampinis (Epic Games Fab)
+  * Paragon Character Assets – Epic Games
+  * Mixamo - Adobe
+  * Unreal Engine Starter Content
+
+  * VFX 및 사운드
+  * Human Vocalizations – Gamemaster Audio (Epic Games Fab)
+  * Realistic Sword Sound Effects – Modern Monkey Studios (Epic Games Fab)
+  * Unreal Engine Starter Content
 
 ---
 
