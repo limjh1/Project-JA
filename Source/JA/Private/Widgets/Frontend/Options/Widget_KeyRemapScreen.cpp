@@ -49,7 +49,7 @@ protected:
 	{
 		if (InPressedKey == EKeys::Escape)
 		{
-			OnInputPreprocessorSelectCanceled.ExecuteIfBound(TEXT("Key Remap has been canceled"));
+			OnInputPreprocessorSelectCanceled.ExecuteIfBound(TEXT("키 설정이 취소되었습니다"));
 			return;
 		}
 
@@ -64,7 +64,7 @@ protected:
 		case ECommonInputType::MouseAndKeyboard:
 			if (InPressedKey.IsGamepadKey() || CurrentInputType == ECommonInputType::Gamepad)
 			{
-				OnInputPreprocessorSelectCanceled.ExecuteIfBound(TEXT("Detected Gamepad Key Pressed for keyboard inputs. Key Remap has been canceled"));
+				OnInputPreprocessorSelectCanceled.ExecuteIfBound(TEXT("키 설정 중 게임패드 입력이 감지되어 취소되었습니다."));
 				return;
 			}
 
@@ -83,7 +83,7 @@ protected:
 
 			if (!InPressedKey.IsGamepadKey())
 			{
-				OnInputPreprocessorSelectCanceled.ExecuteIfBound(TEXT("Detected non Gamepad Key Pressed for keyboard inputs. Key Remap has been canceled"));
+				OnInputPreprocessorSelectCanceled.ExecuteIfBound(TEXT("키 설정 중 게임패드가 아닌 입력이 감지되어 취소되었습니다."));
 				return;
 			}
 
@@ -121,17 +121,17 @@ void UWidget_KeyRemapScreen::NativeOnActivated()
 	switch (CachedDesiredInputType)
 	{
 	case ECommonInputType::MouseAndKeyboard:
-		InputDeviceName = TEXT("Mouse & Keyboard");
+		InputDeviceName = TEXT("키보드 / 마우스");
 		break;
 	case ECommonInputType::Gamepad:
-		InputDeviceName = TEXT("Gamepad");
+		InputDeviceName = TEXT("게임 패드");
 		break;
 	default:
 		break;
 	}
 
 	const FString DisplayRichMsg = FString::Printf(
-		TEXT("<KeyRemapDefault>Press any</> <KeyRemapHighlight>%s</> <KeyRemapDefault>key.</>"), *InputDeviceName
+		TEXT("<KeyRemapDefault>아무</> <KeyRemapHighlight>%s</> <KeyRemapDefault>키를 누르세요.</>"), *InputDeviceName
 	);
 
 	CommonRichText_RemapMessage->SetText(FText::FromString(DisplayRichMsg));

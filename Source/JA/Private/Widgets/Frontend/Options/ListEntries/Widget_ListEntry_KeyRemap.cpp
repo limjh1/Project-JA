@@ -74,8 +74,8 @@ void UWidget_ListEntry_KeyRemap::OnResetKeyBindingButtonClicked()
 	{
 		UJAFrontendUISubsystem::Get(this)->PushConfirmScreenToModalStackAysnc(
 			EConfirmScreenType::Ok,
-			FText::FromString(TEXT("Reset Key Mapping")),
-			FText::FromString(TEXT("The Key binding for ") + CachedOwningKeyRemapDataObject->GetDataDisplayName().ToString() + TEXT(" 는 이미 기본값입니다.")),
+			FText::FromString(TEXT("키 설정 초기화")),
+			FText::FromString(CachedOwningKeyRemapDataObject->GetDataDisplayName().ToString() + TEXT(" 키는 이미 기본값입니다.")),
 			[](EConfirmScreenButtonType ClickedButton) {}
 		);
 
@@ -84,7 +84,7 @@ void UWidget_ListEntry_KeyRemap::OnResetKeyBindingButtonClicked()
 
 	UJAFrontendUISubsystem::Get(this)->PushConfirmScreenToModalStackAysnc(
 		EConfirmScreenType::YesNo,
-		FText::FromString(TEXT("Reset Key Mapping")),
+		FText::FromString(TEXT("키 설정 초기화")),
 		FText::FromString(TEXT("정말 ") + CachedOwningKeyRemapDataObject->GetDataDisplayName().ToString() + TEXT(" 키를 초기화 하시겠습니까?")),
 		[this](EConfirmScreenButtonType ClickedButton)
 		{
@@ -108,7 +108,7 @@ void UWidget_ListEntry_KeyRemap::OnKeyRemapCanceled(const FString& CanceledReaso
 {
 	UJAFrontendUISubsystem::Get(this)->PushConfirmScreenToModalStackAysnc(
 		EConfirmScreenType::Ok,
-		FText::FromString(TEXT("Key Remap")),
+		FText::FromString(TEXT("키 바인딩 변경")),
 		FText::FromString(CanceledReason),
 		[](EConfirmScreenButtonType ClickedButton)
 		{
