@@ -14,6 +14,9 @@ struct FInputActionValue;
 class UHeroCombatComponent;
 class UHeroUIComponent;
 class UJACustomMovementComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityFailedBP, const UGameplayAbility*, Ability, const FGameplayTagContainer&, ReasonTags);
+
 /**
  * 
  */
@@ -34,6 +37,9 @@ public:
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	virtual UHeroUIComponent* GetHeroUIComponent() const override;
 	//~ End IPawnUIInterface Interface
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Events")
+	FOnAbilityFailedBP OnAbilityFailedDispatcher;
 
 public:
 	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const { return HeroCombatComponent; }
@@ -94,6 +100,9 @@ private:
 private:
 	void HandleGroundMovementInput(const FInputActionValue& InputActionValue);
 	void HandleClimbMovementInput(const FInputActionValue& InputActionValue);
+
+	UFUNCTION()
+	void HandleAbilityFailed(const UGameplayAbility* Ability, const FGameplayTagContainer& ReasonTags);
 
 public:
 	FORCEINLINE float GetCapsuleHeight() const { return CapsuleHeight; }

@@ -113,6 +113,11 @@ void AJAHeroCharacter::BeginPlay()
 		JACustomMovementComponent->OnEnterClimbStateDelegate.BindUObject(this, &ThisClass::OnPlayerEnterClimbState);
 		JACustomMovementComponent->OnExitClimbStateDelegate.BindUObject(this, &ThisClass::OnPlayerExitClimbState);
 	}
+
+	if (JAAbilitySystemComponent)
+	{
+		JAAbilitySystemComponent->AbilityFailedCallbacks.AddUObject(this, &ThisClass::HandleAbilityFailed);
+	}
 }
 
 void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -285,4 +290,9 @@ void AJAHeroCharacter::HandleClimbMovementInput(const FInputActionValue& InputAc
 
 	AddMovementInput(ForwardDirection, LookAxisVector.Y);
 	AddMovementInput(RightDirection, LookAxisVector.X);
+}
+
+void AJAHeroCharacter::HandleAbilityFailed(const UGameplayAbility* Ability, const FGameplayTagContainer& ReasonTags)
+{
+	OnAbilityFailedDispatcher.Broadcast(Ability, ReasonTags);
 }

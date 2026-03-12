@@ -76,6 +76,8 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_ComboWindow, "Player.Status.ComboWindow");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Climbing_Default, "Player.Status.Climbing.Default");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Climbing_LedgeDown, "Player.Status.Climbing.LedgeDown");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Stamina_PauseRegen, "Player.Status.Stamina.PauseRegen");	
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_EquipWeapon, "Player.Status.EquipWeapon");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Heavy, "Player.SetByCaller.AttackType.Heavy");
