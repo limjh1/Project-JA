@@ -165,6 +165,9 @@ graph TD
     * Human Vocalizations – Gamemaster Audio (Epic Games Fab)
     * Realistic Sword Sound Effects – Modern Monkey Studios (Epic Games Fab)
     * Unreal Engine Starter Content
+   
+  * **로고 및 영상**
+    * AI Assisted Design – Gemini (Google)
 
 ---
 
