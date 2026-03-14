@@ -107,3 +107,12 @@ enum class EOptionListDataModifyReason :uint8
 	DependencyModified,
 	ResetToDefault
 };
+
+UENUM(BlueprintType)
+enum class EJAEquipmentType :uint8
+{
+	Armour_Chest,
+	Armour_Pants,
+	Armour_Boots,
+	Armour_Gloves
+};
