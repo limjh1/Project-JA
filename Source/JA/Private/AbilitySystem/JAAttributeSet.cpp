@@ -48,6 +48,14 @@ void UJAAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
         PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
     }
 
+    if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
+    {
+        const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth());
+        SetCurrentHealth(NewCurrentHealth);
+
+        PawnUIComponent->OnMaxHealthChanged.Broadcast(GetMaxHealth());
+    }
+
     if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
     {
         const float NewCurrentRage = FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage());

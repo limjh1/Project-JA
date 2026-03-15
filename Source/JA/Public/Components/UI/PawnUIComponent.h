@@ -20,4 +20,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPercentChangedDelegate OnCurrentHealthChanged;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnPercentChangedDelegate OnMaxHealthChanged;
+
 };

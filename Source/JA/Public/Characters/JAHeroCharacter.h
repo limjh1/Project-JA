@@ -14,6 +14,7 @@ struct FInputActionValue;
 class UHeroCombatComponent;
 class UHeroUIComponent;
 class UJACustomMovementComponent;
+class UJAEquipmentComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityFailedBP, const UGameplayAbility*, Ability, const FGameplayTagContainer&, ReasonTags);
 
@@ -44,10 +45,12 @@ public:
 public:
 	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const { return HeroCombatComponent; }
 	FORCEINLINE UJACustomMovementComponent* GetJACustomMovementComponent() const { return JACustomMovementComponent; }
+	FORCEINLINE UJAEquipmentComponent* GetJAEquipmentComponent() const { return JAEquipmentComponent; }
 
 protected:
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void PostInitializeComponents() override;
 	//~ End APawn Interface
 
 	virtual void BeginPlay() override;
@@ -71,6 +74,21 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	UJACustomMovementComponent* JACustomMovementComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment", meta = (AllowPrivateAccess = "true"))
+	UJAEquipmentComponent* JAEquipmentComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* ChestMeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* PantsMeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* GlovesMeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* BootsMeshComp;
+
 #pragma endregion
 
 #pragma region Inputs
@@ -90,7 +108,7 @@ private:
 	void Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue);
 	void Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue);	
 
-	void Input_PickUpStonesStarted(const FInputActionValue& InputActionValue);
+	void Input_PickUpStarted(const FInputActionValue& InputActionValue);
 
 	void Input_AbilityInputPressed(FGameplayTag InInputTag);
 	void Input_AbilityInputReleased(FGameplayTag InInputTag);

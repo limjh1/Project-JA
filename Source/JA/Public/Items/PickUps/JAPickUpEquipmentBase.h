@@ -7,6 +7,9 @@
 #include "JATypes/JAEnumTypes.h"
 #include "JAPickUpEquipmentBase.generated.h"
 
+class UDataAsset_Equipment;
+class UJAAbilitySystemComponent;
+
 /**
  * 
  */
@@ -17,9 +20,15 @@ class JA_API AJAPickUpEquipmentBase : public AJAPickUpBase
 
 protected:
 	virtual void OnPickUpCollisionSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+	virtual void OnPickUpCollisionSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
 
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-	EJAEquipmentType EquipmentType = EJAEquipmentType::Armour_Chest;
+public:
+	void Interact(UJAAbilitySystemComponent* AbilitySystemComponent, int32 ApplyLevel);
 
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "On Interact Equipment"))
+	void BP_OnInteractEquipment();
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equipment", meta = (AllowPrivateAccess = "true"))
+	UDataAsset_Equipment* EquipmentData;
 };

@@ -16,6 +16,7 @@
 #include "GameModes/JABaseGameMode.h"
 #include "Components/Movement/JACustomMovementComponent.h"
 #include "JAFunctionLibrary.h"
+#include "Components/Equipment/JAEquipmentComponent.h"
 
 #include "JADebugHelper.h"
 
@@ -46,6 +47,25 @@ AJAHeroCharacter::AJAHeroCharacter(const FObjectInitializer& ObjectInitializer)
 
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
 	HeroUIComponent = CreateDefaultSubobject<UHeroUIComponent>(TEXT("HeroUIComponent"));
+	JAEquipmentComponent = CreateDefaultSubobject<UJAEquipmentComponent>(TEXT("JAEquipmentComponent"));
+
+
+	// 방어구 붙을 메시 생성 및 부착
+	ChestMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ChestMeshComp"));
+	ChestMeshComp->SetupAttachment(GetMesh());
+	ChestMeshComp->SetLeaderPoseComponent(GetMesh()); // 생성 시점에 LeaderPose를 미리 걸어둠
+
+	PantsMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("PantsMeshComp"));
+	PantsMeshComp->SetupAttachment(GetMesh());
+	PantsMeshComp->SetLeaderPoseComponent(GetMesh());
+
+	GlovesMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("GlovesMeshComp"));
+	GlovesMeshComp->SetupAttachment(GetMesh());
+	GlovesMeshComp->SetLeaderPoseComponent(GetMesh());
+
+	BootsMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BootsMeshComp"));
+	BootsMeshComp->SetupAttachment(GetMesh());
+	BootsMeshComp->SetLeaderPoseComponent(GetMesh());
 }
 
 UPawnCombatComponent* AJAHeroCharacter::GetPawnCombatComponent() const
@@ -104,6 +124,16 @@ void AJAHeroCharacter::PossessedBy(AController* NewController)
 	}
 }
 
+void AJAHeroCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (JAEquipmentComponent)
+	{
+		JAEquipmentComponent->InitializeEquipmentMeshes(ChestMeshComp, PantsMeshComp, GlovesMeshComp, BootsMeshComp);
+	}
+}
+
 void AJAHeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -141,7 +171,7 @@ void AJAHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
 	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
 
-	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_PickUp_Stones, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
+	JAInputComponent->BindNativeInputAction(InputConfigDataAsset, JAGameplayTags::InputTag_PickUp_Stones, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStarted);
 
 	JAInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
@@ -236,9 +266,16 @@ void AJAHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue& Inpu
 	);
 }
 
-void AJAHeroCharacter::Input_PickUpStonesStarted(const FInputActionValue& InputActionValue)
+void AJAHeroCharacter::Input_PickUpStarted(const FInputActionValue& InputActionValue)
 {
-	UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_ConsumeStones, this);
+	if (UJAFunctionLibrary::NativeDoesActorHaveTag(this, JAGameplayTags::Player_Status_PickUp_Stones))
+	{
+		UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_ConsumeStones, this);
+	}
+	else if (UJAFunctionLibrary::NativeDoesActorHaveTag(this, JAGameplayTags::Player_Status_PickUp_Equipment))
+	{
+		UJAFunctionLibrary::SendGameplayEventToActor(JAGameplayTags::Player_Event_Interact_Equipment, this);
+	}
 }
 
 void AJAHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

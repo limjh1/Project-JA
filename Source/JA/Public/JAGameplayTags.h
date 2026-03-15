@@ -42,15 +42,13 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Heavy);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stones);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Equipment);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Hang_Default);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Hang_LedgeDown);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Hop);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_LedgeUp);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Vaulting);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equipment_Chest);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equipment_Pants);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equipment_Boots);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equipment_Gloves);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equipment_Armour);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
@@ -69,6 +67,8 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_InputPressed);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_Finished);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Climb_LedgeUp);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equipment_Armour);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Interact_Equipment);
 		
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
@@ -83,9 +83,16 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Climbing_LedgeDown);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Stamina_PauseRegen);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_EquipWeapon);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Equipment_Chest);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Equipment_Pants);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Equipment_Boots);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Equipment_Gloves);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_PickUp_Stones);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_PickUp_Equipment);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);
+
 
 	/* Enemy Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);

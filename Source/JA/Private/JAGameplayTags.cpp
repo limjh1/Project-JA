@@ -41,15 +41,13 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_SpecialWeaponAbility_Light, "Player.Ability.SpecialWeaponAbility.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_SpecialWeaponAbility_Heavy, "Player.Ability.SpecialWeaponAbility.Heavy");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_PickUp_Stones, "Player.Ability.PickUp.Stones");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_PickUp_Equipment, "Player.Ability.PickUp.Equipment");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Hang_Default, "Player.Ability.Climb.Hang.Default");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Hang_LedgeDown, "Player.Ability.Climb.Hang.LedgeDown");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Hop, "Player.Ability.Climb.Hop");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_LedgeUp, "Player.Ability.Climb.LedgeUp");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Vaulting, "Player.Ability.Climb.Vaulting");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equipment_Chest, "Player.Ability.Equipment.Chest");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equipment_Pants, "Player.Ability.Equipment.Pants");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equipment_Boots, "Player.Ability.Equipment.Boots");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equipment_Gloves, "Player.Ability.Equipment.Gloves");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equipment_Armour, "Player.Ability.Equipment.Armour");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Light, "Player.Cooldown.SpecialWeaponAbility.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Heavy, "Player.Cooldown.SpecialWeaponAbility.Heavy");
@@ -68,6 +66,8 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_InputPressed, "Player.Event.InputPressed");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_Finished, "Player.Event.Climb.Finished");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_LedgeUp, "Player.Event.Climb.LedgeUp");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Equipment_Armour, "Player.Event.Equipment.Armour");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Interact_Equipment, "Player.Event.Interact.Equipment");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_JumpToFinisher, "Player.Status.JumpToFinisher");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rolling, "Player.Status.Rolling");
@@ -82,6 +82,12 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Climbing_LedgeDown, "Player.Status.Climbing.LedgeDown");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Stamina_PauseRegen, "Player.Status.Stamina.PauseRegen");	
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_EquipWeapon, "Player.Status.EquipWeapon");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Equipment_Chest, "Player.Status.Equipment.Chest");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Equipment_Pants, "Player.Status.Equipment.Pants");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Equipment_Boots, "Player.Status.Equipment.Boots");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Equipment_Gloves, "Player.Status.Equipment.Gloves");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_PickUp_Stones, "Player.Status.PickUp.Stones");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_PickUp_Equipment, "Player.Status.PickUp.Equipment");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Heavy, "Player.SetByCaller.AttackType.Heavy");
