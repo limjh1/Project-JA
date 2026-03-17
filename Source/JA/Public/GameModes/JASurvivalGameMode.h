@@ -85,7 +85,7 @@ private:
 	FOnSurvivalGameModeStateChangedDelegate OnSurvivalGameModeStateChanged;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
-	UDataTable* EnemyWaveSpawnerDataTable;
+	TObjectPtr<UDataTable> EnemyWaveSpawnerDataTable;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
 	int32 TotalWavesToSpawn;
@@ -100,7 +100,7 @@ private:
 	int32 TotalSpawnedEnemiesThisWaveCounter = 0;
 
 	UPROPERTY()
-	TArray<AActor*> TargetPointsArray;
+	TArray<TObjectPtr<AActor>> TargetPointsArray;
 
 	UPROPERTY()
 	float TimePassedSinceStart = 0.f;

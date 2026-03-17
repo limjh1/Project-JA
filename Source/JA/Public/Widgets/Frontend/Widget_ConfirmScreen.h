@@ -62,11 +62,11 @@ protected:
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	UCommonTextBlock* CommonTextBlock_Title;
+	TObjectPtr<UCommonTextBlock> CommonTextBlock_Title;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommonTextBlock* CommonTextBlock_Message;
+	TObjectPtr<UCommonTextBlock> CommonTextBlock_Message;
 
 	UPROPERTY(meta = (BindWidget))
-	UDynamicEntryBox* DynamicEntryBox_Buttons;
+	TObjectPtr<UDynamicEntryBox> DynamicEntryBox_Buttons;
 };

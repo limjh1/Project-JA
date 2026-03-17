@@ -23,5 +23,5 @@ public:
 	void RemoveEnemyDrawnWidgetsIfAny();
 
 private:
-	TArray<UJAWidgetBase*> EnemyDrawnWidgets;
+	TArray<TObjectPtr<UJAWidgetBase>> EnemyDrawnWidgets;
 };

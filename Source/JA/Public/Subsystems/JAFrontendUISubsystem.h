@@ -47,6 +47,6 @@ public:
 
 private:
 	UPROPERTY(Transient)
-	UWidget_PrimaryLayout* CreatedPrimaryLayout;
+	TObjectPtr<UWidget_PrimaryLayout> CreatedPrimaryLayout;
 
 };

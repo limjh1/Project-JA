@@ -32,8 +32,11 @@ protected:
 	void CollectEquipments();
 
 private:
-	AActor* CachedActor;
-	UObject* CachedObject;
+	UPROPERTY()
+	TObjectPtr<AActor> CachedActor;
+
+	UPROPERTY()
+	TObjectPtr<UObject> CachedObject;
 
 private:
 	UPROPERTY(EditDefaultsOnly)

@@ -59,9 +59,9 @@ protected:
 private:
 	// ~Bound Widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional, AllowPrivateAccess = "true"))
-	UCommonTextBlock* CommonText_SettingDisplayName;
+	TObjectPtr<UCommonTextBlock> CommonText_SettingDisplayName;
 	// ~Bound Widgets
 
 	UPROPERTY(Transient)
-	UListDataObject_Base* CachedOwningDataObject;
+	TObjectPtr<UListDataObject_Base> CachedOwningDataObject;
 };

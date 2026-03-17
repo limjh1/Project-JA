@@ -31,5 +31,5 @@ private:
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Frontend List View Settings")
-	UDataAsset_DataListEntryMapping* DataListEntryMapping;
+	TObjectPtr<UDataAsset_DataListEntryMapping> DataListEntryMapping;
 };

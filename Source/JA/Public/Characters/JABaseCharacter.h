@@ -52,13 +52,13 @@ protected:
 	//~ End APawn Interface
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	UJAAbilitySystemComponent* JAAbilitySystemComponent;
+	TObjectPtr<UJAAbilitySystemComponent> JAAbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	UJAAttributeSet* JAAttributeSet;
+	TObjectPtr<UJAAttributeSet> JAAttributeSet;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MotionWarping")
-	UMotionWarpingComponent* MotionWarpingComponent;
+	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;

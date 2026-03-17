@@ -33,7 +33,7 @@ void UOptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwiningLocalP
 
 TArray<UListDataObject_Base*> UOptionsDataRegistry::GetListSourceItemsBySelectedTabID(const FName& InSelectedTabID) const
 {
-	UListDataObject_Collection* const* FoundTabCollectionPtr = RegisteredOptionsTabCollections.FindByPredicate(
+	TObjectPtr<UListDataObject_Collection> const* FoundTabCollectionPtr = RegisteredOptionsTabCollections.FindByPredicate(
 		[InSelectedTabID](UListDataObject_Collection* AvailableTabCollection)->bool
 		{
 			return AvailableTabCollection->GetDataID() == InSelectedTabID;

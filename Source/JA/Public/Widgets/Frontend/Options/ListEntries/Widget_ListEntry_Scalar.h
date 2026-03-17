@@ -38,12 +38,12 @@ private:
 private:
 	// ~Bound Widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UCommonNumericTextBlock* CommonNumeric_SettingValue;
+	TObjectPtr<UCommonNumericTextBlock> CommonNumeric_SettingValue;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UAnalogSlider* AnalogSlider_SettingSlider;
+	TObjectPtr<UAnalogSlider> AnalogSlider_SettingSlider;
 	// ~Bound Widgets
 
 	UPROPERTY(Transient)
-	UListDataObject_Scalar* CachedOwningScalarDataObject;
+	TObjectPtr<UListDataObject_Scalar> CachedOwningScalarDataObject;
 };

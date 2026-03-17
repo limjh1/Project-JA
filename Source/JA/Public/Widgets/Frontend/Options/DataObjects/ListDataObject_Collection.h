@@ -25,5 +25,5 @@ public:
 
 private:
 	UPROPERTY(Transient)
-	TArray<UListDataObject_Base*> ChildListDataArray;
+	TArray<TObjectPtr<UListDataObject_Base>> ChildListDataArray;
 };

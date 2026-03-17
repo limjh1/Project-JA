@@ -59,24 +59,24 @@ protected:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	UEnemyCombatComponent* EnemyCombatComponent;
+	TObjectPtr<UEnemyCombatComponent> EnemyCombatComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	UBoxComponent* LeftHandCollisionBox;
+	TObjectPtr<UBoxComponent> LeftHandCollisionBox;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	FName LeftHandCollisionBoxAttachBoneName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	UBoxComponent* RightHandCollisionBox;
+	TObjectPtr<UBoxComponent> RightHandCollisionBox;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	FName RightHandCollisionBoxAttachBoneName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
-	UEnemyUIComponent* EnemyUIComponent;
+	TObjectPtr<UEnemyUIComponent> EnemyUIComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
-	UWidgetComponent* EnemyHealthWidgetComponent;
+	TObjectPtr<UWidgetComponent> EnemyHealthWidgetComponent;
 
 };

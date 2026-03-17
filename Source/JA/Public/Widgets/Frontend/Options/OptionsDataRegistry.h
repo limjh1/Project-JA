@@ -21,7 +21,7 @@ public:
 	// Gets called by options screen right after the object of type UOptionsDataRegistry is created
 	void InitOptionsDataRegistry(ULocalPlayer* InOwiningLocalPlayer);
 
-	const TArray<UListDataObject_Collection*>& GetRegisteredOptionsTabCollections() const { return RegisteredOptionsTabCollections; }
+	const TArray<TObjectPtr<UListDataObject_Collection>>& GetRegisteredOptionsTabCollections() const { return RegisteredOptionsTabCollections; }
 
 	TArray<UListDataObject_Base*> GetListSourceItemsBySelectedTabID(const FName& InSelectedTabID) const;
 
@@ -36,6 +36,6 @@ private:
 
 private:
 	UPROPERTY(Transient)
-	TArray<UListDataObject_Collection*> RegisteredOptionsTabCollections;
+	TArray<TObjectPtr<UListDataObject_Collection>> RegisteredOptionsTabCollections;
 
 };

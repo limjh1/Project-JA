@@ -45,7 +45,7 @@ struct FJAHeroWeaponData
 	TSubclassOf<UJAHeroLinkedAnimLayer> WeaponAnimLayerToLink;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UInputMappingContext* WeaponInputMappingContext;
+	TObjectPtr<UInputMappingContext> WeaponInputMappingContext;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FJAHeroAbilitySet> DefaultWeaponAbilities;

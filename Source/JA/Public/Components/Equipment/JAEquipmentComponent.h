@@ -39,21 +39,21 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Visual")
-	UCurveFloat* DissolveCurve;
+	TObjectPtr<UCurveFloat> DissolveCurve;
 
 	UPROPERTY()
-	UTimelineComponent* DissolveTimeline;
+	TObjectPtr<UTimelineComponent> DissolveTimeline;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Visual")
 	float DissolveDuration = 1.f;
 
 	UPROPERTY()
-	USkeletalMeshComponent* CurrentDissolvingMesh;
+	TObjectPtr<USkeletalMeshComponent> CurrentDissolvingMesh;
 
 	UPROPERTY()
-	TMap<FGameplayTag, USkeletalMeshComponent*> ArmorMeshMap;
+	TMap<FGameplayTag, TObjectPtr<USkeletalMeshComponent>> ArmorMeshMap;
 
 	UPROPERTY()
-	TArray<USkeletalMeshComponent*> ActiveMeshMap;
+	TArray<TObjectPtr<USkeletalMeshComponent>> ActiveMeshMap;
 		
 };

@@ -30,5 +30,5 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equipment", meta = (AllowPrivateAccess = "true"))
-	UDataAsset_Equipment* EquipmentData;
+	TObjectPtr<UDataAsset_Equipment> EquipmentData;
 };

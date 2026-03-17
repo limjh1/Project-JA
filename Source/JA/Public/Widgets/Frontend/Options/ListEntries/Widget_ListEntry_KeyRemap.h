@@ -37,14 +37,14 @@ private:
 private:
 	// ~Bound Widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UJAFrontendCommonButtonBase* CommonButton_RemapKey;
+	TObjectPtr<UJAFrontendCommonButtonBase> CommonButton_RemapKey;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UJAFrontendCommonButtonBase* CommonButton_ResetKeyBinding;
+	TObjectPtr<UJAFrontendCommonButtonBase> CommonButton_ResetKeyBinding;
 	// ~Bound Widgets
 
 private:
 	UPROPERTY(Transient)
-	UListDataObject_KeyRemap* CachedOwningKeyRemapDataObject;
+	TObjectPtr<UListDataObject_KeyRemap> CachedOwningKeyRemapDataObject;
 
 };

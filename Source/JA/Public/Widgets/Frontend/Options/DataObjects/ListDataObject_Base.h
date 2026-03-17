@@ -79,7 +79,7 @@ private:
 	TSoftObjectPtr<UTexture2D> SoftDescriptionImage;
 
 	UPROPERTY(Transient)
-	UListDataObject_Base* ParentData;
+	TObjectPtr<UListDataObject_Base> ParentData;
 
 	bool bShouldApplyChangeImmedialty = false;
 

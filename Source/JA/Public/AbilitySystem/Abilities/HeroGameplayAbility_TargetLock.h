@@ -74,13 +74,13 @@ private:
 	float TargetLockCameraOffetDistance = 20.f;
 
 	UPROPERTY()
-	TArray<AActor*> AvailableActorsToLock;
+	TArray<TObjectPtr<AActor>> AvailableActorsToLock;
 
 	UPROPERTY()
-	AActor* CurrentLockedActor;
+	TObjectPtr<AActor> CurrentLockedActor;
 
 	UPROPERTY()
-	UJAWidgetBase* DrawnTargetLockWidget;
+	TObjectPtr<UJAWidgetBase> DrawnTargetLockWidget;
 
 	UPROPERTY()
 	FVector2D TargetLockWidgetSize = FVector2D::ZeroVector;

@@ -47,10 +47,10 @@ protected:
 	virtual void ToggleBodyCollisionBoxCollsion(bool bShouldEnable, EToggleDamageType ToggleDamageType);
 
 protected:
-	TArray<AActor*> OverlappedActors;
+	TArray<TObjectPtr<AActor>> OverlappedActors;
 
 private:
-	TMap<FGameplayTag, AJAWeaponBase*> CharacterCarriedWeaponMap;
+	TMap<FGameplayTag, TObjectPtr<AJAWeaponBase>> CharacterCarriedWeaponMap;
 
 public:
 	UPROPERTY(BlueprintReadWrite, Category = "JA|Combat")

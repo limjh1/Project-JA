@@ -50,19 +50,19 @@ private:
 private:
 	// ~Bound Widgets
 	UPROPERTY(meta = (BindWidget))
-	UJAFrontendTabListWidgetBase* TabListWidget_OptionsTabs;
+	TObjectPtr<UJAFrontendTabListWidgetBase> TabListWidget_OptionsTabs;
 
 	UPROPERTY(meta = (BindWidget))
-	UJAFrontendCommonListView* CommonListView_OptionsList;
+	TObjectPtr<UJAFrontendCommonListView> CommonListView_OptionsList;
 
 	UPROPERTY(meta = (BindWidget))
-	UWidget_OptionsDetailsView* DetailsView_ListEntryInfo;
+	TObjectPtr<UWidget_OptionsDetailsView> DetailsView_ListEntryInfo;
 	// ~Bound Widgets
 
 private:
 	// Handle the creation of data in the options screen. Direct access to this variable is forbidden.
 	UPROPERTY(Transient)
-	UOptionsDataRegistry* CreatedOwningDataRegistry;
+	TObjectPtr<UOptionsDataRegistry> CreatedOwningDataRegistry;
 
 	UPROPERTY(EditDefaultsOnly, Category = "FrontendOptionsScreen", meta = (RowType = "/Script/CommonUI.CommonInputActionDataBase"))
 	FDataTableRowHandle ResetAction;
@@ -70,7 +70,7 @@ private:
 	FUIActionBindingHandle ResetActionHandle;
 
 	UPROPERTY(Transient)
-	TArray<UListDataObject_Base*> ResettableDataArray;
+	TArray<TObjectPtr<UListDataObject_Base>> ResettableDataArray;
 
 	bool bIsResettingData = false;
 };

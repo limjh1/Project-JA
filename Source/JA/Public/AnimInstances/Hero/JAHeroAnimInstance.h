@@ -24,10 +24,10 @@ public:
 	
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|References")
-	AJAHeroCharacter* OwningHeroCharacter;
+	TObjectPtr<AJAHeroCharacter> OwningHeroCharacter;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|References")
-	UJACustomMovementComponent* OwningHeroCustomMovementComponent;
+	TObjectPtr<UJACustomMovementComponent> OwningHeroCustomMovementComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	bool bShouldEnterRelaxState;

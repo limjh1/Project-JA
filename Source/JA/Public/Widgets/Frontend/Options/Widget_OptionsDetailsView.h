@@ -31,18 +31,18 @@ protected:
 private:
 	//~ Bound Widgets
 	UPROPERTY(meta = (BindWidget))
-	UCommonTextBlock* CommonTextBlock_Title;
+	TObjectPtr<UCommonTextBlock> CommonTextBlock_Title;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommonLazyImage* CommonLazyImage_DescriptionImage;
+	TObjectPtr<UCommonLazyImage> CommonLazyImage_DescriptionImage;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommonRichTextBlock* CommonRichText_Description;
+	TObjectPtr<UCommonRichTextBlock> CommonRichText_Description;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommonRichTextBlock* CommonRichText_DynamicDetails;
+	TObjectPtr<UCommonRichTextBlock> CommonRichText_DynamicDetails;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommonRichTextBlock* CommonRichText_DisabledReason;
+	TObjectPtr<UCommonRichTextBlock> CommonRichText_DisabledReason;
 	//~ Bound Widgets
 };

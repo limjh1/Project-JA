@@ -67,7 +67,7 @@ void UJAEquipmentComponent::EquipItem(const UDataAsset_Equipment* InData)
 	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
 	USkeletalMeshComponent* MainMesh = OwnerChar->GetMesh();
 
-	if (USkeletalMeshComponent** FoundMeshPtr = ArmorMeshMap.Find(InData->SlotTag))
+	if (TObjectPtr<USkeletalMeshComponent>* FoundMeshPtr = ArmorMeshMap.Find(InData->SlotTag))
 	{
 		USkeletalMeshComponent* TargetComp = *FoundMeshPtr;
 

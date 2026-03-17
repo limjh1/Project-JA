@@ -39,10 +39,10 @@ private:
 
 private:
 	UPROPERTY(Transient)
-	UEnhancedInputUserSettings* CachedOwningInputUserSettings;
+	TObjectPtr<UEnhancedInputUserSettings> CachedOwningInputUserSettings;
 
 	UPROPERTY(Transient)
-	UEnhancedPlayerMappableKeyProfile* CachedOwningKeyProfile;
+	TObjectPtr<UEnhancedPlayerMappableKeyProfile> CachedOwningKeyProfile;
 
 	ECommonInputType CachedDesiredInputKeyType;
 

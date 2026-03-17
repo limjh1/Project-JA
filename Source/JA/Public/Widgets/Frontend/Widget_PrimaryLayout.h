@@ -26,6 +26,6 @@ protected:
 
 private:
 	UPROPERTY(Transient)
-	TMap<FGameplayTag, UCommonActivatableWidgetContainerBase*> RegisteredWidgetStackMap;
+	TMap<FGameplayTag, TObjectPtr<UCommonActivatableWidgetContainerBase>> RegisteredWidgetStackMap;
 	
 };

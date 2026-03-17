@@ -43,17 +43,17 @@ private:
 	void HandleApplyProjectileDamage(APawn* InHitPawn, const FGameplayEventData& InPayLoad);
 
 private:
-	TArray<AActor*> OverlappedActors;
+	TArray<TObjectPtr<AActor>> OverlappedActors;
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
-	UBoxComponent* ProjectileCollisionBox;
+	TObjectPtr<UBoxComponent> ProjectileCollisionBox;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
-	UNiagaraComponent* ProjectileNiagaraComponent;
+	TObjectPtr<UNiagaraComponent> ProjectileNiagaraComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
-	UProjectileMovementComponent* ProjectileMovementComponent;
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
 	EProjectileDamagePolicy ProjectileDamagePolicy = EProjectileDamagePolicy::OnHit;

@@ -27,9 +27,9 @@ AJAWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeaponByTag(FGameplayTag
 {
     if (CharacterCarriedWeaponMap.Contains(InWeaponTagToGet))
     {
-        if (AJAWeaponBase* const* FoundWeapon = CharacterCarriedWeaponMap.Find(InWeaponTagToGet))
+        if (TObjectPtr<AJAWeaponBase> const* FoundWeapon = CharacterCarriedWeaponMap.Find(InWeaponTagToGet))
         {
-            return *FoundWeapon;
+            return FoundWeapon->Get()/**FoundWeapon*/;
         }
     }
 

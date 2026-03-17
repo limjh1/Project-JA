@@ -119,7 +119,7 @@ public:
 
 private:
 	UPROPERTY()
-	AJABaseCharacter* OwningCharacter;
+	TObjectPtr<AJABaseCharacter> OwningCharacter;
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))

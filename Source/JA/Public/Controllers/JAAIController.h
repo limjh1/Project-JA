@@ -27,10 +27,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UAIPerceptionComponent* EnemyPerceptionComponent;
+	TObjectPtr<UAIPerceptionComponent> EnemyPerceptionComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UAISenseConfig_Sight* AISenseConfig_Sight;
+	TObjectPtr<UAISenseConfig_Sight> AISenseConfig_Sight;
 
 	UFUNCTION()
 	virtual void OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);

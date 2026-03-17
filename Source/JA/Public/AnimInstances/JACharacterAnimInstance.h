@@ -23,10 +23,10 @@ public:
 
 protected:
 	UPROPERTY()
-	AJABaseCharacter* OwningCharacter;
+	TObjectPtr<AJABaseCharacter> OwningCharacter;
 
 	UPROPERTY()
-	UCharacterMovementComponent*	OwningMovementComponent;
+	TObjectPtr<UCharacterMovementComponent>	OwningMovementComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	float GroundSpeed;

@@ -158,8 +158,17 @@ int32 AJASurvivalGameMode::TrySpawnWaveEnemies()
 {
 	if (TargetPointsArray.IsEmpty())
 	{
+		TArray<AActor*> TempActors;
+
 		// 레벨 모든 액터를 검토하기 때문에 최초
-		UGameplayStatics::GetAllActorsOfClass(this, ATargetPoint::StaticClass(), TargetPointsArray);
+		UGameplayStatics::GetAllActorsOfClass(this, ATargetPoint::StaticClass(), TempActors);
+		TargetPointsArray.Reserve(TempActors.Num()); // 최적화를 위해 미리 공간 확보
+		for (AActor* Actor : TempActors)
+		{
+			TargetPointsArray.Add(Actor);
+		}
+
+		//UGameplayStatics::GetAllActorsOfClass(this, ATargetPoint::StaticClass(), TargetPointsArray);
 	}
 
 	checkf(!TargetPointsArray.IsEmpty(), TEXT("No Valid Target Point Found In Level: %s For Spawning enemies"), *GetWorld()->GetName());

@@ -38,15 +38,15 @@ private:
 private:
 	// ~Bound Widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UJAFrontendCommonButtonBase* CommonButton_PreviousOption;
+	TObjectPtr<UJAFrontendCommonButtonBase> CommonButton_PreviousOption;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UJAFrontendCommonRotator* CommonRotator_AvailableOptions;
+	TObjectPtr<UJAFrontendCommonRotator> CommonRotator_AvailableOptions;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UJAFrontendCommonButtonBase* CommonButton_NextOption;
+	TObjectPtr<UJAFrontendCommonButtonBase> CommonButton_NextOption;
 	// ~Bound Widgets
 
 	UPROPERTY(Transient)
-	UListDataObject_String* CachedOwningStringDataObject;
+	TObjectPtr<UListDataObject_String> CachedOwningStringDataObject;
 };

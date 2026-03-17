@@ -43,7 +43,7 @@ private:
 private:
 	// ~Bound Widgets
 	UPROPERTY(meta = (BindWidget))
-	UCommonRichTextBlock* CommonRichText_RemapMessage;
+	TObjectPtr<UCommonRichTextBlock> CommonRichText_RemapMessage;
 	// ~Bound Widgets
 
 	TSharedPtr<FKeyRemapScreenInputPreprocessor> CachedInputPreprocessor;

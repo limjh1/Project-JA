@@ -60,34 +60,35 @@ private:
 #pragma region Components
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* CameraBoom;
+	TObjectPtr<USpringArmComponent> CameraBoom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* FollowCamera;
+	TObjectPtr<UCameraComponent> FollowCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	UHeroCombatComponent* HeroCombatComponent;
+	TObjectPtr<UHeroCombatComponent> HeroCombatComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
-	UHeroUIComponent* HeroUIComponent;
+	TObjectPtr<UHeroUIComponent> HeroUIComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	UJACustomMovementComponent* JACustomMovementComponent;
+	TObjectPtr<UJACustomMovementComponent> JACustomMovementComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment", meta = (AllowPrivateAccess = "true"))
-	UJAEquipmentComponent* JAEquipmentComponent;
+	TObjectPtr<UJAEquipmentComponent> JAEquipmentComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
-	USkeletalMeshComponent* ChestMeshComp;
+	TObjectPtr<USkeletalMeshComponent> ChestMeshComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
-	USkeletalMeshComponent* PantsMeshComp;
+	TObjectPtr<USkeletalMeshComponent> PantsMeshComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
-	USkeletalMeshComponent* GlovesMeshComp;
+	TObjectPtr<USkeletalMeshComponent> GlovesMeshComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
-	USkeletalMeshComponent* BootsMeshComp;
+	TObjectPtr<USkeletalMeshComponent> BootsMeshComp;
+
 
 #pragma endregion
 
@@ -97,7 +98,7 @@ private:
 	void OnPlayerExitClimbState();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
-	UDataAsset_InputConfig* InputConfigDataAsset;
+	TObjectPtr<UDataAsset_InputConfig> InputConfigDataAsset;
 
 	UPROPERTY()
 	FVector2D SwitchDirection = FVector2D::ZeroVector;
