@@ -17,6 +17,7 @@
 #include "Components/Movement/JACustomMovementComponent.h"
 #include "JAFunctionLibrary.h"
 #include "Components/Equipment/JAEquipmentComponent.h"
+#include "Components/Items/PotionInventoryComponent.h"
 
 #include "JADebugHelper.h"
 
@@ -51,21 +52,23 @@ AJAHeroCharacter::AJAHeroCharacter(const FObjectInitializer& ObjectInitializer)
 
 
 	// 방어구 붙을 메시 생성 및 부착
-	ChestMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ChestMeshComp"));
-	ChestMeshComp->SetupAttachment(GetMesh());
-	ChestMeshComp->SetLeaderPoseComponent(GetMesh()); // 생성 시점에 LeaderPose를 미리 걸어둠
+	ChestMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ChestMeshComp"));
+	ChestMeshComponent->SetupAttachment(GetMesh());
+	ChestMeshComponent->SetLeaderPoseComponent(GetMesh()); // 생성 시점에 LeaderPose를 미리 걸어둠
 
-	PantsMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("PantsMeshComp"));
-	PantsMeshComp->SetupAttachment(GetMesh());
-	PantsMeshComp->SetLeaderPoseComponent(GetMesh());
+	PantsMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("PantsMeshComp"));
+	PantsMeshComponent->SetupAttachment(GetMesh());
+	PantsMeshComponent->SetLeaderPoseComponent(GetMesh());
 
-	GlovesMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("GlovesMeshComp"));
-	GlovesMeshComp->SetupAttachment(GetMesh());
-	GlovesMeshComp->SetLeaderPoseComponent(GetMesh());
+	GlovesMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("GlovesMeshComp"));
+	GlovesMeshComponent->SetupAttachment(GetMesh());
+	GlovesMeshComponent->SetLeaderPoseComponent(GetMesh());
 
-	BootsMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BootsMeshComp"));
-	BootsMeshComp->SetupAttachment(GetMesh());
-	BootsMeshComp->SetLeaderPoseComponent(GetMesh());
+	BootsMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BootsMeshComp"));
+	BootsMeshComponent->SetupAttachment(GetMesh());
+	BootsMeshComponent->SetLeaderPoseComponent(GetMesh());
+
+	PotionInventoryComponent = CreateDefaultSubobject<UPotionInventoryComponent>(TEXT("PotionInventoryComponent"));
 }
 
 UPawnCombatComponent* AJAHeroCharacter::GetPawnCombatComponent() const
@@ -130,7 +133,7 @@ void AJAHeroCharacter::PostInitializeComponents()
 
 	if (JAEquipmentComponent)
 	{
-		JAEquipmentComponent->InitializeEquipmentMeshes(ChestMeshComp, PantsMeshComp, GlovesMeshComp, BootsMeshComp);
+		JAEquipmentComponent->InitializeEquipmentMeshes(ChestMeshComponent, PantsMeshComponent, GlovesMeshComponent, BootsMeshComponent);
 	}
 }
 

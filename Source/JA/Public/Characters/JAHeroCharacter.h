@@ -15,6 +15,7 @@ class UHeroCombatComponent;
 class UHeroUIComponent;
 class UJACustomMovementComponent;
 class UJAEquipmentComponent;
+class UPotionInventoryComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityFailedBP, const UGameplayAbility*, Ability, const FGameplayTagContainer&, ReasonTags);
 
@@ -46,6 +47,7 @@ public:
 	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const { return HeroCombatComponent; }
 	FORCEINLINE UJACustomMovementComponent* GetJACustomMovementComponent() const { return JACustomMovementComponent; }
 	FORCEINLINE UJAEquipmentComponent* GetJAEquipmentComponent() const { return JAEquipmentComponent; }
+	FORCEINLINE UPotionInventoryComponent* GetPotionInventoryComponent() const { return PotionInventoryComponent; }
 
 protected:
 	//~ Begin APawn Interface.
@@ -78,18 +80,19 @@ private:
 	TObjectPtr<UJAEquipmentComponent> JAEquipmentComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMeshComponent> ChestMeshComp;
+	TObjectPtr<USkeletalMeshComponent> ChestMeshComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMeshComponent> PantsMeshComp;
+	TObjectPtr<USkeletalMeshComponent> PantsMeshComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMeshComponent> GlovesMeshComp;
+	TObjectPtr<USkeletalMeshComponent> GlovesMeshComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment | Armour", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMeshComponent> BootsMeshComp;
+	TObjectPtr<USkeletalMeshComponent> BootsMeshComponent;
 
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Potion", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UPotionInventoryComponent> PotionInventoryComponent;
 #pragma endregion
 
 #pragma region Inputs

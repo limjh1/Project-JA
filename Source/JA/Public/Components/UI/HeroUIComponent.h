@@ -15,6 +15,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAbilityCooldownBeginDelegate, 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStoneInteractedDelegate, bool, bShouldDisplayInputKey);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCountChangedDelegate, float, NewCount);
+
 /**
  * 
  */
@@ -41,4 +43,7 @@ public:
 	
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FOnStoneInteractedDelegate OnInteracted;
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable)
+	FOnCountChangedDelegate OnChangedPotionQuantity;	
 };

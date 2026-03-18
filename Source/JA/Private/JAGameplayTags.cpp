@@ -27,6 +27,8 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Toggleable, "InputTag.Toggleable");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Toggleable_TargetLock, "InputTag.Toggleable.TargetLock");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Toggleable_Rage, "InputTag.Toggleable.Rage");
+
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_DrinkPotion, "InputTag.DrinkPotion");
 	
 	/* Player Tags */
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equip_Katana, "Player.Ability.Equip.Katana");
@@ -48,6 +50,7 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_LedgeUp, "Player.Ability.Climb.LedgeUp");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Vaulting, "Player.Ability.Climb.Vaulting");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equipment_Armour, "Player.Ability.Equipment.Armour");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_DrinkPotion, "Player.Ability.DrinkPotion");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Light, "Player.Cooldown.SpecialWeaponAbility.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Heavy, "Player.Cooldown.SpecialWeaponAbility.Heavy");
@@ -68,6 +71,7 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Climb_LedgeUp, "Player.Event.Climb.LedgeUp");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Equipment_Armour, "Player.Event.Equipment.Armour");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Interact_Equipment, "Player.Event.Interact.Equipment");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_DrinkPotionEffect, "Player.Event.DrinkPotionEffect");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_JumpToFinisher, "Player.Status.JumpToFinisher");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rolling, "Player.Status.Rolling");
