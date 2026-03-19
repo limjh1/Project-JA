@@ -93,6 +93,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Equipment_Gloves);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_PickUp_Stones);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_PickUp_Equipment);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_PerfectDodge);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);

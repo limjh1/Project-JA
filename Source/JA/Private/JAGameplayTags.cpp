@@ -92,6 +92,7 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Equipment_Gloves, "Player.Status.Equipment.Gloves");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_PickUp_Stones, "Player.Status.PickUp.Stones");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_PickUp_Equipment, "Player.Status.PickUp.Equipment");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_PerfectDodge, "Player.Status.PerfectDodge");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Heavy, "Player.SetByCaller.AttackType.Heavy");
