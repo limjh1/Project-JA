@@ -16,6 +16,7 @@ class UHeroUIComponent;
 class UJACustomMovementComponent;
 class UJAEquipmentComponent;
 class UPotionInventoryComponent;
+class UAfterImageComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityFailedBP, const UGameplayAbility*, Ability, const FGameplayTagContainer&, ReasonTags);
 
@@ -48,6 +49,7 @@ public:
 	FORCEINLINE UJACustomMovementComponent* GetJACustomMovementComponent() const { return JACustomMovementComponent; }
 	FORCEINLINE UJAEquipmentComponent* GetJAEquipmentComponent() const { return JAEquipmentComponent; }
 	FORCEINLINE UPotionInventoryComponent* GetPotionInventoryComponent() const { return PotionInventoryComponent; }
+	FORCEINLINE UAfterImageComponent* GetAfterImageComponent() const { return AfterImageComponent; }
 
 protected:
 	//~ Begin APawn Interface.
@@ -93,6 +95,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Potion", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPotionInventoryComponent> PotionInventoryComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat | After Image", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAfterImageComponent> AfterImageComponent;
 #pragma endregion
 
 #pragma region Inputs

@@ -51,6 +51,7 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Climb_Vaulting, "Player.Ability.Climb.Vaulting");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equipment_Armour, "Player.Ability.Equipment.Armour");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_DrinkPotion, "Player.Ability.DrinkPotion");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Fx_PerfectDodge, "Player.Ability.Fx.PerfectDodge");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Light, "Player.Cooldown.SpecialWeaponAbility.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Heavy, "Player.Cooldown.SpecialWeaponAbility.Heavy");
@@ -72,6 +73,8 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Equipment_Armour, "Player.Event.Equipment.Armour");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Interact_Equipment, "Player.Event.Interact.Equipment");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_DrinkPotionEffect, "Player.Event.DrinkPotionEffect");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_AfterImage, "Player.Event.AfterImage");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Fx_PerfectDodge, "Player.Event.Fx.PerfectDodge");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_JumpToFinisher, "Player.Status.JumpToFinisher");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rolling, "Player.Status.Rolling");
@@ -92,7 +95,6 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Equipment_Gloves, "Player.Status.Equipment.Gloves");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_PickUp_Stones, "Player.Status.PickUp.Stones");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_PickUp_Equipment, "Player.Status.PickUp.Equipment");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Status_PerfectDodge, "Player.Status.PerfectDodge");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light");
 	UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Heavy, "Player.SetByCaller.AttackType.Heavy");

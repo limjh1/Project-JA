@@ -9,6 +9,7 @@
 #include "Interfaces/PawnUIInterface.h"
 #include "Components/UI/PawnUIComponent.h"
 #include "Components/UI/HeroUIComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "JADebugHelper.h"
 
@@ -23,6 +24,7 @@ UJAAttributeSet::UJAAttributeSet()
     InitDamageTaken(1.f);
     InitCurrentStamina(1.f);
     InitMaxStamina(1.f);
+    InitCustomTimeDilation(1.f);
 }
 
 void UJAAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -117,6 +119,23 @@ void UJAAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
     }
 }
 
+void UJAAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+    Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+    if (Attribute == GetCustomTimeDilationAttribute())
+    {
+        UGameplayStatics::SetGlobalTimeDilation(GetWorld(), NewValue);
+
+        if (AActor* AvatarActor = GetOwningAbilitySystemComponent()->GetAvatarActor())
+        {
+            AvatarActor->CustomTimeDilation = 1.0f / NewValue;
+
+            //Debug::Print(TEXT("TimeDilation Changed: "), NewValue);
+        }
+    }
+}
+
 void UJAAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -130,6 +149,7 @@ void UJAAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, AttackPower, COND_OwnerOnly, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, DefensePower, COND_OwnerOnly, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, DamageTaken, COND_OwnerOnly, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UJAAttributeSet, CustomTimeDilation, COND_OwnerOnly, REPNOTIFY_Always);
 }
 
 void UJAAttributeSet::OnRep_CurrentHealth(const FGameplayAttributeData& OldValue)
@@ -175,4 +195,9 @@ void UJAAttributeSet::OnRep_DefensePower(const FGameplayAttributeData& OldValue)
 void UJAAttributeSet::OnRep_DamageTaken(const FGameplayAttributeData& OldValue)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UJAAttributeSet, DamageTaken, OldValue);
+}
+
+void UJAAttributeSet::OnRep_CustomTimeDilation(const FGameplayAttributeData& OldValue)
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UJAAttributeSet, CustomTimeDilation, OldValue);
 }

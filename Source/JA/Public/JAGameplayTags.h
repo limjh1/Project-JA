@@ -52,6 +52,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Climb_Vaulting);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equipment_Armour);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_DrinkPotion);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Fx_PerfectDodge);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
@@ -73,6 +74,8 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equipment_Armour);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Interact_Equipment);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_DrinkPotionEffect);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AfterImage);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Fx_PerfectDodge);
 		
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
@@ -93,7 +96,6 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Equipment_Gloves);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_PickUp_Stones);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_PickUp_Equipment);
-	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_PerfectDodge);
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);

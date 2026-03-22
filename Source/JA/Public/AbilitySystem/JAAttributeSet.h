@@ -27,6 +27,7 @@ public:
 	UJAAttributeSet();
 
     virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+    virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 
 public:
 
@@ -70,6 +71,10 @@ public:
     FGameplayAttributeData DamageTaken;
     ATTRIBUTE_ACCESSORS(UJAAttributeSet, DamageTaken)
 
+    UPROPERTY(BlueprintReadOnly, Category = "TimeDilation", ReplicatedUsing = OnRep_CustomTimeDilation)
+    FGameplayAttributeData CustomTimeDilation;
+    ATTRIBUTE_ACCESSORS(UJAAttributeSet, CustomTimeDilation);
+
 private:
     TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
 
@@ -101,6 +106,9 @@ public:
 
     UFUNCTION()
     void OnRep_DamageTaken(const FGameplayAttributeData& OldValue);
+
+    UFUNCTION()
+    void OnRep_CustomTimeDilation(const FGameplayAttributeData& OldValue);
 
     // === Replication 설정 ===
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

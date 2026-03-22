@@ -8,6 +8,19 @@
 #include "AfterImageComponent.generated.h"
 
 class UPoseableMeshComponent;
+class UMaterialInterface;
+
+// 잔상 데이터와 해당 잔상을 제어하는 타이머 핸들을 묶는 구조체
+USTRUCT()
+struct FGhostData
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TObjectPtr<UPoseableMeshComponent> MeshComponent = nullptr;
+
+	FTimerHandle DeactivateTimerHandle;
+};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class JA_API UAfterImageComponent : public UActorComponent
@@ -20,24 +33,23 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	/** 태그 변화를 감지하여 잔상 시작/중지 제어 */
 	void OnPerfectDodgeTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	void StartAfterImage(float Interval);
 	void StopAfterImage();
-
-	/** 타이머 루프에서 호출될 실제 스폰 함수 */
+	
 	void SpawnAfterImage();
 
-	/** 풀에서 Hidden 상태인 컴포넌트를 반환 */
-	UPoseableMeshComponent* GetAvailableGhost() const;
-
 private:
-	/** 성능 최적화를 위한 오브젝트 풀링 컨테이너 */
+	int32 CurrentGhostIndex = 0;
+	bool bIsSpawning = false;
+	float LastSpawnRealTime = 0.f;
+
 	UPROPERTY()
-	TArray<TObjectPtr<UPoseableMeshComponent>> GhostPool;
+	TArray<FGhostData> GhostPool;
 
 	UPROPERTY(EditAnywhere, Category = "AfterImage|Settings")
 	int32 MaxPoolSize = 10;
@@ -48,8 +60,10 @@ private:
 	UPROPERTY(EditAnywhere, Category = "AfterImage|Settings")
 	float SpawnInterval = 0.1f;
 
-	FTimerHandle GhostTimerHandle;
+	UPROPERTY(EditAnywhere, Category = "AfterImage|Settings")
+	TObjectPtr<UMaterialInterface> AfterImageMaterial;
 
-	/** 태그 감시용 델리게이트 핸들 보관 (메모리 누수 방지) */
+	FTimerHandle SpawnTimerHandle;
+
 	FDelegateHandle TagDelegateHandle;
 };

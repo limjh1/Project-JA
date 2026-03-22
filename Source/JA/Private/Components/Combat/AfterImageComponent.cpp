@@ -7,57 +7,91 @@
 #include "JAFunctionLibrary.h"
 #include "TimerManager.h"
 #include "Characters/JABaseCharacter.h"
+#include "Kismet/GameplayStatics.h"
+
+#include "JADebugHelper.h"
 
 UAfterImageComponent::UAfterImageComponent()
+	: LastSpawnRealTime(0.f)
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bStartWithTickEnabled = false;
 }
 
 void UAfterImageComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	AActor* Owner = GetOwner();
-	if (!Owner) 
-	{ 
-		return; 
+	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
+	if (!OwnerChar || !OwnerChar->GetMesh())
+	{
+		return;
 	}
 
-	// 1. 오브젝트 풀 초기화 (BeginPlay에서 수행해야 안전함)
+	GhostPool.SetNum(MaxPoolSize);
 	for (int32 i = 0; i < MaxPoolSize; ++i)
 	{
-		// 풀링된 컴포넌트가 액터 소멸 시 함께 정리되도록 등록
-		UPoseableMeshComponent* Ghost = NewObject<UPoseableMeshComponent>(Owner);
+		UPoseableMeshComponent* Ghost = NewObject<UPoseableMeshComponent>(OwnerChar);
 		if (Ghost)
 		{
-			Ghost->RegisterComponent(); // 렌더링 스레드 등록
+			Ghost->RegisterComponent();
 			Ghost->SetHiddenInGame(true);
 			Ghost->SetComponentTickEnabled(false);
-			Ghost->SetCollisionEnabled(ECollisionEnabled::NoCollision); // 물리 부하 방지
-			GhostPool.Add(Ghost);
+			Ghost->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			Ghost->SetSkinnedAssetAndUpdate(OwnerChar->GetMesh()->GetSkinnedAsset());
+
+			int32 NumMaterials = Ghost->GetNumMaterials();
+			for (int32 MatIdx = 0; MatIdx < NumMaterials; ++MatIdx)
+			{
+				Ghost->SetMaterial(MatIdx, AfterImageMaterial);
+			}
+
+			GhostPool[i].MeshComponent = Ghost;
 		}
 	}
 
-	// 2. GameplayTag 변화 감지 (Delegate 바인딩)
-	if (UAbilitySystemComponent* ASC = UJAFunctionLibrary::NativeGetJAASCFromAcotr(Owner))
+	if (UAbilitySystemComponent* ASC = UJAFunctionLibrary::NativeGetJAASCFromAcotr(OwnerChar))
 	{
-		TagDelegateHandle = ASC->RegisterGameplayTagEvent(JAGameplayTags::Player_Status_PerfectDodge, EGameplayTagEventType::NewOrRemoved)
+		TagDelegateHandle = ASC->RegisterGameplayTagEvent(JAGameplayTags::Player_Event_AfterImage, EGameplayTagEventType::NewOrRemoved)
 			.AddUObject(this, &UAfterImageComponent::OnPerfectDodgeTagChanged);
 	}
 }
 
 void UAfterImageComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	// 3. 자원 정리 (메모리 누수 및 댕글링 타이머 방지)
 	StopAfterImage();
+
+	if (UWorld* World = GetWorld())
+	{
+		for (FGhostData& GhostData : GhostPool)
+		{
+			World->GetTimerManager().ClearTimer(GhostData.DeactivateTimerHandle);
+		}
+	}
 
 	if (UAbilitySystemComponent* ASC = UJAFunctionLibrary::NativeGetJAASCFromAcotr(GetOwner()))
 	{
-		ASC->RegisterGameplayTagEvent(JAGameplayTags::Player_Status_PerfectDodge, EGameplayTagEventType::NewOrRemoved)
+		ASC->RegisterGameplayTagEvent(JAGameplayTags::Player_Event_AfterImage, EGameplayTagEventType::NewOrRemoved)
 			.Remove(TagDelegateHandle);
 	}
 
 	Super::EndPlay(EndPlayReason);
+}
+
+void UAfterImageComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (bIsSpawning)
+	{
+		// 엔진 시간축 왜곡을 완전히 무시하는 절대 시간
+		float CurrentRealTime = GetWorld()->GetRealTimeSeconds();
+		if (CurrentRealTime - LastSpawnRealTime >= SpawnInterval)
+		{
+			SpawnAfterImage();
+			LastSpawnRealTime = CurrentRealTime;
+		}
+	}
 }
 
 void UAfterImageComponent::OnPerfectDodgeTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
@@ -74,44 +108,56 @@ void UAfterImageComponent::OnPerfectDodgeTagChanged(const FGameplayTag CallbackT
 
 void UAfterImageComponent::StartAfterImage(float Interval)
 {
-	if (GetWorld())
-	{
-		GetWorld()->GetTimerManager().SetTimer(GhostTimerHandle, this, &UAfterImageComponent::SpawnAfterImage, Interval, true);
-	}
+	SetComponentTickEnabled(true);
+
+	bIsSpawning = true;
+
+	// 시작 시점의 절대 시간을 기록하여 즉시 첫 잔상이 나오도록 유도
+	LastSpawnRealTime = GetWorld()->GetRealTimeSeconds() - Interval;
+
+	//if (UWorld* World = GetWorld())
+	//{
+	//	World->GetTimerManager().SetTimer(SpawnTimerHandle, this, &UAfterImageComponent::SpawnAfterImage, Interval, true);
+	//}
 }
 
 void UAfterImageComponent::StopAfterImage()
 {
-	if (GetWorld())
-	{
-		GetWorld()->GetTimerManager().ClearTimer(GhostTimerHandle);
-	}
+	SetComponentTickEnabled(false);
+
+	bIsSpawning = false;
+	//if (GetWorld())
+	//{
+	//	GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
+	//}
 }
 
 void UAfterImageComponent::SpawnAfterImage()
 {
 	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
-	if (!OwnerChar || !OwnerChar->GetMesh())
+	if (!OwnerChar || !OwnerChar->GetMesh() || GhostPool.IsEmpty())
 	{
 		return;
 	}
 
-	UPoseableMeshComponent* Ghost = GetAvailableGhost();
+	FGhostData& GhostData = GhostPool[CurrentGhostIndex];
+	CurrentGhostIndex = (CurrentGhostIndex + 1) % MaxPoolSize;
+
+	UPoseableMeshComponent* Ghost = GhostData.MeshComponent;
 	if (Ghost)
 	{
 		Ghost->SetHiddenInGame(false);
-
-		// 스켈레탈 메시의 현재 월드 트랜스폼 복사
 		Ghost->SetWorldLocationAndRotation(OwnerChar->GetMesh()->GetComponentLocation(), OwnerChar->GetMesh()->GetComponentRotation());
-
-		// [기술적 핵심] 현재 포즈 스냅샷 복사
 		Ghost->CopyPoseFromSkeletalComponent(OwnerChar->GetMesh());
+		Ghost->RefreshBoneTransforms();
 
-		// 람다 캡처 시 TWeakObjectPtr를 사용하여 GC에 의한 유효성 문제 방어
+		// 만약 해당 잔상의 비활성화 타이머가 아직 돌고 있다면 강제로 끔 (안전장치)
+		GetWorld()->GetTimerManager().ClearTimer(GhostData.DeactivateTimerHandle);
+
 		TWeakObjectPtr<UPoseableMeshComponent> WeakGhost = Ghost;
-		FTimerHandle DeactivateHandle;
 
-		GetWorld()->GetTimerManager().SetTimer(DeactivateHandle, [WeakGhost]()
+		// 구조체가 소유한 전용 타이머 핸들에 새 타이머 등록
+		GetWorld()->GetTimerManager().SetTimer(GhostData.DeactivateTimerHandle, [WeakGhost]()
 			{
 				if (WeakGhost.IsValid())
 				{
@@ -119,16 +165,4 @@ void UAfterImageComponent::SpawnAfterImage()
 				}
 			}, GhostLifeTime, false);
 	}
-}
-
-UPoseableMeshComponent* UAfterImageComponent::GetAvailableGhost() const
-{
-	for (UPoseableMeshComponent* Ghost : GhostPool)
-	{
-		if (Ghost && Ghost->bHiddenInGame)
-		{
-			return Ghost;
-		}
-	}
-	return nullptr;
 }

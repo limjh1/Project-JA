@@ -18,6 +18,7 @@
 #include "JAFunctionLibrary.h"
 #include "Components/Equipment/JAEquipmentComponent.h"
 #include "Components/Items/PotionInventoryComponent.h"
+#include "Components/Combat/AfterImageComponent.h"
 
 #include "JADebugHelper.h"
 
@@ -69,6 +70,7 @@ AJAHeroCharacter::AJAHeroCharacter(const FObjectInitializer& ObjectInitializer)
 	BootsMeshComponent->SetLeaderPoseComponent(GetMesh());
 
 	PotionInventoryComponent = CreateDefaultSubobject<UPotionInventoryComponent>(TEXT("PotionInventoryComponent"));
+	AfterImageComponent = CreateDefaultSubobject<UAfterImageComponent>(TEXT("AfterImageComponent"));
 }
 
 UPawnCombatComponent* AJAHeroCharacter::GetPawnCombatComponent() const
