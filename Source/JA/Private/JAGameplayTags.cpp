@@ -13,8 +13,12 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Climb_Hop, "InputTag.Climb.Hop");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Equip_Katana, "InputTag.Equip.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Unequip_Katana, "InputTag.Unequip.Katana");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Equip_Pistol, "InputTag.Equip.Pistol");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Unequip_Pistol, "InputTag.Unequip.Pistol");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_LightAttack_Katana, "InputTag.LightAttack.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_HeavyAttack_Katana, "InputTag.HeavyAttack.Katana");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_LightAttack_Pistol, "InputTag.LightAttack.Pistol");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_HeavyAttack_Pistol, "InputTag.HeavyAttack.Pistol");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Roll, "InputTag.Roll");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_SwitchTarget, "InputTag.SwitchTarget");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_SpecialWeaponAbility_Light, "InputTag.SpecialWeaponAbility.Light");
@@ -57,9 +61,12 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_SpecialWeaponAbility_Heavy, "Player.Cooldown.SpecialWeaponAbility.Heavy");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Katana, "Player.Weapon.Katana");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Pistol, "Player.Weapon.Pistol");
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Equip_Katana, "Player.Event.Equip.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Unequip_Katana, "Player.Event.Unequip.Katana");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Equip_Pistol, "Player.Event.Equip.Pistol");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Unequip_Pistol, "Player.Event.Unequip.Pistol");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_HitPause, "Player.Event.HitPause");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_SuccessfulBlock, "Player.Event.SuccessfulBlock");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_SwitchTarget_Left, "Player.Event.SwitchTarget.Left");
