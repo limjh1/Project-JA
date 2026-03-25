@@ -38,8 +38,12 @@ namespace JAGameplayTags
 	/* Player Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Katana);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unquip_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Pistol);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unquip_Pistol);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Light_Katana);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Heavy_Katana);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Light_Pistol);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Heavy_Pistol);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_HitPause);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Roll);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Block);

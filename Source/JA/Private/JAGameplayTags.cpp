@@ -37,8 +37,12 @@ namespace JAGameplayTags
 	/* Player Tags */
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equip_Katana, "Player.Ability.Equip.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Unquip_Katana, "Player.Ability.Unequip.Katana");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equip_Pistol, "Player.Ability.Equip.Pistol");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Unquip_Pistol, "Player.Ability.Unequip.Pistol");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack_Light_Katana, "Player.Ability.Attack.Light.Katana");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack_Heavy_Katana, "Player.Ability.Attack.Heavy.Katana");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack_Light_Pistol, "Player.Ability.Attack.Light.Pistol");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack_Heavy_Pistol, "Player.Ability.Attack.Heavy.Pistol");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_HitPause, "Player.Ability.HitPause");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Roll, "Player.Ability.Roll");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Block, "Player.Ability.Block");
