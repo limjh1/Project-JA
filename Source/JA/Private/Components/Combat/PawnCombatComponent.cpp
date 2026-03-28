@@ -56,7 +56,7 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDama
              ToggleDamageType == EToggleDamageType::LeftHand)
     {
         ToggleBodyCollisionBoxCollsion(bShouldEnable, ToggleDamageType);
-    }    
+    }     
 }
 
 void UPawnCombatComponent::OnHitTargetActor(AActor* HitActor)
