@@ -46,6 +46,10 @@ inline void UJAInputComponent::BindAbilityInputAction(const UDataAsset_InputConf
 			continue;
 		}
 
+		//UE_LOG(LogTemp, Warning, TEXT("[Input Binding Debug] Action : %s | Bound Tag : %s"),
+		//	*AbilityInputActionConfig.InputAction->GetName(),
+		//	*AbilityInputActionConfig.InputTag.ToString());
+
 		BindAction(AbilityInputActionConfig.InputAction, ETriggerEvent::Started, ContextObject, InputPressedFunc, AbilityInputActionConfig.InputTag);
 		BindAction(AbilityInputActionConfig.InputAction, ETriggerEvent::Completed, ContextObject, InputReleasedFunc, AbilityInputActionConfig.InputTag);
 	}

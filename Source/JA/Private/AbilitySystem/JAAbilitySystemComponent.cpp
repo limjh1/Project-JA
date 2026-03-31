@@ -30,6 +30,8 @@ void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInpu
 		return;
 	}
 
+	//Debug::Print("OnAbilityInputPressed InInputTag: " + InInputTag.ToString());
+
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag))
