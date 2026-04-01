@@ -32,7 +32,7 @@ public:
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class JA_API UDataAsset_InputConfig : public UDataAsset
 {
 	GENERATED_BODY()
@@ -42,6 +42,9 @@ public:
 
 	void AddInputMappingContext(ULocalPlayer* LocalPlayer, UInputMappingContext* ContextToAdd, int32 InPriority);
 	void RemoveInputMappingContext(ULocalPlayer* LocalPlayer, UInputMappingContext* ContextToRemove);
+
+protected:
+	virtual EDataValidationResult IsDataValid(class FDataValidationContext& Context) const override;
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

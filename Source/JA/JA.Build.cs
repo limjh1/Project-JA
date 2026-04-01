@@ -28,7 +28,17 @@ public class JA : ModuleRules
 			"PreLoadScreen"
         });
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+        if (Target.bBuildEditor)
+        {
+            // 에디터 툴 제작을 위한 전용 모듈
+            PrivateDependencyModuleNames.AddRange(new string[] 
+			{
+				"UnrealEd",
+				"AssetTools"
+			});
+        }
+
+        PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

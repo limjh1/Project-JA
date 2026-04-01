@@ -35,6 +35,8 @@ namespace JAGameplayTags
 
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_DrinkPotion);
 
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Test_AssetGenerate);
+
 	/* Player Tags */
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Katana);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unquip_Katana);

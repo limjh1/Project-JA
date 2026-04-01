@@ -33,6 +33,8 @@ namespace JAGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Toggleable_Rage, "InputTag.Toggleable.Rage");
 
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_DrinkPotion, "InputTag.DrinkPotion");
+
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Test_AssetGenerate, "InputTag.Test.AssetGenerate");
 	
 	/* Player Tags */
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equip_Katana, "Player.Ability.Equip.Katana");
