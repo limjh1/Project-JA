@@ -11,7 +11,7 @@ void UJAAbilitySystemComponent::OnInternalAbilityEnded(const FAbilityEndedData& 
 {
 	if (AbilityEndedData.AbilityThatEnded)
 	{
-		FGameplayTag AbilityTag = AbilityEndedData.AbilityThatEnded->AbilityTags.First();
+		FGameplayTag AbilityTag = AbilityEndedData.AbilityThatEnded->GetAssetTags().First();
 		OnJAAbilityEnded.Broadcast(AbilityTag);
 	}
 }
@@ -34,7 +34,7 @@ void UJAAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInpu
 
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag))
+		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InInputTag))
 		{
 			continue;
 		}
@@ -64,7 +64,7 @@ void UJAAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInp
 
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag))
+		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InInputTag))
 		{
 			continue;
 		}
@@ -93,7 +93,7 @@ void UJAAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FJAHeroAbi
 		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
 		AbilitySpec.SourceObject = GetAvatarActor();
 		AbilitySpec.Level = ApplyLevel;
-		AbilitySpec.DynamicAbilityTags.AddTag(AbilitySet.InputTag);
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
 
 		OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
 	}
@@ -108,7 +108,7 @@ void UJAAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FJAHeroAbi
 		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
 		AbilitySpec.SourceObject = GetAvatarActor();
 		AbilitySpec.Level = ApplyLevel;
-		AbilitySpec.DynamicAbilityTags.AddTag(AbilitySet.InputTag);
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
 
 		OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
 	}

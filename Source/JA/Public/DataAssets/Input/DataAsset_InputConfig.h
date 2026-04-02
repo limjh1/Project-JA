@@ -44,7 +44,9 @@ public:
 	void RemoveInputMappingContext(ULocalPlayer* LocalPlayer, UInputMappingContext* ContextToRemove);
 
 protected:
+#if WITH_EDITOR
 	virtual EDataValidationResult IsDataValid(class FDataValidationContext& Context) const override;
+#endif
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

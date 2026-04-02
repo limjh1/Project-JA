@@ -47,6 +47,7 @@ void UDataAsset_InputConfig::RemoveInputMappingContext(ULocalPlayer* LocalPlayer
     SubSystem->RemoveMappingContext(ContextToRemove);
 }
 
+#if WITH_EDITOR
 EDataValidationResult UDataAsset_InputConfig::IsDataValid(FDataValidationContext& Context) const
 {
     EDataValidationResult Result = Super::IsDataValid(Context);
@@ -107,3 +108,4 @@ EDataValidationResult UDataAsset_InputConfig::IsDataValid(FDataValidationContext
 
     return Result;
 }
+#endif

@@ -13,7 +13,7 @@ UAnimNotify_StartRagdoll::UAnimNotify_StartRagdoll()
 #endif // WITH_EDITORONLY_DATA
 }
 
-void UAnimNotify_StartRagdoll::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UAnimNotify_StartRagdoll::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation);
 

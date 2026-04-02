@@ -17,7 +17,7 @@ class JA_API UAnimNotify_StartRagdoll : public UAnimNotify
 public:
 	UAnimNotify_StartRagdoll();
 
-	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
+	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 	
 	// 에디터에서 보일 이름 설정
 	virtual FString GetNotifyName_Implementation() const override { return TEXT("Start Ragdoll"); }
