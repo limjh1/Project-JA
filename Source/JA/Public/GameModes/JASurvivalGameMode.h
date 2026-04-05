@@ -11,6 +11,7 @@ class AJAEnemyCharacter;
 UENUM(BlueprintType)
 enum class EJASurvivalGameModeState : uint8
 {
+	WaitTriggerFirstWave,
 	WaitSpawnNewWave,
 	SpawningNewWave,
 	InProgress,
@@ -65,6 +66,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RegisterSpawnedEnemies(const TArray<AJAEnemyCharacter*>& InEnemiesToRegister);
 
+	UFUNCTION(BlueprintCallable)
+	void StartFirstWave();
+
 private:
 	void SetCurrentSurvivalGameModeState(EJASurvivalGameModeState InState);
 	bool HasFinishedAllWaves() const;
@@ -106,13 +110,13 @@ private:
 	float TimePassedSinceStart = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
-	float SpawnNewWaveWaitTime = 5.f;
+	float SpawnNewWaveWaitTime = 3.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
-	float SpawnEnemisDelayTime = 2.f;
+	float SpawnEnemisDelayTime = 1.5f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
-	float WaveCompletedWaitTime = 5.f;
+	float WaveCompletedWaitTime = 3.f;
 
 private:
 	UPROPERTY()

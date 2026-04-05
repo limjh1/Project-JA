@@ -706,17 +706,20 @@ void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwiningLocal
 					{
 						if (MappableKeyProfile->DoesMappingPassQueryOptions(KeyMapping, GamepadOnly))
 						{
-							/*Debug::Print(
-								TEXT(" Mapping ID: ") + KeyMapping.GetMappingName().ToString() +
-								TEXT(" Display Name: ") + KeyMapping.GetDisplayName().ToString() +
-								TEXT(" Bound Key: ") + KeyMapping.GetCurrentKey().GetDisplayName().ToString()
-							);*/
+							//Debug::Print(
+							//	TEXT(" Mapping ID: ") + KeyMapping.GetMappingName().ToString() +
+							//	TEXT(" Display Name: ") + KeyMapping.GetDisplayName().ToString() +
+							//	TEXT(" Bound Key: ") + KeyMapping.GetCurrentKey().GetDisplayName().ToString()
+							//);
 
 							UListDataObject_KeyRemap* KeyRemapDataObject = NewObject<UListDataObject_KeyRemap>();
 							KeyRemapDataObject->SetDataID(KeyMapping.GetMappingName());
 							KeyRemapDataObject->SetDataDisplayName(KeyMapping.GetDisplayName());
 
 							FString DescKeyString = "UI_Options_Desc_" + KeyMapping.GetMappingName().ToString();
+
+							//Debug::Print(DescKeyString);
+							
 							FText DescText = FText::FromStringTable(TEXT("/Game/UI/StringTable/ST_OptionsScreenDescription"), DescKeyString);
 							KeyRemapDataObject->SetDescriptionRichText(DescText);
 

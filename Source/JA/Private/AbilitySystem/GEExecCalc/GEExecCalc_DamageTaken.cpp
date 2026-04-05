@@ -94,10 +94,10 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetJADamageCapture().DefensePowerDef, EvaluateParameters, TargetDefensePower);
 	//Debug::Print(TEXT("TargetDefensePower"), TargetDefensePower);
 
-	//#TODO 5%, 15% 데미지 콤보 보상치 수정 필요. 그리고 공격 종류에 상관없이 통합 콤보 인덱스로 UI 띄우기
+	// 2%, 5% 데미지 콤보 보상치 수정 필요
 	if (0 != UsedLightAttackComboCount)
 	{
-		const float DamageIncreasePercentLight = (UsedLightAttackComboCount - 1) * 0.05f + 1.f;
+		const float DamageIncreasePercentLight = (UsedLightAttackComboCount - 1) * 0.02f + 1.f;
 
 		BaseDamage *= DamageIncreasePercentLight;
 		//Debug::Print(TEXT("ScaledBaseDamageLight"), BaseDamage);
@@ -105,7 +105,7 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 
 	if (0 != UsedHeavyAttackComboCount)
 	{
-		const float DamageIncreasePercentHeavy = UsedHeavyAttackComboCount * 0.15f + 1.f;
+		const float DamageIncreasePercentHeavy = UsedHeavyAttackComboCount * 0.05f + 1.f;
 
 		BaseDamage *= DamageIncreasePercentHeavy;
 		//Debug::Print(TEXT("ScaledBaseDamageHeavy"), BaseDamage);

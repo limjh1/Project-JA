@@ -20,24 +20,21 @@ void AJASurvivalGameMode::InitGame(const FString& MapName, const FString& Option
 	{
 		CurrentGameDifficulty = SavedGameDifficulty;
 	}
+
+	CurrentSurvivalGameModeState = EJASurvivalGameModeState::WaitTriggerFirstWave;
 }
 
 void AJASurvivalGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
-	checkf(EnemyWaveSpawnerDataTable, TEXT("Forgot to Assign a valid data table in survival game mode bp"));
-
-	SetCurrentSurvivalGameModeState(EJASurvivalGameModeState::WaitSpawnNewWave);
-
-	TotalWavesToSpawn = EnemyWaveSpawnerDataTable->GetRowNames().Num();
-
-	PreLoadNextWaveEnemies(); // First Wave
 }
 
 void AJASurvivalGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (EJASurvivalGameModeState::WaitTriggerFirstWave == CurrentSurvivalGameModeState)
+		return;
 
 	if (EJASurvivalGameModeState::WaitSpawnNewWave == CurrentSurvivalGameModeState)
 	{
@@ -98,6 +95,17 @@ void AJASurvivalGameMode::RegisterSpawnedEnemies(const TArray<AJAEnemyCharacter*
 			SpawnedEnemy->OnDestroyed.AddUniqueDynamic(this, &ThisClass::OnEnemyDestroyed);
 		}
 	}
+}
+
+void AJASurvivalGameMode::StartFirstWave()
+{
+	checkf(EnemyWaveSpawnerDataTable, TEXT("Forgot to Assign a valid data table in survival game mode bp"));
+
+	SetCurrentSurvivalGameModeState(EJASurvivalGameModeState::WaitSpawnNewWave);
+
+	TotalWavesToSpawn = EnemyWaveSpawnerDataTable->GetRowNames().Num();
+
+	PreLoadNextWaveEnemies(); // First Wave
 }
 
 void AJASurvivalGameMode::SetCurrentSurvivalGameModeState(EJASurvivalGameModeState InState)
