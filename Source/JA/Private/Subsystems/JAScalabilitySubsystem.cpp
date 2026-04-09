@@ -15,6 +15,8 @@ void UJAScalabilitySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     Super::Initialize(Collection);
 
+    StartPerformanceBenchmark();
+
 #if WITH_EDITOR
     //Debug::Print(FString(TEXT("[UJAScalabilitySubsystem] UJAScalabilitySubsystem::Initialize")));
 #endif
@@ -41,50 +43,7 @@ void UJAScalabilitySubsystem::Tick(float DeltaTime)
         bInitialResourcesRegistered = true;
     }    
 
-    Accumulator += DeltaTime;
-    FrameCount++;
-    Timer += DeltaTime;
-
-    // 평균 1초
-    if (Timer >= CheckInterval)
-    {
-        float AverageMS = (Accumulator / FrameCount) * 1000.f;
-        AnalyzePerformance(AverageMS);
-
-        Timer = 0.f;
-        Accumulator = 0.f;
-        FrameCount = 0;
-    }
-}
-
-void UJAScalabilitySubsystem::AnalyzePerformance(float AverageMS)
-{
-    uint8 TierValue = static_cast<uint8>(CurrentTier);
-    bool bChanged = false;
-
-    if (PERFORM_THRESHOLD_DOWN < AverageMS && (uint8)EOptimizationTier::Low < TierValue)
-    {
-        --TierValue;
-        bChanged = true;
-    }
-    else if (PERFORM_THRESHOLD_UP > AverageMS && (uint8)EOptimizationTier::Epic > TierValue)
-    {
-        ++TierValue;
-        bChanged = true;
-    }
-
-    if (bChanged)
-    {
-        ApplyScalability(static_cast<EOptimizationTier>(TierValue));
-    }
-
-#if WITH_EDITOR
-    //Debug::Print(TEXT("[UJAScalabilitySubsystem] AverageMS"), AverageMS);
-    //
-    //const UEnum* EnumPtr = StaticEnum<EOptimizationTier>();
-    //FString TierName = EnumPtr ? EnumPtr->GetDisplayNameTextByValue((int64)CurrentTier).ToString() : TEXT("Unknown");
-    //Debug::Print(TEXT("[UJAScalabilitySubsystem] CurrentTier ") + TierName);
-#endif
+    UpdateBenchmarkState(DeltaTime);
 }
 
 void UJAScalabilitySubsystem::ApplyScalability(EOptimizationTier NewTier)
@@ -94,13 +53,6 @@ void UJAScalabilitySubsystem::ApplyScalability(EOptimizationTier NewTier)
         return;
     }
 
-    float CurrentTime = GetWorld()->GetTimeSeconds();
-    if (TierChangeCooldown > CurrentTime - LastTierChangeTime)
-    {
-        return;
-    }
-
-    LastTierChangeTime = CurrentTime;
     CurrentTier = NewTier;
 
     UpdateShadowSettings(CurrentTier);
@@ -170,6 +122,64 @@ void UJAScalabilitySubsystem::SetConsoleVar(FString Name, float Val)
     if (auto* ConsoleVar = IConsoleManager::Get().FindConsoleVariable(*Name))
     {
         ConsoleVar->Set(Val);
+    }
+}
+
+void UJAScalabilitySubsystem::StartPerformanceBenchmark()
+{
+    // 성능 측정을 위한 세팅
+    ApplyScalability(EOptimizationTier::High);
+
+    CurrentState = EJAScalabilitySubsystemState::Warmup;
+    BenchmarkTimer = 0.f;
+}
+
+void UJAScalabilitySubsystem::UpdateBenchmarkState(float DeltaTime)
+{
+    if (EJAScalabilitySubsystemState::Idle == CurrentState)
+    {
+        return;
+    }
+    else if (EJAScalabilitySubsystemState::Warmup == CurrentState)
+    {
+        BenchmarkTimer += DeltaTime;
+        if (WarmupDuration <= BenchmarkTimer)
+        {
+            CurrentState = EJAScalabilitySubsystemState::Measuring;
+            BenchmarkTimer = 0.f;
+            Accumulator = 0.f;
+            FrameCount = 0;
+        }
+    }
+    else if (EJAScalabilitySubsystemState::Measuring == CurrentState)
+    {
+        BenchmarkTimer += DeltaTime;
+        Accumulator += DeltaTime;
+        ++FrameCount;
+
+        if (BenchmarkDuration <= BenchmarkTimer)
+        {
+            CurrentState = EJAScalabilitySubsystemState::Applying;
+        }
+    }
+    else if (EJAScalabilitySubsystemState::Applying == CurrentState)
+    {
+        float AverageMS = (Accumulator / (FrameCount > 0 ? FrameCount : 1)) * 1000.f;
+
+        if (AverageMS >= PERFORM_THRESHOLD_DOWN)      CurrentTier = EOptimizationTier::Low;     // 70~
+        else if (AverageMS >= PERFORM_THRESHOLD_MID)  CurrentTier = EOptimizationTier::Medium;  // 50~69
+        else if (AverageMS >= PERFORM_THRESHOLD_UP)   CurrentTier = EOptimizationTier::High;    // 25~49
+        else                                          CurrentTier = EOptimizationTier::Epic;    // 0~24
+
+#if WITH_EDITOR
+        Debug::Print("AverageMS", AverageMS);
+        Debug::Print("CurrentTier", static_cast<uint8>(CurrentTier));
+#endif
+
+        ApplyScalability(CurrentTier);
+
+        CurrentState = EJAScalabilitySubsystemState::Idle;
+        SetTickableTickType(ETickableTickType::Never);
     }
 }
 

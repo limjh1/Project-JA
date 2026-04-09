@@ -37,8 +37,14 @@ UHierarchicalInstancedStaticMeshComponent* AJAHISMManager::GetOrCreateHISMCompon
     NewHISM->SetStaticMesh(InMesh);
     NewHISM->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-    // 기본 LOD 세팅 등 필요 시 여기서 수행
-    NewHISM->SetCullDistances(0, 5000);
+    // 메시 크기에 비례해서 컬링
+    const float CullDistanceMultiplier = 70.0f;
+    float MeshRadius = InMesh->GetBounds().SphereRadius;
+    float MaxDistance = MeshRadius * CullDistanceMultiplier;
+
+    MaxDistance = FMath::Clamp(MaxDistance, 3000.f, 20000.f);
+
+    NewHISM->SetCullDistances(0, MaxDistance);
 
     HISMMap.Add(InMesh, NewHISM);
 
