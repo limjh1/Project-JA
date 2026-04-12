@@ -7,28 +7,28 @@
 ---
 
 ## 목차
-1. [Overview](#1-overview)
-2. [Focus & Goals](#2-focus--goals)
-3. [Technical Stack](#3-technical-stack)
-4. [Game Preview](#4-game-preview)
-5. [Core Implementation](#5-core-implementation)
-6. [Troubleshooting](#6-troubleshooting)
-7. [Project Structure](#7-project-structure)
-8. [Architecture](#8-architecture)
-9. [Repository Info](#9-repository-info)
-10. [License / Usage](#10-license--usage)
-11. [Author](#11-author)
+1. [개요](#1-개요)
+2. [핵심 목표 및 중점 사항](#2-핵심-목표-및-중점-사항)
+3. [기술 스택](#3-기술-스택)
+4. [게임 미리보기](#4-게임-미리보기)
+5. [핵심 구현 사항](#5-핵심-구현-사항)
+6. [트러블슈팅](#6-트러블슈팅)
+7. [프로젝트 구조](#7-프로젝트-구조)
+8. [시스템 아키텍쳐](#8-시스템-아키텍쳐)
+9. [레포지토리 정보](#9-레포지토리-정보)
+10. [레퍼런스 및 리소스](#10-레퍼런스-및-리소스)
+11. [작성자](#11-작성자)
 
 ---
 
-## 1. Overview
+## 1. 개요
 
 **Project JA**는 단순 기능 구현을 넘어, 대규모 액션 게임 개발 시 발생할 수 있는 병목과 데이터 오염을 방어하는 시스템 설계 중심의 포트폴리오입니다.
 기존 강의의 베이스라인을 기반으로 핵심 로직을 C++로 리팩토링하고, 커스텀 최적화 파이프라인 및 에셋 검증 툴을 직접 구현했습니다.
 
 ---
 
-## 2. Focus & Goals
+## 2. 핵심 목표 및 중점 사항
 
 * **시스템 성능 최적화**
   - 초기 벤치마킹 기반의 능동적 Scalability Subsystem 구축 및 HISM(Hierarchical Instanced Static Mesh) 자동 배칭을 통한 Draw Call 절감.
@@ -41,27 +41,27 @@
 
 ---
 
-## 3. Technical Stack
+## 3. 기술 스택
 
 | 항목 | 내용 |
 | :--- | :--- |
-| **Engine** | Unreal Engine 5.5 |
-| **Language** | C++ (Core Logic), Blueprint (Content Only) |
-| **Optimization** | HISM Manager, Unreal Insights, Custom GameInstanceSubsystem |
-| **Core Systems** | Gameplay Ability System (GAS), CommonUI, Enhanced Input, AI (BT, EQS) |
-| **Movement** | Custom CharacterMovement (Climbing), Motion Warping |
-| **Editor Pipeline** | AssetTools, DataValidation, Editor Utility Widget |
+| **엔진** | Unreal Engine 5.5 |
+| **언어** | C++ (Core Logic), Blueprint (Content Only) |
+| **최적화** | HISM Manager, Unreal Insights, Custom GameInstanceSubsystem |
+| **시스템** | Gameplay Ability System (GAS), CommonUI, Enhanced Input, AI (BT, EQS) |
+| **이동** | Custom CharacterMovement (Climbing), Motion Warping |
+| **에디터** | AssetTools, DataValidation, Editor Utility Widget |
 
 ---
 
-## 4. Game Preview
+## 4. 게임 미리보기
 
 * (제작중) (기능별 설명 영상)
 * https://www.youtube.com/watch?v=4kyv6RzZWCg (인게임 플레이 영상 Full ver)
 
 ---
 
-## 5. Core Implementation
+## 5. 핵심 구현 사항
 
 ### 5.1. Dynamic Scalability & HISM 렌더링 최적화
 <details>
@@ -104,7 +104,7 @@
 
 ---
 
-## 6. Troubleshooting
+## 6. 트러블슈팅
 
 ### 6.1. Merge Actor 한계 파악 및 HISM 하이브리드 배치
 <details>
@@ -127,7 +127,7 @@
 
 ---
 
-## 7. Project Structure
+## 7. 프로젝트 구조
 
 ```text
 ProjectJA
@@ -148,9 +148,9 @@ ProjectJA
 
 ---
 
-## 8. Architecture
+## 8. 시스템 아키텍쳐
 
-### Core System Architecture
+### 핵심 시스템 아키텍쳐
 > *데이터 파이프라인, 프론트엔드 UI, 코어 전투, 그리고 렌더링 최적화가 유기적으로 결합된 전체 라이프사이클 구조도*
 
 ```mermaid
@@ -202,14 +202,14 @@ flowchart LR
 
 ---
 
-## 9. Repository Info
+## 9. 레포지토리 정보
 
 이 저장소는 **클라이언트 아키텍처 설계, 엔진 서브시스템 확장 및 최적화 로직 기록용**입니다.
 프로젝트의 핵심 클래스와 엔지니어링 구현 과정을 공개하며, 대용량 에셋 및 빌드 산출물은 포함되지 않습니다.
 
 ---
 
-## 10. License / Usage
+## 10. 레퍼런스 및 리소스
 
 * **Reference:** 
   * [Udemy – Unreal Engine 5 C++ Advanced Action RPG](https://www.udemy.com/course/unreal-engine-5-advanced-action-rpg-korean/)
@@ -236,7 +236,7 @@ flowchart LR
 
 ---
 
-## 11. Author
+## 11. 작성자
 
 **Lim Jaehyeok (임재혁)** Game Client Developer
 * Email: jehyuk1711@gmail.com
