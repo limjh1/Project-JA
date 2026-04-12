@@ -58,6 +58,7 @@
 
 > *현재 개발 단계의 인게임 스크린샷 및 영상 링크입니다.*
 
+* https://www.youtube.com/watch?v=4kyv6RzZWCg (인게임 플레이Full ver)
 
 ---
 
