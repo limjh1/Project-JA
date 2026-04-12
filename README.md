@@ -48,7 +48,7 @@
 | **Engine** | Unreal Engine 5.5 |
 | **Language** | C++ (Core Logic), Blueprint (Content Only) |
 | **Optimization** | HISM Manager, Unreal Insights, Custom GameInstanceSubsystem |
-| **Core Systems** | Gameplay Ability System (GAS), MVVM (UI), Enhanced Input, AI (BT, EQS) |
+| **Core Systems** | Gameplay Ability System (GAS), CommonUI, Enhanced Input, AI (BT, EQS) |
 | **Movement** | Custom CharacterMovement (Climbing), Motion Warping |
 | **Editor Pipeline** | AssetTools, DataValidation, Editor Utility Widget |
 
