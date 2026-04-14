@@ -59,7 +59,7 @@
 ## 4. 게임 미리보기
 
 * (제작중) (기능별 설명 영상)
-* https://www.youtube.com/watch?v=4kyv6RzZWCg (인게임 플레이 영상 Full ver)
+* https://www.youtube.com/watch?v=6-geVG32l0c (인게임 플레이 영상 Full ver)
 
 ---
 
