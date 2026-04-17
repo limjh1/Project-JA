@@ -58,8 +58,8 @@
 
 ## 4. 게임 미리보기
 
-* [기술 구현 상세 및 핵심 기능 설명](https://youtu.be/FuPVmhB996s)
-* [인게임 플레이 (Full ver.)](https://youtu.be/6-geVG32l0c)
+* [기술 구현 상세 및 핵심 기능 설명](https://youtu.be/FuPVmhB996s) (5m 12s)
+* [인게임 플레이 (Full ver.)](https://youtu.be/6-geVG32l0c) (6m 10s)
 
 ---
 
@@ -75,7 +75,7 @@
 
 </details>
 
-### 5.2. 에셋 파이프라인 자동화 (IA 에셋 제너레이터 제작)
+### 5.2. 에셋 파이프라인 자동화 (Input Action 에셋 제너레이터 제작)
 <details>
 <summary><b>상세 내용 보기 (클릭)</b></summary>
 
