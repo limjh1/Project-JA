@@ -102,6 +102,7 @@ namespace JAGameplayTags
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Climbing_Default);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Climbing_LedgeDown);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Stamina_PauseRegen);
+	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Stamina_Use);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_EquipWeapon);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Equipment_Chest);
 	JA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Equipment_Pants);
