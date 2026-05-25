@@ -16,10 +16,6 @@ void UJAScalabilitySubsystem::Initialize(FSubsystemCollectionBase& Collection)
     Super::Initialize(Collection);
 
     StartPerformanceBenchmark();
-
-#if WITH_EDITOR
-    //Debug::Print(FString(TEXT("[UJAScalabilitySubsystem] UJAScalabilitySubsystem::Initialize")));
-#endif
 }
 
 void UJAScalabilitySubsystem::Deinitialize()
@@ -61,9 +57,9 @@ void UJAScalabilitySubsystem::ApplyScalability(EOptimizationTier NewTier)
     UpdateLightVisibilityDistance(CurrentTier);
 
 #if WITH_EDITOR
-    //const UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/ProjectJA.EOptimizationTier"), true);
-    //FString TierName = EnumPtr ? EnumPtr->GetNameStringByValue((int64)CurrentTier) : TEXT("Unknown");
-    //Debug::Print(TEXT("[UJAScalabilitySubsystem] Scalability Switched to ") + TierName);
+    const UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/ProjectJA.EOptimizationTier"), true);
+    FString TierName = EnumPtr ? EnumPtr->GetNameStringByValue((int64)CurrentTier) : TEXT("Unknown");
+    Debug::Print(TEXT("[UJAScalabilitySubsystem] Scalability Switched to ") + TierName);
 #endif
 }
 

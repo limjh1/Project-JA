@@ -114,11 +114,6 @@ void UAfterImageComponent::StartAfterImage(float Interval)
 
 	// 시작 시점의 절대 시간을 기록하여 즉시 첫 잔상이 나오도록 유도
 	LastSpawnRealTime = GetWorld()->GetRealTimeSeconds() - Interval;
-
-	//if (UWorld* World = GetWorld())
-	//{
-	//	World->GetTimerManager().SetTimer(SpawnTimerHandle, this, &UAfterImageComponent::SpawnAfterImage, Interval, true);
-	//}
 }
 
 void UAfterImageComponent::StopAfterImage()
@@ -126,10 +121,6 @@ void UAfterImageComponent::StopAfterImage()
 	SetComponentTickEnabled(false);
 
 	bIsSpawning = false;
-	//if (GetWorld())
-	//{
-	//	GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
-	//}
 }
 
 void UAfterImageComponent::SpawnAfterImage()

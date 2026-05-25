@@ -19,9 +19,15 @@ public:
     void AddInstance(UStaticMesh* InMesh, const FTransform& InTransform);
 
 private:
+    UHierarchicalInstancedStaticMeshComponent* GetOrCreateHISMComponent(UStaticMesh* InMesh);
+
+private:
     // 메시별로 HISM 컴포넌트를 캐싱하여 드로우콜을 1개로 유지
     UPROPERTY()
     TMap<UStaticMesh*, UHierarchicalInstancedStaticMeshComponent*> HISMMap;
 
-    UHierarchicalInstancedStaticMeshComponent* GetOrCreateHISMComponent(UStaticMesh* InMesh);
+private:
+    const float CullDistanceMultiplier = 70.f;
+    const float MinClampDist = 3000.f;
+    const float MaxClampDist = 20000.f;
 };

@@ -38,11 +38,10 @@ UHierarchicalInstancedStaticMeshComponent* AJAHISMManager::GetOrCreateHISMCompon
     NewHISM->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
     // 메시 크기에 비례해서 컬링
-    const float CullDistanceMultiplier = 70.0f;
     float MeshRadius = InMesh->GetBounds().SphereRadius;
     float MaxDistance = MeshRadius * CullDistanceMultiplier;
 
-    MaxDistance = FMath::Clamp(MaxDistance, 3000.f, 20000.f);
+    MaxDistance = FMath::Clamp(MaxDistance, MinClampDist, MaxClampDist);
 
     NewHISM->SetCullDistances(0, MaxDistance);
 
